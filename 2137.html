@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css"></link>
+<style>
+    h1 {
+        position: relative;
+        top: -0.4em;
+        text-shadow: 5px 5px #808080;
+        font-size: 2em;
+    }
+    h2 {
+        position: relative;
+        top: -0.25em;
+        font-size: 1.75em;
+    }
+    #clock{
+        position: relative;
+        top: -2em;
+    }
+    .notifyButton {
+        position: fixed;
+        right: 5px;
+        top: 3px;
+        font-size: 0.25em; 
+    }
+    .homeButton {
+        position: fixed;
+        left: 5px;
+        top: 3px;
+        font-size: 0.25em; 
+    }
+</style>
+<script>
+function notifyMe() {
+    if (!window.Notification) {
+        console.log('Browser does not support notifications.');
+    } else {
+        // check if permission is already granted
+        console.log('Browser does support notifications.');
+        if (Notification.permission === 'granted') {
+        console.log('Permssion already granted');
+
+        } else {
+            // request permission from user
+            Notification.requestPermission().then(function (p) {
+                if (p === 'granted') {
+                    console.log('Permssion granted');
+                    // show notification here
+                    var notify = new Notification('Hi there!');
+                    //, {
+                        //body: 'How are you doing?',
+                        //icon: 'https://bit.ly/2DYqRrh',
+                    //});
+                } else {
+                    console.log('User blocked notifications.');
+                }
+            }).catch(function (err) {
+                console.error(err);
+            });
+        }
+    }
+}
+var trig = true;
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+
+  m = checkTime(m);
+  s = checkTime(s);
+  if (h==21&&m==37){
+    document.getElementById('ans').innerHTML =
+  "TAK";
+  }else{
+    document.getElementById('ans').innerHTML =
+  "NIE";  
+  }
+  if (h==21&&m==36&&s==00){
+    if (trig==true){
+        console.log(trig)
+           const notification = new Notification('Papieska się zbliża!', {
+                    body: 'Została minuta do 21:37.\n przygotuj się do śpiewania',
+                    icon: 'data:image/jpeg;base64,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',
+                })
+           notification.onclick = (e) => {
+              window.location.href = "https://www.youtube.com/watch?v=0qzLRlQFFQ4&t=40s";
+           };
+
+        }
+    trig = false;
+    console.log(trig);
+  } else {
+  if (trig == false){
+  trig = true;
+  console.log('t');
+  }
+  }
+
+  document.getElementById('clock').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
+</script>
+</head>
+
+<body onload="startTime()">
+<button class="notifyButton" onclick="notifyMe()">Powiadomienia</button>
+<button class="homeButton" onclick="window.location.href='index.html'">Strona główna</button>
+<center>
+<h2><b>Czy jest papieska?</b></h2>
+<h1> <p id="ans"></p> </h1>
+<div id="clock"></div>
+</center>
+</body>
+</html>
