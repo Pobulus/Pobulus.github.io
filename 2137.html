@@ -40,18 +40,15 @@ function notifyMe() {
         console.log('Browser does support notifications.');
         if (Notification.permission === 'granted') {
         console.log('Permssion already granted');
-
+            var notify = new Notification('Wyraziłeś już zgodę na powiadomienia');
         } else {
             // request permission from user
             Notification.requestPermission().then(function (p) {
                 if (p === 'granted') {
                     console.log('Permssion granted');
                     // show notification here
-                    var notify = new Notification('Hi there!');
-                    //, {
-                        //body: 'How are you doing?',
-                        //icon: 'https://bit.ly/2DYqRrh',
-                    //});
+                    var notify = new Notification('Tak będą wyglądały powiadomienia');
+                    
                 } else {
                     console.log('User blocked notifications.');
                 }
