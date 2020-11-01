@@ -1,0 +1,172 @@
+<html>
+    <head>
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="stylesheet" href="style.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+
+            $(document).ready(function(){
+                $(".right, .left").hide();
+                
+              })
+            var choice = 0;
+            function rock(){
+                console.log("rock");
+                choice = 1;
+                compare();
+            }
+            function paper(){
+                console.log("paper");
+                choice = 2;
+                compare();
+            }
+            function scissors(){
+                console.log("scissors");
+                choice = 3;
+                compare();
+            }
+            function compare(){
+                
+                $(".tile").hide();
+                $(".right, .left").show();
+                var array = new Uint16Array(10);
+                window.crypto.getRandomValues(array);
+                var ranPick = array[parseInt(Math.random())]%3+1;
+                switch (choice){
+                    case 1:
+                        $(".rock.left").animate({opacity: 1});
+                        
+                        break;
+                    case 2:
+                        $(".paper.left").animate({opacity: 1});
+                        
+                        break;
+                    case 3:
+                        $(".scissors.left").animate({opacity: 1});
+                        
+                        break;    
+                    default:
+                        console.log("This message should not appear, ever");
+                        break;
+                }
+                switch(ranPick){
+                    case 1:
+                        $(".rock.right").animate({opacity: 1});
+                        break;
+                    case 2:
+                        $(".paper.right").animate({opacity: 1});
+                        break;
+                    case 3:
+                        $(".scissors.right").animate({opacity: 1});
+                        break;
+                    default:
+                        console.log("This message should not appear, ever");
+                        console.log("choice", choice, "ranPick", ranPick);
+                        break;
+                    
+                }
+                switch(choice){
+                    case ranPick:
+                        $("#banner").text("DRAW");
+                        $(".right").animate({right: "30vw"});
+                        $(".left").animate({left: "30vw"});  
+                        break;
+                    
+                    case ranPick+1:
+                    
+                        $("#banner").text("WIN");
+                        $(".right").css({"z-index": 500});
+                        $(".right").animate({left: "0.5vw"});
+                        $(".left").animate({right: "0.5vw"});  
+                        break;
+                    
+                    case ranPick-1:
+                        $("#banner").text("LOSE");
+                        $(".right").css({"z-index": 502});
+                        $(".right").animate({left: "0.5vw"});
+                        $(".left").animate({right: "0.5vw"});  
+                        break;  
+                    default:
+                        if(choice==1){
+                            $("#banner").text("WIN");
+                            $(".right").css({"z-index": 500});
+                            $(".right").animate({left: "0.5vw"});
+                            $(".left").animate({right: "0.5vw"});  
+                            
+                        }
+                        if(choice==3&&ranPick==1){
+                            $("#banner").text("LOSE");
+                            $(".right").css({"z-index": 502});
+                            $(".right").animate({left: "0.5vw"});
+                            $(".left").animate({right: "0.5vw"});  
+                          
+                        }
+                        break;                     
+                }
+                setTimeout(function(){console.log("reloading...");window.location.reload();}, 1250);
+                
+            }
+        </script>
+        <style>
+            .tile{
+                
+                font-size: 10vw;
+                position: relative;
+                top: 40vh;
+                width: 30vw;
+                text-align: center;
+                z-index: 1000;
+            }
+            @media only screen and (max-width: 768px) {
+
+                .tile {
+                width: 90vw;
+                margin-bottom: 1vw;
+                }}
+            .tilecontainter{
+                position: fixed;
+                top: 50vh;
+                width: 100vw;
+            }
+            .left{
+                position: absolute;
+                top: 30%;
+                font-size: 15vw;
+                z-index: 500;
+                opacity: 0%;
+                left: 5vw;
+                z-index: 501;
+            }
+            .right{
+                position: absolute;
+                top: 30%;
+                font-size: 15vw;
+                z-index: 500;
+                opacity: 0%;
+                right: 5vw;
+            }
+            #banner{
+                position: fixed;
+                top: 10%;
+                text-align: center;
+                width: 100vw;
+                font-size: 7vw;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 id="banner">ROCK PAPER SCISSORS</h2>
+        
+        <button class="tile" onclick="rock()">👊</button>
+        <button class="tile" onclick="paper()">✋</button>
+        <button class="tile" onclick="scissors()">✌️</button>
+        <button class="homeButton" onclick="window.location.href='index.html'">Strona główna</button>
+        
+        <div class="scissors left" >✌️</div>
+        <div class="scissors right" >✌️</div>
+        <div class="paper left" >✋</div>
+        <div class="paper right" >✋</div>
+        <div class="rock left" >👊</div>
+        <div class="rock right" >👊</div>
+    </body>
+</html>

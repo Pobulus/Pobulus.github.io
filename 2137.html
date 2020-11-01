@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="style.css"></link>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="style.css">
 <style>
+    center {
+        height: 100%;
+    }
     h1 {
-        position: relative;
-        top: -0.4em;
+        position: fixed;
+        top: 10%;
+        width: 100%;
+        
         text-shadow: 5px 5px #808080;
-        font-size: 2em;
+        font-size: 10vw;
     }
     h2 {
         position: relative;
-        top: -0.25em;
-        font-size: 1.75em;
+        width: 100%;
+        
+        font-size: 7vw;
+    }
+    button{
+        height: 5vw;
     }
     #clock{
-        position: relative;
-        top: -2em;
-    }
-    .notifyButton {
         position: fixed;
-        right: 5px;
-        top: 3px;
-        font-size: 0.25em; 
+        bottom: 10%;
+        width: 100%;
+        
+        font-size: 5vw;
     }
-    .homeButton {
-        position: fixed;
-        left: 5px;
-        top: 3px;
-        font-size: 0.25em; 
+     @media only screen and (max-width: 768px) {
+         h1{
+             top: 30%;
+         }
     }
+
 </style>
 <script>
 function notifyMe() {
@@ -108,11 +115,10 @@ function checkTime(i) {
 
 <body onload="startTime()">
 <button class="notifyButton" onclick="notifyMe()">Powiadomienia</button>
-<button class="homeButton" onclick="window.location.href='index.html'">Strona główna</button>
-<center>
+    <button class="homeButton" onclick="window.location.href='index.html'">Strona główna</button>
 <h2><b>Czy jest papieska?</b></h2>
 <h1> <p id="ans"></p> </h1>
 <div id="clock"></div>
-</center>
+
 </body>
 </html>

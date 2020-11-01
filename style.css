@@ -20,7 +20,7 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-
+  
   z-index: 1000;
   opacity: 0.5;
 }
@@ -30,3 +30,15 @@ button:hover {
   opacity: 1;
 
 }
+    .notifyButton {
+        position: fixed;
+        right: 5px;
+        top: 3px;
+        font-size: 2vw; 
+    }
+    .homeButton {
+        position: fixed;
+        left: 5px;
+        top: 3px;
+        font-size: 2vw; 
+    }
