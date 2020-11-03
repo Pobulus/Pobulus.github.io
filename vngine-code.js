@@ -1,5 +1,6 @@
 var elem=document.documentElement;
 var names = {"s":"Simp","c":"Chad"};
+var colors = {"s": "#00ff00", "c":"#00ffff"};
 var fullscr=false; 
 /* View in fullscreen */
 function openFullscreen() {
@@ -62,6 +63,7 @@ function readLine(x){
         
         if (argument.length==1){
             $("#speakerBox").text(names[argument]);
+            $("#speakerBox").css({"color":colors[argument]});
         display(textLineArgs[argNumber]);
         }
         
