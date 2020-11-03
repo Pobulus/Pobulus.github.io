@@ -47,6 +47,8 @@
         #textDisplay{
             color: #fff;
             font-size: 150%;
+            text-align: left;
+            margin-left: 1%;
         }
         #speakerBox{
             position: relative;
@@ -61,17 +63,47 @@
         #speakerName{
             
         }
+        @media only screen and (max-width: 1000px) {
+            #backdropContainer{
+                height: 50%;
+                top: 0;
+                position: fixed;
+            }
+            #bottomBox{
+                position: absolute;
+                bottom: 1px;
+                height: 50%;
+                font-size: 150%;
+            }
+            #controls{
+                height: 200%;
+                font-size: 150%;
+                
+                bottom: 0px;
+            }
+            
+        
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         var mainCounter = 0;
         var textLines = new Array;
-        $.get('script.txt', function(data){
-            var array = data.split('\n');
+        function load(){
+        $.get('https://pobulus.github.io/script.txt', function(data){
+            console.log(data);
+            textLines = data.split('\n');
             console.log(textLines);
+            display(mainCounter);
         });
+        }
         function nextLine(){
-            mainCounter = mainCounter++;
+            mainCounter = mainCounter+1;
+            console.log("next");
+            display(mainCounter);
+        }
+        function prevLine(){
+            mainCounter = mainCounter-1;
             console.log("next");
             display(mainCounter);
         }
@@ -92,7 +124,7 @@
     
 </head>
 
-<body>
+<body onload="load()">
     
     
     <div id="buttonBox">
@@ -102,7 +134,7 @@
     <div id="backdropContainer">
     <image src="background.jpg" id="backdrop" class="picture"></image>
     </div>
-    <center>
+    
     <div id="bottomBox">
         <div id="speakerBox">
             Sample
@@ -110,13 +142,15 @@
         </div>
         
         <div id="textBox">
-            <p id="textDisplay">LoremImpsum Dupa dupa dupaudpaujdjiow daiowjd jdopaj gehwdoja d woadki </p>
+            <p id="textDisplay">Loading... </p>
         </div>
         <div id="controls">
-            <button>PREV</button>
+            <center>
+            <button onclick="prevLine()">PREV</button>
             <button onclick="nextLine()">NEXT</button>
+            </center>
         </div>
     </div>
-    </center>
+    
 </body>
 </html>
