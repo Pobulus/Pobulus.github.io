@@ -3,3 +3,7 @@ s; This is my test script
 s; I don't yet exist...
 s; but I just wanted to tell you
 s; Have a nice day!
+c; Greetings mortal!
+c; I am megaChad!
+c; My chin eats grapes.
+c; Later Skaters!

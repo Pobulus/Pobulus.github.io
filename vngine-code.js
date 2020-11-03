@@ -1,4 +1,5 @@
 var elem=document.documentElement;
+var names = {"s":"Simp","c":"Chad"};
 var fullscr=false; 
 /* View in fullscreen */
 function openFullscreen() {
@@ -55,7 +56,17 @@ function readLine(x){
     
     textLineArgs = textLines[x].split("; ");
     console.log(textLineArgs);
-    display(textLineArgs[1]);
+    var argNumber = 0;
+    for (const argument of textLineArgs){
+        argNumber = argNumber+1;
+        
+        if (argument.length==1){
+            $("#speakerBox").text(names[argument]);
+        display(textLineArgs[argNumber]);
+        }
+        
+    }
+    
 }
 function display(x){
     $("#textDisplay").text(x);
