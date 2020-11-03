@@ -63,7 +63,27 @@
         #speakerName{
             
         }
-        @media only screen and (min-aspect-ratio: 1/2) {
+        button{
+            background-color: #000000;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            transition-duration: 0.4s;
+            color: #ffffff;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            z-index: 1000;
+            opacity: 0.5;
+}
+            
+        button:hover {
+              background-color: #ffffff;
+              color: #000000;
+              opacity: 1;
+
+}
+        @media only screen and (min-aspect-ratio: 2/1) {
             #backdropContainer{
                 height: 50%;
                 position: absolute;
@@ -80,32 +100,35 @@
                 
                 bottom: 0px;
             }
-            button{
-                  background-color: #000000;
-  border: 2px solid #ffffff;
-
-  border-radius: 5px;
-  transition-duration: 0.4s;
-  color: #ffffff;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  
-  z-index: 1000;
-  opacity: 0.5;
-}
             
-        button:hover {
-  background-color: #ffffff;
-  color: #000000;
-  opacity: 1;
-
-}
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        var elem = document.documentElement;
+        var fullscr = false; 
+/* View in fullscreen */
+        function openFullscreen() {
+            if (!fullscr){
+            fullscr = true;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }}
+            else{
+                fullscr = false;
+                 if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+            }
+        }
         var mainCounter = 0;
         var textLines = new Array;
         function load(){
@@ -148,7 +171,8 @@
     
     <div id="buttonBox">
     <button onclick="changeBackground('background2.png')">Background</button>
-    <button onclick="changeBackground('background.jpg')">Background2</button>
+        <button onclick="changeBackground('background.jpg')">Background2</button>
+        <button onclick="openFullscreen()">Fullscreen</button>
     </div>  
     <div id="backdropContainer">
     <image src="background.jpg" id="backdrop" class="picture"></image>
