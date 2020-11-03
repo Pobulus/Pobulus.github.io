@@ -1,5 +1,5 @@
-Hello world!
-This is my test script
-I don't yet exist...
-but I just wanted to tell you
-Have a nice day!
+s; Hello world!
+s; This is my test script
+s; I don't yet exist...
+s; but I just wanted to tell you
+s; Have a nice day!
