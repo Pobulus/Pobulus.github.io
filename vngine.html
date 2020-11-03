@@ -1,0 +1,122 @@
+<html>
+<head>
+    <style>
+        body{
+            background: #000;
+            align-content: center;
+        }
+        #backdropContainer{
+
+            z-index: 1;
+            
+        }
+        #backdrop{
+            height: 100%;
+            width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            object-fit: contain;
+        }
+        #buttonBox {
+            position: absolute;
+            display: block;
+            z-index: 5;
+        }
+        #bottomBox{
+            
+            z-index: 10;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            bottom: 5%;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            width: 80%;
+        }
+        #textBox{
+            object-fit: contain;
+            
+            
+            height: 15%;
+            
+            
+        }
+        #textDisplay{
+            color: #fff;
+            font-size: 150%;
+        }
+        #speakerBox{
+            position: relative;
+            margin: 5px;
+            height: 10px;
+            text-align: left;
+            object-fit: contain;
+            font-size: 180%;
+            
+            color: #0f0;
+        }
+        #speakerName{
+            
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var mainCounter = 0;
+        var textLines = new Array;
+        $.get('script.txt', function(data){
+            var array = data.split('\n');
+            console.log(textLines);
+        });
+        function nextLine(){
+            mainCounter = mainCounter++;
+            console.log("next");
+            display(mainCounter);
+        }
+        function display(x){
+            $("#textDisplay").text(textLines[x]);
+            console.log(x);
+        }
+        function changeBackground(x){
+            $("#backdrop").attr('src', x);
+        }
+    </script>
+    
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    
+    
+    <div id="buttonBox">
+    <button onclick="changeBackground('background2.png')">Background</button>
+    <button onclick="changeBackground('background.jpg')">Background2</button>
+    </div>  
+    <div id="backdropContainer">
+    <image src="background.jpg" id="backdrop" class="picture"></image>
+    </div>
+    <center>
+    <div id="bottomBox">
+        <div id="speakerBox">
+            Sample
+    
+        </div>
+        
+        <div id="textBox">
+            <p id="textDisplay">LoremImpsum Dupa dupa dupaudpaujdjiow daiowjd jdopaj gehwdoja d woadki </p>
+        </div>
+        <div id="controls">
+            <button>PREV</button>
+            <button onclick="nextLine()">NEXT</button>
+        </div>
+    </div>
+    </center>
+</body>
+</html>
