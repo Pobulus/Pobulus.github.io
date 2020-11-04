@@ -74,6 +74,6 @@ function display(x){
     $("#textDisplay").text(x);
     console.log(x);
 }
-function changeBackground(x){
-    $("#backdrop").attr('src', x);
+function changeImage(x, y){
+    $("#"+ x).attr('src', y);
 }
