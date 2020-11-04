@@ -92,8 +92,13 @@ body{
 }
         @media only screen and (max-aspect-ratio: 1/1) {
             #backdropContainer{
-                height: 50%;
-                position: absolute;
+                
+                height: 50vh;
+                top: 0px;
+                position: relative;
+            }
+            .character{
+                object-fit:scale-down;
             }
             .debugButton{
                 font-size: 1.5vh;
