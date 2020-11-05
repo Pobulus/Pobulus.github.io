@@ -1,124 +1,164 @@
-body{
-            background: #000;
-            align-content: center;
-        }
-        #backdropContainer{
-            position: relative;
-            z-index: 1;
-            
-        }
-        .character{
-            z-index: 5;
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            object-fit: contain;
-            top: 0px;
-            
-        }
-        #backdrop{
-            height: 100%;
-            width: 100%;
-            position: relative;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            object-fit: contain;
-        }
-        #buttonBox {
-            position: absolute;
-            display: block;
-            z-index: 5;
-        }
-        #bottomBox{
-            
-            z-index: 10;
-            position: absolute;
-            left: 0;
-            right: 0;
-            margin-left: auto;
-            margin-right: auto;
-            bottom: 5%;
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.7);
-            width: 80%;
-        }
-        #textBox{
-            object-fit: contain;
-            
-            
-            height: 15%;
-            
-            
-        }
-        #textDisplay{
-            color: #fff;
-            font-size: 2vw;
-            text-align: left;
-            margin-left: 1%;
-        }
-        #speakerBox{
-            position: relative;
-            margin: 5px;
-            height: 10px;
-            text-align: left;
-            object-fit: contain;
-            font-size: 2.5vw;
-            
-            color: #0f0;
-        }
-        #speakerName{
-            
-        }
-        button{
-            background-color: #000000;
-            border: 2px solid #ffffff;
-            border-radius: 5px;
-            transition-duration: 0.4s;
-            color: #ffffff;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            z-index: 1000;
-            opacity: 0.5;
-}
-            
-        button:hover {
-              background-color: #ffffff;
-              color: #000000;
-              opacity: 1;
-
-}
-        @media only screen and (max-aspect-ratio: 1/1) {
+    body{
+                background: #000;
+                align-content: center;
+            }
             #backdropContainer{
-                
-                height: 50vh;
+                position: fixed;
+                z-index: 1;
                 top: 0px;
-                position: relative;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+
             }
             .character{
-                object-fit:scale-down;
+                z-index: 5;
+                height: auto;
+                width: 100%;
+                position: fixed;
+                object-fit: contain;
+                top: 0px;
+                max-height: 100%;
+
+
+
             }
-            .debugButton{
-                font-size: 1.5vh;
+            #backdrop{
+                height: 100%;
+                width: 100%;
+                position: relative;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                object-fit: contain;
+            }
+            #scene{
+                
+                width: 100%;
+                z-index: 5;
+                position: absolute;
+                display: block;
+                top: 0;
+                object-fit: contain;
+            }
+            #buttonBox {
+                position: absolute;
+                display: block;
+                z-index: 5;
             }
             #bottomBox{
+
+                z-index: 10;
                 position: absolute;
-                height: 50%;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                bottom: 5%;
+                border-radius: 5px;
+                background: rgba(0, 0, 0, 0.7);
+                width: 80%;
             }
-            #speakerBox{
-                font-size: 2.5vh;
+            #textBox{
+                object-fit: contain;
+
+
+                height: 15%;
+
+
             }
             #textDisplay{
-                font-size: 2vh;
+                color: #fff;
+                font-size: 2vw;
+                text-align: left;
+                margin-left: 1%;
             }
-            #controls{
-                height: 2vh;     
-                bottom: 0px;
+            #speakerBox{
+                position: relative;
+                margin: 5px;
+                height: 10px;
+                text-align: left;
+                object-fit: contain;
+                font-size: 2.5vw;
+
+                color: #0f0;
             }
-            .controlButton{
-                font-size: 1.5vh;
-            }  
-            
-        }
+            #speakerName{
+
+            }
+            button{
+                background-color: #000000;
+                border: 2px solid #ffffff;
+                border-radius: 5px;
+                transition-duration: 0.4s;
+                color: #ffffff;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                z-index: 1000;
+                opacity: 0.5;
+    }
+
+            button:hover {
+                  background-color: #ffffff;
+                  color: #000000;
+                  opacity: 1;
+
+    }
+            @media only screen and (max-aspect-ratio: 1/1) {
+                #backdropContainer{
+
+                    max-height: 50%;
+                    width: 100%;
+                    top: 0px;
+                    position: fixed;
+
+                }
+                #backdrop{
+                    object-fit: cover;      
+                }
+                #scene{
+                    min-height: 30vh;
+                    max-height: 50vh;
+                    width: 100%;
+                    top: 0;
+                    position: fixed;
+                }
+                .character{
+                    object-fit: contain;
+                    max-height: 50%;
+                    display: block;
+
+                }
+                .debugButton{
+                    font-size: 1.5vh;
+                }
+                #bottomBox{
+                    position: absolute;
+                    bottom: 0px;
+                    height: 50%;
+                    width: 100%;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                }
+                #speakerBox{
+                    font-size: 3vh;
+                }
+                #textDisplay{
+                    font-size: 2.5vh;
+                }
+                #controls{
+                    height: 40vh;  
+                    width: 100vw;
+                    bottom: 0px;
+                    left: 0px;
+                    
+                }
+                .controlButton{
+                    display: block;
+                    font-size: 2vh;
+                    width: 90vw;
+                }  
+
+            }
