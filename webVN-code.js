@@ -74,7 +74,7 @@ function interpret(x){
                 $("#speakerBox").css({"color":colors[argument]});
             display(textLineArgs[argNumber]);
             } else if(argument == "xc") {
-                imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]+".png");
+                imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]);
             }else if(argument == "ml") {
                 imageMoveLeft(textLineArgs[argNumber]);
             }else if(argument == "mr") {
@@ -92,7 +92,7 @@ function interpret(x){
             }else if(argument == "vs") {
                 imageShow(textLineArgs[argNumber]);
             }else if(argument == "bg") {
-                imageChange("background", textLineArgs[argNumber]);
+                imageChange("backdrop", textLineArgs[argNumber]);
             }
         }
     }

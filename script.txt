@@ -5,8 +5,8 @@ but I just wanted to tell you...
 s; Have a nice day!; vs; c0
 ml; c1; xc; c1; bob_neutral; vs; c1; c; Greetings mortal!
 al; c0; c; I am megaChad!; ac; c1
-b; My current mood is HAPPY.; xc; c1; bob_happy; xc; c0; char_happy
-c; Later Skaters!; ch; c0; char_neutral
+b; My current mood is HAPPY.; xc; c1; bob_happy.png; xc; c0; char_happy.png
+c; Later Skaters!; xc; c0; char_neutral.png
 ar; c0; al; c1
 b; This is the first line.; c; this is the second line.
  ;       
