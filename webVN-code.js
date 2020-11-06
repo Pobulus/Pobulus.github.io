@@ -74,7 +74,12 @@ function interpret(x){
                 $("#speakerBox").css({"color":colors[argument]});
             display(textLineArgs[argNumber]);
             } else if(argument == "xc") {
-                imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]);
+                var filename = textLineArgs[argNumber+1]
+                if (filename.charAt(filename.length-4)=="."){
+                    imageChange(textLineArgs[argNumber], filename);
+                } else {
+                    imageChange(textLineArgs[argNumber], filename+".png");
+                }
             }else if(argument == "ml") {
                 imageMoveLeft(textLineArgs[argNumber]);
             }else if(argument == "mr") {
