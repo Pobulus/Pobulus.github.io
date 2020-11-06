@@ -65,6 +65,24 @@ function readLine(x){
             $("#speakerBox").text(names[argument]);
             $("#speakerBox").css({"color":colors[argument]});
         display(textLineArgs[argNumber]);
+        } else if(argument == "ch") {
+            imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]+".png");
+        }else if(argument == "ml") {
+            imageMoveLeft(textLineArgs[argNumber]);
+        }else if(argument == "mr") {
+            imageMoveRight(textLineArgs[argNumber]);
+        }else if(argument == "mc") {
+            imageMoveCenter(textLineArgs[argNumber]);
+        }else if(argument == "al") {
+            imageAnimateLeft(textLineArgs[argNumber]);
+        }else if(argument == "ar") {
+            imageAnimateRight(textLineArgs[argNumber]);
+        }else if(argument == "ac") {
+            imageAnimateCenter(textLineArgs[argNumber]);
+        }else if(argument == "vh") {
+            imageHide(textLineArgs[argNumber]);
+        }else if(argument == "vs") {
+            imageShow(textLineArgs[argNumber]);
         }
         
     }
@@ -74,6 +92,30 @@ function display(x){
     $("#textDisplay").text(x);
     console.log(x);
 }
-function changeImage(x, y){
+
+function imageMoveLeft(x){
+    $("#"+x).css({left:"-35vw"});
+}
+function imageMoveRight(x){
+    $("#"+x).css({left:"35vw"});
+}
+function imageMoveCenter(x){
+    $("#"+x).css({left:"0vw"});
+}function imageAnimateLeft(x){
+    $("#"+x).animate({left:"-35vw"});
+}
+function imageAnimateRight(x){
+    $("#"+x).animate({left:"35vw"});
+}
+function imageAnimateCenter(x){
+    $("#"+x).animate({left:"0vw"});
+}
+function imageHide(x){
+    $("#"+x).hide();
+}
+function imageShow(x){
+    $("#"+x).show();
+}
+function imageChange(x, y){
     $("#"+ x).attr('src', y);
 }

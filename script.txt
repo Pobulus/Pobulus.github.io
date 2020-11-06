@@ -1,9 +1,9 @@
-s; Hello world!
+vh; char1; s; Hello world!
 s; This is my test script
-s; I don't yet exist...
-s; but I just wanted to tell you
-s; Have a nice day!
+mr; char1; s; I don't yet exist...
+s; but I just wanted to tell you...
+s; Have a nice day!; vs; char1
 c; Greetings mortal!
-c; I am megaChad!
-c; My chin eats grapes.
-c; Later Skaters!
+al; char1; c; I am megaChad!
+c; My current mood is HAPPY. ch; char1; char_happy
+c; Later Skaters! ch; char1; char_neutral
