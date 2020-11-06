@@ -1,11 +1,11 @@
-s; Hello world!
-ch; c0; char_neutral; s; This is my test script
+bg; background2.png; s; Hello world!
+xc; c0; char_neutral; s; This is my test script
 mr; c0; s; I don't yet exist...
 but I just wanted to tell you...
 s; Have a nice day!; vs; c0
-ml; c1; ch; c1; bob_neutral; vs; c1; c; Greetings mortal!
+ml; c1; xc; c1; bob_neutral; vs; c1; c; Greetings mortal!
 al; c0; c; I am megaChad!; ac; c1
-b; My current mood is HAPPY.; ch; c1; bob_happy; ch; c0; char_happy
+b; My current mood is HAPPY.; xc; c1; bob_happy; xc; c0; char_happy
 c; Later Skaters!; ch; c0; char_neutral
 ar; c0; al; c1
 b; This is the first line.; c; this is the second line.

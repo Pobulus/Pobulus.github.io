@@ -56,8 +56,11 @@ function prevLine(){
     readLine(mainCounter);
 }
 function readLine(x){
+    interpret(textLines[x]);
+}
+function interpret(x){
     
-    textLineArgs = textLines[x].split("; ");
+    textLineArgs = x.split("; ");
     console.log(textLineArgs);
     var argNumber = 0;
     if (textLineArgs.length==1){
@@ -70,7 +73,7 @@ function readLine(x){
                 $("#speakerBox").text(names[argument]);
                 $("#speakerBox").css({"color":colors[argument]});
             display(textLineArgs[argNumber]);
-            } else if(argument == "ch") {
+            } else if(argument == "xc") {
                 imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]+".png");
             }else if(argument == "ml") {
                 imageMoveLeft(textLineArgs[argNumber]);
@@ -88,6 +91,8 @@ function readLine(x){
                 imageHide(textLineArgs[argNumber]);
             }else if(argument == "vs") {
                 imageShow(textLineArgs[argNumber]);
+            }else if(argument == "bg") {
+                imageChange("background", textLineArgs[argNumber]);
             }
         }
     }
