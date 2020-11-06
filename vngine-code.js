@@ -58,33 +58,36 @@ function readLine(x){
     textLineArgs = textLines[x].split("; ");
     console.log(textLineArgs);
     var argNumber = 0;
-    for (const argument of textLineArgs){
-        argNumber = argNumber+1;
-        
-        if (argument.length==1){
-            $("#speakerBox").text(names[argument]);
-            $("#speakerBox").css({"color":colors[argument]});
-        display(textLineArgs[argNumber]);
-        } else if(argument == "ch") {
-            imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]+".png");
-        }else if(argument == "ml") {
-            imageMoveLeft(textLineArgs[argNumber]);
-        }else if(argument == "mr") {
-            imageMoveRight(textLineArgs[argNumber]);
-        }else if(argument == "mc") {
-            imageMoveCenter(textLineArgs[argNumber]);
-        }else if(argument == "al") {
-            imageAnimateLeft(textLineArgs[argNumber]);
-        }else if(argument == "ar") {
-            imageAnimateRight(textLineArgs[argNumber]);
-        }else if(argument == "ac") {
-            imageAnimateCenter(textLineArgs[argNumber]);
-        }else if(argument == "vh") {
-            imageHide(textLineArgs[argNumber]);
-        }else if(argument == "vs") {
-            imageShow(textLineArgs[argNumber]);
+    if (textLineArgs.length==1){
+        display(textLineArgs[0]);
+    }else{
+        for (const argument of textLineArgs){
+            argNumber = argNumber+1;
+
+            if (argument.length==1){
+                $("#speakerBox").text(names[argument]);
+                $("#speakerBox").css({"color":colors[argument]});
+            display(textLineArgs[argNumber]);
+            } else if(argument == "ch") {
+                imageChange(textLineArgs[argNumber],textLineArgs[argNumber+1]+".png");
+            }else if(argument == "ml") {
+                imageMoveLeft(textLineArgs[argNumber]);
+            }else if(argument == "mr") {
+                imageMoveRight(textLineArgs[argNumber]);
+            }else if(argument == "mc") {
+                imageMoveCenter(textLineArgs[argNumber]);
+            }else if(argument == "al") {
+                imageAnimateLeft(textLineArgs[argNumber]);
+            }else if(argument == "ar") {
+                imageAnimateRight(textLineArgs[argNumber]);
+            }else if(argument == "ac") {
+                imageAnimateCenter(textLineArgs[argNumber]);
+            }else if(argument == "vh") {
+                imageHide(textLineArgs[argNumber]);
+            }else if(argument == "vs") {
+                imageShow(textLineArgs[argNumber]);
+            }
         }
-        
     }
     
 }
