@@ -5,5 +5,5 @@ s; but I just wanted to tell you...
 s; Have a nice day!; vs; char1
 c; Greetings mortal!
 al; char1; c; I am megaChad!
-c; My current mood is HAPPY. ch; char1; char_happy
+c; My current mood is HAPPY.; ch; char1; char_happy
 c; Later Skaters! ch; char1; char_neutral
