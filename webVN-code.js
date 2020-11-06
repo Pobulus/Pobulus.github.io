@@ -27,6 +27,8 @@ function openFullscreen() {
 var mainCounter = 0;
 var textLines = new Array;
 function load(){
+    $("#buttonBox").hide();
+    $(".character").hide();
     $.get('https://pobulus.github.io/script.txt', function(data){
         console.log(data);
         textLines = data.split('\n');
@@ -97,10 +99,10 @@ function display(x){
 }
 
 function imageMoveLeft(x){
-    $("#"+x).css({left:"-35vw"});
+    $("#"+x).css({left:"-33vw"});
 }
 function imageMoveRight(x){
-    $("#"+x).css({left:"35vw"});
+    $("#"+x).css({left:"33vw"});
 }
 function imageMoveCenter(x){
     $("#"+x).css({left:"0vw"});
@@ -121,4 +123,7 @@ function imageShow(x){
 }
 function imageChange(x, y){
     $("#"+ x).attr('src', y);
+}
+function debugMode(){
+    $("#buttonBox").show();
 }

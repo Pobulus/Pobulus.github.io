@@ -3,47 +3,43 @@
     <link rel="stylesheet" href="webVN-style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="webVN-code.js"></script>
-    
-    
-    
-    
-    
-    
-    
 </head>
-
 <body onload="load()">
-    
-    
     <div id="buttonBox">
-    <button class="debugButton" onclick="imageMoveLeft('char1')">L</button>
-    <button class="debugButton" onclick="imageMoveCenter('char1')">C</button>
+        <button class="debugButton" onclick="imageMoveLeft('char1')">L</button>
+        <button class="debugButton" onclick="imageMoveCenter('char1')">C</button>
         <button class="debugButton" onclick="imageMoveRight('char1')">R</button>    
         <button class="debugButton" onclick="imageAnimateLeft('char1')">aL</button>
-    <button class="debugButton" onclick="imageAnimateCenter('char1')">aC</button>
+        <button class="debugButton" onclick="imageAnimateCenter('char1')">aC</button>
         <button class="debugButton" onclick="imageAnimateRight('char1')">aR</button>
         <button class="debugButton" onclick="imageShow('char1')">vS</button>
         <button class="debugButton" onclick="imageHide('char1')">vH</button>
-        
-        
     </div>
-    
     <div id="backdropContainer">
-        
     <image src="background.jpg" id="backdrop" class="picture"></image>
         <div id="scene">
-        <image src="" id="char1" class="picture character"></image>
-        <image src="" id="char2" class="picture character"></image>
+            <image src="" id="c0" class="picture character"></image>
+            <image src="" id="c1" class="picture character"></image>
+            <image src="" id="c2" class="picture character"></image>
+            <image src="" id="c3" class="picture character"></image>
+            <image src="" id="c4" class="picture character"></image>
+            <image src="" id="c5" class="picture character"></image>
+            <image src="" id="c6" class="picture character"></image>
+            <image src="" id="c7" class="picture character"></image>
+            <image src="" id="c8" class="picture character"></image>
+            <image src="" id="c9" class="picture character"></image>
+            <image src="" id="ca" class="picture character"></image>
+            <image src="" id="cb" class="picture character"></image>
+            <image src="" id="cc" class="picture character"></image>
+            <image src="" id="cd" class="picture character"></image>
+            <image src="" id="ce" class="picture character"></image>
+            <image src="" id="cf" class="picture character"></image>
+        </div>
     </div>
-    </div>
-    
-    
     <div id="bottomBox">
         <div id="speakerBox">
             Null
-    
-        </div>
-        
+        </div>    
         <div id="textBox">
             <p id="textDisplay">Loading... </p>
         </div>
@@ -55,6 +51,5 @@
             </center>
         </div>
     </div>
-    
 </body>
 </html>
