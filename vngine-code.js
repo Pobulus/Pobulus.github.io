@@ -1,6 +1,6 @@
 var elem=document.documentElement;
-var names = {"s":"Simp","c":"Chad"};
-var colors = {"s": "#00ff00", "c":"#00ffff"};
+var names = {"s":"Simp","c":"Chad","b":"Bob"};
+var colors = {"s": "#00ff00", "c":"#00ffff","b":"#ff8800"};
 var fullscr=false; 
 /* View in fullscreen */
 function openFullscreen() {

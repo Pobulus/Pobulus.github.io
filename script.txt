@@ -1,9 +1,11 @@
-vh; char1; s; Hello world!
-s; This is my test script
+vh; char1; vh; char2; s; Hello world!
+ch; char1; char_neutral; s; This is my test script
 mr; char1; s; I don't yet exist...
 s; but I just wanted to tell you...
 s; Have a nice day!; vs; char1
-c; Greetings mortal!
-al; char1; c; I am megaChad!
-c; My current mood is HAPPY.; ch; char1; char_happy
-c; Later Skaters! ch; char1; char_neutral
+mr; char2; ch; char2; bob_neutral; vs; char2; c; Greetings mortal!
+al; char1; c; I am megaChad!; ac; char2
+b; My current mood is HAPPY.; ch; char2; bob_happy; ch; char1; char_happy
+c; Later Skaters!; ch; char1; char_neutral
+
+b; This is the first line.; c; this is the second line.
