@@ -114,10 +114,10 @@ function imageAnimateCenter(x){
     $("#"+x).animate({left:"0vw"});
 }
 function imageHide(x){
-    $("#"+x).hide();
+    $("#"+x).hide("slow");
 }
 function imageShow(x){
-    $("#"+x).show();
+    $("#"+x).show("slow");
 }
 function imageChange(x, y){
     $("#"+ x).attr('src', y);
