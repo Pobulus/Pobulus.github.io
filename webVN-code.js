@@ -2,6 +2,7 @@ var elem=document.documentElement;
 var names = {" ":" "};
 var colors = {};
 var fullscr=false; 
+var debug=false;
 /* View in fullscreen */
 function openFullscreen() {
     if (!fullscr){
@@ -159,5 +160,34 @@ function imageChange(x, y){
     $("#"+ x).attr('src', y);
 }
 function debugMode(){
-    $("#buttonBox").show();
+    if(debug){
+        $("#buttonBox").hide();
+        debug=false;
+    }else{
+        $("#buttonBox").show();
+        debug=true;
+
+    }
 }
+document.onkeydown = function(e) {
+    switch(e.which) {
+        case 68: // d
+        debugMode();
+        break;
+
+        case 70: // f
+        openFullscreen();
+        break;
+        case 32: //space
+        case 39: // right
+        nextLine();
+        break;
+
+        case 37: // left
+        prevLine();
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
