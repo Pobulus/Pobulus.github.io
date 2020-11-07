@@ -5,7 +5,7 @@ w; White; #ffffff
 m; Magenta; #ff00ff
 y; Yellow; #ffff00
 c; Cyan; #00ffff
-o; Orange; #ff8800;
+o; Orange; #ff8800
 #script
 bg; background.jpg; o; Hello world!
 xc; c0; char_neutral; b; This is my test script
@@ -20,7 +20,7 @@ ar; c0; al; c1
  ;       
 m; was anything there?; vh; c0
 vh; c1; c; This is an unexpected twist!
-mc; c0; xc; c0; https://i.pinimg.com/originals/b8/38/ed/b838ed9eead6ce4b448bc020883ec881.gif b; WOAH, I'm transforming!
+mc; c0; xc; c0; https://i.pinimg.com/originals/b8/38/ed/b838ed9eead6ce4b448bc020883ec881.gif; b; WOAH, I'm transforming!
 vs; c0; b; AAAAAAAAA!
 al; c0; w; Everybody to the left!
 ar; c0; g; Everybody to the right!

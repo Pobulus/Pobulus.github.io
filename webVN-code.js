@@ -47,6 +47,11 @@ function load(){
         for (const line of definitions){
             lineArgs = line.split("; ");
             names[lineArgs[0]]=lineArgs[1];
+            console.log(lineArgs[2][lineArgs[2].length-1]);
+            if(lineArgs[2][lineArgs[2].length-1]==";"){
+                lineArgs[2]=lineArgs[2].substring(0,7);
+               
+               }
             colors[lineArgs[0]]=lineArgs[2];
             
         }
