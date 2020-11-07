@@ -26,12 +26,23 @@ function openFullscreen() {
 }
 var mainCounter = 0;
 var textLines = new Array;
+var dataLines = new Array;
+var definitions = new Array;
 function load(){
     $("#buttonBox").hide();
     $(".character").hide();
     $.get('https://pobulus.github.io/script.txt', function(data){
         console.log(data);
-        textLines = data.split('\n');
+        dataLines = data.split('\n');
+        var count = 0;
+        for (const line of dataLines){
+            if (line=="#script"){
+                definitions = dataLines.subarray(0, count);
+                textLines = dataLines.subarray(count+1);   
+            }
+            count = count++;
+        }
+        console.log(definitions);
         console.log(textLines);
         readLine(mainCounter);
     });
