@@ -1,6 +1,6 @@
 var elem=document.documentElement;
-var names = {"s":"Simp","c":"Chad","b":"Bob", " ":" "};
-var colors = {"s": "#00ff00", "c":"#00ffff","b":"#ff8800"};
+var names = {" ":" "};
+var colors = {};
 var fullscr=false; 
 /* View in fullscreen */
 function openFullscreen() {
@@ -37,10 +37,18 @@ function load(){
         var count = 0;
         for (const line of dataLines){
             if (line=="#script"){
-                definitions = dataLines.subarray(0, count);
-                textLines = dataLines.subarray(count+1);   
+                console.log(count);
+                definitions = dataLines.slice(0, count);
+                textLines = dataLines.slice(count+1);   
             }
-            count = count++;
+            count = count+1;
+        }
+        var lineArgs;
+        for (const line of definitions){
+            lineArgs = line.split("; ");
+            names[lineArgs[0]]=lineArgs[1];
+            colors[lineArgs[0]]=lineArgs[2];
+            
         }
         console.log(definitions);
         console.log(textLines);

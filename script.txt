@@ -1,26 +1,34 @@
-s; Steve; #00ffff
-c; Robert; #ffffff
-b; Daniel; #ff00ff
+r; Red; #ff0000
+g; Green; #00ff00
+b; Blue; #0000ff
+w; White; #ffffff
+m; Magenta; #ff00ff
+y; Yellow; #ffff00
+c; Cyan; #00ffff
+o; Orange; #ff8800;
 #script
-bg; background.jpg; s; Hello world!
-xc; c0; char_neutral; s; This is my test script
-mr; c0; s; I don't yet exist...
+bg; background.jpg; o; Hello world!
+xc; c0; char_neutral; b; This is my test script
+mr; c0; y; I don't yet exist...
 but I just wanted to tell you...
 s; Have a nice day!; vs; c0
 ml; c1; xc; c1; bob_neutral; vs; c1; c; Greetings mortal!
-al; c0; c; I am megaChad!; ac; c1
+al; c0; w; I am megaChad!; ac; c1
 b; My current mood is HAPPY.; xc; c1; bob_happy; xc; c0; char_happy
 c; Later Skaters!; xc; c0; char_neutral
 ar; c0; al; c1
-b; This is the first line.; c; this is the second line.
  ;       
-b; was anything there?; vh; c0
+m; was anything there?; vh; c0
 vh; c1; c; This is an unexpected twist!
-mc; c0; xc; c0; https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d5a30244-7dcd-4acc-a472-cbd2bd37a1dc/d9bzdfr-a8f3182d-af2e-458c-8911-4e31f2764fda.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZDVhMzAyNDQtN2RjZC00YWNjLWE0NzItY2JkMmJkMzdhMWRjXC9kOWJ6ZGZyLWE4ZjMxODJkLWFmMmUtNDU4Yy04OTExLTRlMzFmMjc2NGZkYS5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.AjP-9_yTB1zKf83SXr2F0z5rcdv7lj06x9KLaT_rYrU; b; WOAH, I'm transforming!
+mc; c0; xc; c0; https://i.pinimg.com/originals/b8/38/ed/b838ed9eead6ce4b448bc020883ec881.gif b; WOAH, I'm transforming!
 vs; c0; b; AAAAAAAAA!
-al; c0; s; Everybody to the left!
-ar; c0; s; Everybody to the right!
-al; c0
-ar; c0
-al; c0
-ar; c0
+al; c0; w; Everybody to the left!
+ar; c0; g; Everybody to the right!
+al; c0; r; I AM RED!
+ar; c0; g; I AM GREEN!
+al; c0; b; I AM BLUE!
+ar; c0; w; I AM WHITE!
+al; c0; c; I AM CYAN!
+ar; c0; y; I AM YELLOW!
+al; c0; m; I AM MAGENTA!
+ar; c0; o; I AM ORANGE!
