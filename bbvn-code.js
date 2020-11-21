@@ -32,6 +32,7 @@ var dataLines = new Array;
 var definitions = new Array;
 function load(){
     $("#buttonBox").hide();
+    $("#title").hide();
     $(".character").hide();
     $.get('https://pobulus.github.io/script.txt', function(data){
         console.log(data);
@@ -125,6 +126,8 @@ function interpret(x){
                 imageShow(textLineArgs[argNumber]);
             }else if(argument == "scene") {
                 imageChange("backdrop", textLineArgs[argNumber]);
+            }else if(argument == "titleSet") {
+                titleSet(textLineArgs[argNumber]);
             }
         }
     }
@@ -133,6 +136,8 @@ function interpret(x){
 function display(x){
     $("#textDisplay").html(x);
     console.log(x);
+}function titleSet(x){
+    $("#title").html(x);
 }
 
 function imageMoveLeft(x){
