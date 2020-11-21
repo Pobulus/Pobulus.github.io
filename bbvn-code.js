@@ -74,7 +74,7 @@ function nextLine(){
     readLine(mainCounter);
 }
 function prevLine(){
-    if (!mainCounter==startLine){
+    if (!mainCounter==0){
         mainCounter = mainCounter-1;
     } else {
         console.log("Start of the script!");

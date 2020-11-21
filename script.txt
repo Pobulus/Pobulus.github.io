@@ -7,7 +7,7 @@ y; Yellow; #ffff00
 c; Cyan; #00ffff
 o; Orange; #ff8800
 #START
-scene; background.jpg; o; Hello world!
+scene; background.jpg; o; <b>Hello world!</b>
 sprite; c0; blue_calm; b; This is my test script
 goR; c0; b; I don't yet exist...
 but I just wanted to tell you...
