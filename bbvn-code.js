@@ -98,30 +98,30 @@ function interpret(x){
                 $("#speakerBox").text(names[argument]);
                 $("#speakerBox").css({"color":colors[argument]});
             display(textLineArgs[argNumber]);
-            } else if(argument == "xc") {
+            } else if(argument == "sprite") {
                 var filename = textLineArgs[argNumber+1]
                 if (filename.charAt(filename.length-4)=="."){
                     imageChange(textLineArgs[argNumber], filename);
                 } else {
                     imageChange(textLineArgs[argNumber], filename+".png");
                 }
-            }else if(argument == "ml") {
+            }else if(argument == "goL") {
                 imageMoveLeft(textLineArgs[argNumber]);
-            }else if(argument == "mr") {
+            }else if(argument == "goR") {
                 imageMoveRight(textLineArgs[argNumber]);
-            }else if(argument == "mc") {
+            }else if(argument == "goC") {
                 imageMoveCenter(textLineArgs[argNumber]);
-            }else if(argument == "al") {
+            }else if(argument == "slideL") {
                 imageAnimateLeft(textLineArgs[argNumber]);
-            }else if(argument == "ar") {
+            }else if(argument == "slideR") {
                 imageAnimateRight(textLineArgs[argNumber]);
-            }else if(argument == "ac") {
+            }else if(argument == "slideC") {
                 imageAnimateCenter(textLineArgs[argNumber]);
-            }else if(argument == "vh") {
+            }else if(argument == "hide") {
                 imageHide(textLineArgs[argNumber]);
-            }else if(argument == "vs") {
+            }else if(argument == "show") {
                 imageShow(textLineArgs[argNumber]);
-            }else if(argument == "bg") {
+            }else if(argument == "scene") {
                 imageChange("backdrop", textLineArgs[argNumber]);
             }
         }
