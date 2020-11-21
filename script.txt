@@ -6,14 +6,14 @@ m; Magenta; #ff00ff
 y; Yellow; #ffff00
 c; Cyan; #00ffff
 o; Orange; #ff8800
-#script
+#START
 scene; background.jpg; o; Hello world!
-sprite; c0; char_neutral; b; This is my test script
-goR; c0; y; I don't yet exist...
+sprite; c0; blue_calm; b; This is my test script
+goR; c0; b; I don't yet exist...
 but I just wanted to tell you...
-s; Have a nice day!; show; c0
-goL; c1; sprite; c1; bob_neutral; show; c1; c; Greetings mortal!
-slideL; c0; w; I am megaChad!; slideC; c1
+b; Have a nice day!; show; c0
+goL; c1; sprite; c1; cyan_calm; show; c1; c; Greetings mortal!
+slideL; c0; w; My name is RED!; slideC; c1
 b; My current mood is HAPPY.; sprite; c1; bob_happy; sprite; c0; char_happy
 c; Later Skaters!; sprite; c0; char_neutral
 slideR; c0; slideL; c1;
