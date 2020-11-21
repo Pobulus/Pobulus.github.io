@@ -37,30 +37,33 @@ function load(){
     $(".character").hide();
     $.get('https://pobulus.github.io/script.txt', function(data){
         console.log(data);
-        textLines = data.split('\n');
+        dataLines = data.split('\n');
         var count = 0;
-        for (const line of textLines){
+        for (const line of dataLines){
             if (line=="#START"){
                 console.log(count);
                 startLine = count;
+                definitions = dataLines.slice(0, count);
+                textLines = dataLines.slice(count+1);   
             }
             count = count+1;
         }
         var lineArgs;
-        definitions = dataLines.slice(0, startLine);
-        for (const line of definitions){       
-            interpret(line);
+        for (const line of definitions){
+            lineArgs = line.split("; ");
+            names[lineArgs[0]]=lineArgs[1];
+            console.log(lineArgs[2][lineArgs[2].length-1]);
+            if(lineArgs[2][lineArgs[2].length-1]==";"){
+                lineArgs[2]=lineArgs[2].substring(0,7);
+               }
+            colors[lineArgs[0]]=lineArgs[2];         
         }
-        
+        console.log(definitions);
         console.log(textLines);
-        mainCounter = startLine;
         readLine(mainCounter);
     });
 }
-function defineCharacter(x, alias, colr){
-    names[x] = alias;
-    colors[x] = colr; 
-}
+
 function nextLine(){
     if (mainCounter<textLines.length-1){
         mainCounter = mainCounter+1;
@@ -105,7 +108,7 @@ function interpret(x){
                     imageChange(textLineArgs[argNumber], filename+".png");
                 }
             }else if(argument == "define") {
-                defineCharacter(textLineArgs[argNumber].charAt(1), textLineArgs[argNumber+1], textLineArgs[argNumber+2]);
+                imageMoveLeft([argNumber]);
             }else if(argument == "goL") {
                 imageMoveLeft(textLineArgs[argNumber]);
             }else if(argument == "goR") {
