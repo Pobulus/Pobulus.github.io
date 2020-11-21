@@ -30,8 +30,9 @@ w; Well, I'm gonna go. Bye! sprite; c2; white_calm
 hide; c2
 c; He fell for it!; sprite; c3; cyan_calm
 sprite; c3; cyan_happy; c; He is so naive...
-Well I must run now anyway...; slideL; c3;
-hide; c3;
+Well I must run now anyway...; slideL; c3; titleSet; The <b>END</b>
+hide; c3;  show; title
+titleSet; The <b>END?</b>
 
  ; Here my ideas End
  ; I have some random tests now...
