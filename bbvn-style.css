@@ -30,6 +30,15 @@ object-fit: contain;
 font-size: 5vw;
 top: 30%;
 max-height: 100%;
+    text-shadow:
+    -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px 1px 0 #000000,
+    1px 1px 0 #000000,  
+    -2px 0 0 #000000,
+    2px 0 0 #000000,
+    0 2px 0 #000000,
+    0 -2px 0 #000000;
 }
 #backdrop{
 height: 100%;
