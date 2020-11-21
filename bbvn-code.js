@@ -47,13 +47,16 @@ function load(){
             count = count+1;
         }
         var lineArgs;
-        definitions = dataLines.slice(0, startLine);
-        for (const line of definitions){       
+        definitions = textLines.slice(0, startLine);
+        console.log(definitions);
+        for (const line of definitions){   
+            console.log(line);
             interpret(line);
+            
         }
         
-        console.log(textLines);
-        mainCounter = startLine;
+        
+        mainCounter = startLine+1;
         readLine(mainCounter);
     });
 }
