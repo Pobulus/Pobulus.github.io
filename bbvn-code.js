@@ -1,6 +1,7 @@
 var elem=document.documentElement;
 var names = {" ":" "};
 var colors = {};
+var labels = {};
 var fullscr=false; 
 var debug=false;
 var startLine = 0;
@@ -36,14 +37,22 @@ function load(){
     $("#title").hide();
     $(".character").hide();
     $.get('https://pobulus.github.io/script.txt', function(data){
+        scriptLoad(data);
+    });
+}
+mainCounter = 0;
+function scriptLoad(data){
         console.log(data);
         textLines = data.split('\n');
         var count = 0;
         for (const line of textLines){
-            if (line=="#START"){
+            if (line.charAt(0)=="#"){
                 console.log(count);
-                startLine = count;
-            }
+                labels[line.slice(1, line.indexOf(';'))] = count+1;
+                console.log(labels);
+                if (line.slice(1)=="START"){
+                startLine = count+1 ;
+            }}
             count = count+1;
         }
         var lineArgs;
@@ -56,9 +65,8 @@ function load(){
         }
         
         
-        mainCounter = startLine+1;
+        mainCounter = startLine;
         readLine(mainCounter);
-    });
 }
 function defineCharacter(x, alias, colr){
     names[x] = alias;
@@ -74,7 +82,7 @@ function nextLine(){
     readLine(mainCounter);
 }
 function prevLine(){
-    if (!mainCounter==0){
+    if (mainCounter>startLine){
         mainCounter = mainCounter-1;
     } else {
         console.log("Start of the script!");
@@ -129,11 +137,19 @@ function interpret(x){
                 imageChange("backdrop", textLineArgs[argNumber]);
             }else if(argument == "bannerSet") {
                 bannerSet(textLineArgs[argNumber]);
+            }else if(argument == "jump") {
+                jumpLabel(textLineArgs[argNumber]);
             }
         }
     }
     
-}function revert(x){ 
+}
+function jumpLabel(x){
+    mainCounter = labels[x];
+    console.log(labels[x]);
+    readLine(mainCounter);
+}
+function revert(x){ 
     textLineArgs = textLines[x].split("; ");
     console.log(textLineArgs);
     var argNumber = 0;
@@ -193,6 +209,7 @@ function debugMode(){
     }
 }
 document.onkeydown = function(e) {
+    if (!debug){
     switch(e.which) {
         case 68: // d
         debugMode();
@@ -201,7 +218,7 @@ document.onkeydown = function(e) {
         case 70: // f
         openFullscreen();
         break;
-        case 32: //space
+        //case 32: //space
         case 39: // right
         nextLine();
         break;
@@ -213,4 +230,5 @@ document.onkeydown = function(e) {
         default: return; // exit this handler for other keys
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
+    }
 };
