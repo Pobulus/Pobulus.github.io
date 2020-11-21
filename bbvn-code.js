@@ -3,6 +3,7 @@ var names = {" ":" "};
 var colors = {};
 var fullscr=false; 
 var debug=false;
+var startLine = 0;
 /* View in fullscreen */
 function openFullscreen() {
     if (!fullscr){
@@ -37,8 +38,9 @@ function load(){
         dataLines = data.split('\n');
         var count = 0;
         for (const line of dataLines){
-            if (line=="#script"){
+            if (line=="#START"){
                 console.log(count);
+                startLine = count;
                 definitions = dataLines.slice(0, count);
                 textLines = dataLines.slice(count+1);   
             }
@@ -72,7 +74,7 @@ function nextLine(){
     readLine(mainCounter);
 }
 function prevLine(){
-    if (!mainCounter==0){
+    if (!mainCounter==startLine){
         mainCounter = mainCounter-1;
     } else {
         console.log("Start of the script!");
