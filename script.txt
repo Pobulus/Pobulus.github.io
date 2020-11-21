@@ -7,9 +7,9 @@ y; Yellow; #ffff00
 c; Cyan; #00ffff
 o; Orange; #ff8800
 #START
-scene; background.jpg; o; <b>Hello world!</b>; titleSet; <i>ACT 1</i>
-sprite; c0; blue_calm; o; This is my <i>test</i> script; show; title
-goR; c0; b; You'll se <b>me</b> in a while; hide; title
+scene; background.jpg; o; <b>Hello world!</b>; bannerSet; <i>ACT 1</i>
+sprite; c0; blue_calm; o; This is my <i>test</i> script; show; banner
+goR; c0; b; You'll see <b>me</b> in a while; hide; banner
 b; H- here I am!; show; c0; sprite; c1; red_calm
 goL; c1; show; c1; r; Greetings mortal!
 slideL; c0; r; My name is RED!; slideC; c1
@@ -30,9 +30,9 @@ w; Well, I'm gonna go. Bye!; sprite; c2; white_calm
 hide; c2
 c; He fell for it!; sprite; c3; cyan_calm
 sprite; c3; cyan_happy; c; He is so naive...
-c; Well I must run now anyway...; slideL; c3; titleSet; The <b>END</b>
-hide; c3; show; title
-titleSet; The <b>END?</b>
+c; Well I must run now anyway...; slideL; c3; bannerSet; The <b>END</b>
+hide; c3; show; banner
+bannerSet; The <b>END?</b>
 
  ; Here my ideas End
  ; I have some random tests now...

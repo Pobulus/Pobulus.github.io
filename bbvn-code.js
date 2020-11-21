@@ -126,8 +126,8 @@ function interpret(x){
                 imageShow(textLineArgs[argNumber]);
             }else if(argument == "scene") {
                 imageChange("backdrop", textLineArgs[argNumber]);
-            }else if(argument == "titleSet") {
-                titleSet(textLineArgs[argNumber]);
+            }else if(argument == "bannerSet") {
+                bannerSet(textLineArgs[argNumber]);
             }
         }
     }
@@ -136,8 +136,8 @@ function interpret(x){
 function display(x){
     $("#textDisplay").html(x);
     console.log(x);
-}function titleSet(x){
-    $("#title").html(x);
+}function bannerSet(x){
+    $("#banner").html(x);
 }
 
 function imageMoveLeft(x){

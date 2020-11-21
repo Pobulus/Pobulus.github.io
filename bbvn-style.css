@@ -19,7 +19,7 @@ position: fixed;
 object-fit: contain;
 top: 0px;
 max-height: 100%;
-}#title{
+}#banner{
 z-index: 10;
 height: auto;
 width: 100%;
@@ -147,6 +147,27 @@ button:hover {
     max-height: 50%;
     display: block;
 
+}
+#banner{
+z-index: 10;
+height: auto;
+width: 100%;
+position: fixed;
+text-align: center;
+color: antiquewhite;
+object-fit: contain;
+font-size: 5vh;
+top: 25%;
+
+    text-shadow:
+    -1px -1px 0 #000000,
+    1px -1px 0 #000000,
+    -1px 1px 0 #000000,
+    1px 1px 0 #000000,  
+    -2px 0 0 #000000,
+    2px 0 0 #000000,
+    0 2px 0 #000000,
+    0 -2px 0 #000000;
 }
 .debugButton{
     font-size: 1.5vh;
