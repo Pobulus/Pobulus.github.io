@@ -131,7 +131,7 @@ function interpret(x){
     
 }
 function display(x){
-    $("#textDisplay").text(x);
+    $("#textDisplay").html(x);
     console.log(x);
 }
 

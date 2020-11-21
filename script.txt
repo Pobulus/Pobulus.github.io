@@ -8,18 +8,23 @@ c; Cyan; #00ffff
 o; Orange; #ff8800
 #START
 scene; background.jpg; o; <b>Hello world!</b>
-sprite; c0; blue_calm; b; This is my test script
-goR; c0; b; I don't yet exist...
-but I just wanted to tell you...
-b; Have a nice day!; show; c0
-goL; c1; sprite; c1; cyan_calm; show; c1; c; Greetings mortal!
-slideL; c0; w; My name is RED!; slideC; c1
-b; My current mood is HAPPY.; sprite; c1; bob_happy; sprite; c0; char_happy
-c; Later Skaters!; sprite; c0; char_neutral
+sprite; c0; blue_calm; o; This is my <i>test</i> script
+goR; c0; b; You'll se <b>me</b> in a while
+H- here I am!; show; c0
+goL; c1; sprite; c1; red_calm; show; c1; r; Greetings mortal!
+slideL; c0; r; My name is RED!; slideC; c1
+r; My current mood is HAPPY.; sprite; c1; red_happy; sprite; c0; blue_happy
+b; GoodBye; sprite; c0; blue_sad
 slideR; c0; slideL; c1;
-hide; controls;
-m; was anything there?; hide; c0
-hide; c1; c; This is an unexpected twist!
+hide; bottomBox;
+w; Hi!; hide; c0; sprite; c2; white_calm; goL; c2
+hide; c1; show; c2; w; Look at me!
+b; <u>NOPE</u>; slideR; c0; sprite; c0; blue_sad
+hide; c0; sprite; c2; white_sad; w; Ow :(
+sprite; c3; cyan_happy; goR; c3; show; c3; c; What's the matter?
+w; Blue just left...; slideC; c3;
+sprite; c3; cyan_calm; c; Oh, that's rude...; scene; background2.png
+ ; Here my ideas End alwaddoajpopwfijaoifjawoijwowijfw; hide; c2; hide; c3
 goC; c0; sprite; c0; https://i.pinimg.com/originals/b8/38/ed/b838ed9eead6ce4b448bc020883ec881.gif; b; WOAH, I'm transforming!
 show; c0; b; AAAAAAAAA!
 slideL; c0; w; Everybody to the left!
