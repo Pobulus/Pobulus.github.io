@@ -45,7 +45,7 @@ function load(){
 } else {
     console.log("localStorage unavailable...");
 }
-    $.get('https://pobulus.github.io/script.txt', function(data){
+    $.get('https://pobulus.github.io/script.csv', function(data){
         scriptLoad(data);
     });
 }
@@ -111,7 +111,7 @@ function readLine(x){
 }
 function interpret(x){
     
-    textLineArgs = x.split("; ");
+    textLineArgs = x.split(";");
     console.log(textLineArgs);
     var argNumber = 0;
     if (textLineArgs.length==1){
