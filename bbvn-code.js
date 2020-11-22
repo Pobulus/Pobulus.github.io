@@ -36,11 +36,24 @@ function load(){
     $("#buttonBox").hide();
     $("#title").hide();
     $(".character").hide();
+    if (typeof(Storage) !== "undefined") {
+                // Code for localStorage/sessionStorage.
+        if(localStorage.userScript !== undefined){
+        document.getElementById("txtArea").innerHTML = localStorage.userScript;
+        }
+        console.log("localStorageAccessed")
+} else {
+    console.log("localStorage unavailable...");
+}
     $.get('https://pobulus.github.io/script.txt', function(data){
         scriptLoad(data);
     });
 }
 mainCounter = 0;
+function userScriptLoad(){
+    localStorage.userScript = $('#txtArea').val();
+    scriptLoad($('#txtArea').val())
+}
 function scriptLoad(data){
         console.log(data);
         textLines = data.split('\n');
@@ -48,7 +61,7 @@ function scriptLoad(data){
         for (const line of textLines){
             if (line.charAt(0)=="#"){
                 console.log(count);
-                labels[line.slice(1, line.indexOf(';'))] = count+1;
+                labels[line.substring(1, line.indexOf(';'))] = count+1;
                 console.log(labels);
                 if (line.slice(1)=="START"){
                 startLine = count+1 ;

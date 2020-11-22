@@ -15,7 +15,8 @@
         <button class="debugButton" onclick="imageShow('c0')">vS</button>
         <button class="debugButton" onclick="imageHide('c0')">vH</button><br>
         <button class="debugButton" onclick="debugMode()">CLOSE DEBUG</button>
-        <button class="debugButton" onclick="scriptLoad($('#txtArea').val())">LOAD</button><br>
+        <button class="debugButton" onclick="localStorage.removeItem('userScript');">CLEAR</button>
+        <button class="debugButton" onclick="userScriptLoad()">LOAD</button><br>
         <textarea id="txtArea" rows="10" cols="50"></textarea>
     </div>
     <div id="backdropContainer" onclick="nextLine()">
