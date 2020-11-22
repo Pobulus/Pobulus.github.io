@@ -166,7 +166,7 @@ function jumpLabel(x){
     readLine(mainCounter);
 }
 function revert(x){ 
-    textLineArgs = textLines[x].split("; ");
+    textLineArgs = textLines[x].split(";");
     console.log(textLineArgs);
     var argNumber = 0;
     if (textLineArgs.length==1){
