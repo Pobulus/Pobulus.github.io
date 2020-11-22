@@ -61,11 +61,14 @@ function scriptLoad(data){
         for (const line of textLines){
             if (line.charAt(0)=="#"){
                 console.log(count);
-                labels[line.substring(1, line.indexOf(';'))] = count+1;
+                if (line.includes(";")){
+                    labels[line.slice(1, line.indexOf(';'))] = count;if (line.slice(1, line.indexOf(';'))=="START"){startLine = count;}
+                }else{
+                   labels[line.slice(1)] = count+1; 
+                    if (line.slice(1)=="START"){startLine = count+1 ;}
+                }
                 console.log(labels);
-                if (line.slice(1)=="START"){
-                startLine = count+1 ;
-            }}
+                }
             count = count+1;
         }
         var lineArgs;
