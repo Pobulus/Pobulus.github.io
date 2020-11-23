@@ -36,6 +36,8 @@ function preload(){
     $("#buttonBox").hide();
     $("#title").hide();
     $(".character").hide();
+    SC.Widget(document.getElementById('sc-widget')).bind(SC.Widget.Events.FINISH,function() {
+SC.Widget(document.getElementById('sc-widget')).play();});
     if (typeof(Storage) !== "undefined") {
                 // Code for localStorage/sessionStorage.
         if(localStorage.userScript !== undefined){
@@ -241,6 +243,7 @@ function debugMode(){
 
     }
 }
+
 document.onkeydown = function(e) {
     if (!debug){
     switch(e.which) {
