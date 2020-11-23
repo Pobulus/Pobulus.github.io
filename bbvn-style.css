@@ -63,6 +63,18 @@ position: absolute;
 display: block;
 z-index: 5;
 }
+#sc-widget {
+    position:absolute;
+    z-index: 20;
+    opacity: 30%;
+    
+}
+#sc-widget:hover {
+    opacity: 100%;
+    width: 40%;
+    height: 20%;
+    
+}
 #bottomBox{
 
 z-index: 10;

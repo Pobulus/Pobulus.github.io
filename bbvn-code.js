@@ -32,7 +32,7 @@ var mainCounter = 0;
 var textLines = new Array;
 var dataLines = new Array;
 var definitions = new Array;
-function load(){
+function preload(){
     $("#buttonBox").hide();
     $("#title").hide();
     $(".character").hide();
@@ -109,6 +109,15 @@ function prevLine(){
 function readLine(x){
     interpret(textLines[x]);
 }
+function songPlay(){
+    SC.Widget(document.getElementById('sc-widget')).play();
+}
+function songPause(){
+    SC.Widget(document.getElementById('sc-widget')).pause();
+}
+function songLoad(x){
+    SC.Widget(document.getElementById('sc-widget')).load(x);
+}
 function interpret(x){
     
     textLineArgs = x.split(";");
@@ -155,6 +164,14 @@ function interpret(x){
                 bannerSet(textLineArgs[argNumber]);
             }else if(argument == "jump") {
                 jumpLabel(textLineArgs[argNumber]);
+            }else if(argument == "song"){
+                if(textLineArgs[argNumber]=="play"){
+                    songPlay();
+                }else if(textLineArgs[argNumber]=="pause"){
+                    songPause();
+                }else{
+                    songLoad(textLineArgs[argNumber]);
+                }
             }
         }
     }
@@ -232,16 +249,18 @@ document.onkeydown = function(e) {
         break;
 
         case 70: // f
-        openFullscreen();
-        break;
-        //case 32: //space
+            openFullscreen();
+            break;
+        case 32: //space
+            songPlay();
+            break;
         case 39: // right
-        nextLine();
-        break;
+            nextLine();
+            break;
 
         case 37: // left
-        prevLine();
-        break;
+            prevLine();
+            break;
 
         default: return; // exit this handler for other keys
     }
