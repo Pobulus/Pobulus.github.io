@@ -9,12 +9,15 @@ LABELS;ACTOR;DIALOG;SPRITE;CHARACTER;SPRITE_NAME;ACTION;TARGET;ACTION;TARGET;;
 ;define;@o;Orange;#ff8800;sprite;c7;orange_calm;;;;
 #START; ;;;;;;;scene;background.jpg;;
 ;o;<b>Hello world!</b>;bannerSet;<i>ACT 1</i>;;;;;;;
-;o;This is my <i>test</i> script;sprite;c0;blue_calm;;;show;banner;;
+;o;This is my <i>test</i> script;;;;;;show;banner;;
 ;o;Hi, my name is Orange!;;;;show;c7;goL;c5;;
 ;o;and this is my friend Yellow;;;;show;c5;;;;
 ;y;Yo!;;;;goR;c4;;;;
-;m;Sup guys!;;;;show;c4;;;;
+;m;Sup guys!;;;;show;c4;goL;c1;;
 ;m;We must leave now!;;;;hide;c4;hide;c5;hide;c7
+;g;Hello there;;;;show;c1;;;;
+;g;Just passing by to water some flowers;;;;slideR;c1;;;;
+;g;Blue shoud be coming soon…;;;;hide;c1;;;;
 ;b;You'll see <b>me</b> in a while;;;;goR;c0;hide;banner;;
 ;b;H- here I am!;sprite;c1;red_calm;;;show;c0;;
 ;r;Greetings Blue!;;;;goL;c1;show;c1;;
