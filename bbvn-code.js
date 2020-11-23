@@ -162,7 +162,7 @@ function interpret(x){
                 imageShow(textLineArgs[argNumber]);
             }else if(argument == "scene") {
                 imageChange("backdrop", textLineArgs[argNumber]);
-            }else if(argument == "bannerSet") {
+            }else if(argument == "text") {
                 bannerSet(textLineArgs[argNumber]);
             }else if(argument == "jump") {
                 jumpLabel(textLineArgs[argNumber]);
