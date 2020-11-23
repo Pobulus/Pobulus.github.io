@@ -18,7 +18,7 @@ LABELS;ACTOR;DIALOG;SPRITE;CHARACTER;SPRITE_NAME;ACTION;TARGET;ACTION;TARGET;;
 ;g;Hello there;;;;show;c1;;;;
 ;g;Just passing by to water some flowers;;;;slideR;c1;;;;
 ;g;Blue shoud be coming soon…;;;;hide;c1;;;;
-;b;You'll see <b>me</b> in a while;;;;goR;c0;hide;banner;;
+;b;You'll see <b>me</b> in a while;sprite;c0;blue_calm;goR;c0;hide;banner;;
 ;b;H- here I am!;sprite;c1;red_calm;;;show;c0;;
 ;r;Greetings Blue!;;;;goL;c1;show;c1;;
 ;r;My name is RED!;;;slideC;c1;slideL;c0;;;
