@@ -66,7 +66,7 @@ z-index: 5;
 #sc-widget {
     position:absolute;
     z-index: 20;
-    opacity: 30%;
+    opacity: 20%;
     
 }
 #sc-widget:hover {
