@@ -13,7 +13,8 @@ function setup() {
   button = createButton("SEARCH");
   button.position(input.width, 0);
   button.mousePressed(lookup);
-  textSize(100);
+  textSize(75);
+  textFont('monospace');
 }
 function keyTyped(){
   if(keyCode==13){
