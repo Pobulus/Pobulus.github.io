@@ -50,8 +50,8 @@ function inverseColor(r,g,b){
   r = 255 - r; //get the mathmatical inverse
   g = 255 - g; //get the mathmatical inverse
   b = 255 - b; //get the mathmatical inverse
-  if (r==b&&b==g&&){
-    if (g>128){
+  if (r==b&&b==g){
+    if (g<128){
     return color(0, 0, 0);
   } else {
       return color(255, 255, 255);

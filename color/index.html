@@ -5,14 +5,44 @@
   <title>ColorVisualisation</title>
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="p5js-temp-color4341852892412057342.js"></script>
+  <script language="javascript" type="text/javascript" src="color.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
   <!-- This line removes any default padding and style.
        You might only need one of these values set. -->
-  <style> body { padding: 0; margin: 0; } </style>
+  <style> body { padding: 0; margin: 0;
+            position: relative; background-color: #000000;
+ 
+        }
+        #loadgif{
+            height: 10vw;
+            width: 10vw;
+        }
+        #p5_loading {
+            top: 25vh;
+            background-color: #000000;
+            color: red;
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            text-align: center;
+            font-size: 10vw;
+            
+            height: 20%;
+            width: 100%;
+        }
+        
+ 
+    </style>
+  
+  </style>
 </head>
 
 <body>
+<div id="p5_loading" class="loadingclass">
+LOADING </br>
+<img id="loadgif" src="loading-gif.gif"></img>
+</div>
+
 </body>
 </html>
