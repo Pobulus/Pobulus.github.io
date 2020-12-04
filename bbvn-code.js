@@ -1,24 +1,24 @@
-var elem=document.documentElement;
-var names = {" ":" "};
+var elem = document.documentElement;
+var names = {" " : " "};
 var colors = {};
 var labels = {};
-var fullscr=false; 
-var debug=false;
+var fullscr = false;
+var debug = false;
 var startLine = 0;
 var backlog = 0;
 /* View in fullscreen */
 function openFullscreen() {
-    if (!fullscr){
-        fullscr=true;
+    if (!fullscr) {
+        fullscr = true;
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.webkitRequestFullscreen) { /* Safari */
             elem.webkitRequestFullscreen();
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
-        }}
-    else{
-        fullscr=false;
+        }
+    } else {
+        fullscr = false;
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.webkitExitFullscreen) { /* Safari */
@@ -26,7 +26,7 @@ function openFullscreen() {
         } else if (document.msExitFullscreen) { /* IE11 */
             document.msExitFullscreen();
         }
-        }
+    }
 }
 var mainCounter = 0;
 var textLines = new Array;
@@ -37,7 +37,7 @@ function preload(){
     $("#title").hide();
     $(".character").hide();
     SC.Widget(document.getElementById('sc-widget')).bind(SC.Widget.Events.FINISH,function() {
-SC.Widget(document.getElementById('sc-widget')).play();});
+    SC.Widget(document.getElementById('sc-widget')).play(); });
     if (typeof(Storage) !== "undefined") {
                 // Code for localStorage/sessionStorage.
         if(localStorage.userScript !== undefined){
@@ -118,7 +118,10 @@ function songPause(){
     SC.Widget(document.getElementById('sc-widget')).pause();
 }
 function songLoad(x){
-    SC.Widget(document.getElementById('sc-widget')).load(x);
+    
+    
+    
+    SC.Widget(document.getElementById('sc-widget')).load(x+"&color=a300c7");
 }
 function interpret(x){
     
