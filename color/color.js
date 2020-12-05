@@ -41,7 +41,7 @@ function draw() {
   
   if (row!=null){
     text(row.getString("bestName"), window.innerWidth/2, window.innerHeight/2-60);
-    text(row.getString("votes"), window.innerWidth/2, window.innerHeight/2+60);
+    text(row.getString("votes")+" #"+row.getString("hexCode"), window.innerWidth/2, window.innerHeight/2+60);
   }else{
     text("null", window.innerWidth/2, window.innerHeight/2);
   }
