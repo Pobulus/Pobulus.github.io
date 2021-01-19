@@ -16,8 +16,8 @@ var race = skin0;
 var male = "♂️";
 var female = "♀️";
 var nb = "";
-var gender = female;
-//♂️♀️🏃
+var gender = nb;
+
 $(document).ready(function(){updatePos();$("#player").append(twemoji.parse('🚶'+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));});
 function updatePos() { 
     $("#player").css("bottom", playerY);
@@ -49,42 +49,7 @@ function updatePos() {
 }
 
 
-/*
-document.onkeydown = function(e) {
-    console.log(e);
-    switch(e.which) {
-        case 68: // d
-        
-        break;
 
-        case 70: // f
-            openFullscreen();
-            break;
-        case 37: //left
-            playerX = playerX-10;
-        
-            break;
-        case 39: // right
-            playerX = playerX+10;
-           
-            break;
-
-        case 38: // up
-            playerY = playerY+10
-           
-            break;
-        case 40: // down
-            playerY = playerY-10
-            
-            break;
-
-        default: return; // exit this handler for other keys
-    }
-    updatePos();
-    e.preventDefault(); // prevent the default action (scroll / move caret)
-    
-};
-*/
 
 var keysPressed = {};
 
