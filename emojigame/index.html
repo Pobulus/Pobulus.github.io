@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>EMOJI GAME?</title>
+        <meta name="description" content="The test website for my potential game based on emojis">
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div id="buttonBox">
+            Gender:
+        <button class="debugButton" onclick="gender=male;updatePos();">male</button>
+        <button class="debugButton" onclick="gender=female;updatePos();">female</button>
+        <button class="debugButton" onclick="gender=nb;updatePos();">none</button>
+            <br>
+            Race:
+        <button class="debugButton" onclick="race=skin0;updatePos();">0</button>
+        <button class="debugButton" onclick="race=skin1;updatePos();">1</button>
+        <button class="debugButton" onclick="race=skin2;updatePos();">2</button>
+        <button class="debugButton" onclick="race=skin3;updatePos();">3</button>
+        <button class="debugButton" onclick="race=skin4;updatePos();">4</button>
+        <button class="debugButton" onclick="race=skin5;updatePos();">5</button>
+        </div>
+        <div id="world">
+        <div id="player" class="text mirr"></div>
+        </div>
+        
+    </body>
+</html>
+

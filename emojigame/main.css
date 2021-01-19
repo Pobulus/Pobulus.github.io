@@ -1,0 +1,12 @@
+.mirr {
+    transform: scale(-1, 1);
+}
+#player {
+    position: absolute;
+}
+img.playerMoji{ width: auto; height: 100%; }
+#world {
+    width: 100vw;
+    height: auto;
+    overflow:hidden;
+}
