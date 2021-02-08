@@ -4,7 +4,7 @@ var prevX = 1;
 var prevY = 0;
 var sprint = false;
 var playerV = 10;
-
+var pause = "True"
 var skin0 = "";
 var skin1 = "🏻";
 var skin2 = "🏼";
@@ -24,6 +24,7 @@ var bald = "‍🦲";
 var curly = "‍🦱";
 var old = "‍🦳";
 var normal = "";
+var onetime = true;
 var hair = normal;
 $(document).ready(function(){updatePos();
 $("#player").append(twemoji.parse('🧍'+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
@@ -45,7 +46,12 @@ function scroll_to(div){
 	$('html, body').animate({
 		scrollLeft: $("#player").offset().left-$(window).width()*0.60
 	},1);}
+
 function updatePos() { 
+    if(pause){
+        $(".previewMoji").replaceWith(twemoji.parse('🧍'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
+    }else{  
+    
     $("#player").css("bottom", playerY);
     $("#player").css("left", playerX);
     console.log(-playerY.toString()+"%");
@@ -77,11 +83,9 @@ function updatePos() {
     }
     prevX = playerX;
     prevY = playerY;
+    }
+
 }
-
-
-
-
 var keysPressed = {};
 
 
@@ -92,6 +96,20 @@ document.addEventListener('keydown', (event) => {
     } else {
         playerV = 10;
     }
+     if (keysPressed['Enter']&&onetime) {
+       onetime = false;
+         pause = !pause;
+    
+         
+       if (pause){
+        $("#buttonBox").fadeIn();
+        $("#player").hide();
+    }else{
+        $("#buttonBox").fadeOut();
+        $("#player").show();
+    }
+   }
+    if(!pause){
    if (keysPressed['ArrowUp']) {
        if(playerY< window.innerHeight/2){
        playerY = playerY+playerV;
@@ -109,7 +127,7 @@ document.addEventListener('keydown', (event) => {
    }if (keysPressed['Shift']) {
        sprint = true;
        console.log(sprint);
-   }if (keysPressed['v']) {
+   }}if (keysPressed['v']) {
        $("#dialogBox").fadeIn();
        
    }if (keysPressed['b']) {
@@ -121,6 +139,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
    delete keysPressed[event.key];
    sprint = false;
+    onetime = true;
    console.log(sprint);
     updatePos();
 });
