@@ -5,18 +5,52 @@
     position: absolute;
     z-index: 10;
 }
+body {
+  overflow: hidden; /* Hide scrollbars */
+}
 img.playerMoji{ width: auto; height: 100%; }
 #buttonBox {
+    font-family: monospace; 
     position: fixed;
+    font-size: 3vh;
     z-index: 500;
+    border: 2px solid #ffffff;
+    border-radius: 5px;
+    color: #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.buttonEmoji {
+height: 3vh;
+width: auto;
+}
+button:hover {
+  background-color: #ffffff;
+  color: #000000;
+  opacity: 1;
+
+}
+button{
+background-color: #000000;
+border: 2px solid #ffffff;
+border-radius: 5px;
+transition-duration: 0.4s;
+color: #ffffff;
+padding: 10px, 20px;
+text-align: center;
+
+display: inline-block;
+z-index: 1000;
+opacity: 0.8;
+font-size: 2vh;
+
 }
 #Sun {
     z-index: 3;
-    position: relative;
-    width: 10vh;
+    position: fixed;
+    width: 15vh;
     height: auto;
     left: 75vw;
-    top: 15vh;
+    top: 12vh;
     
 }
 #world {
@@ -26,7 +60,7 @@ img.playerMoji{ width: auto; height: 100%; }
 }
 #ground {
     background: linear-gradient(0deg, rgba(27,126,25,1) 0%, rgba(65,221,8,1) 48%, rgba(0,255,29,1) 100%);
-    width: 100vw;
+    width: 500vw;
     height: 55vh;
     left: 0px;
     top: 45vh; 
@@ -36,16 +70,57 @@ img.playerMoji{ width: auto; height: 100%; }
 #road {
     z-index: 2;
     background-color: darkslategray;
-    height: 35vh;
-    top: 10vh;
+    height: 30vh;
+    top: 13vh;
     position: relative;
 }
 #skybox {
     background-color: lightblue;
-    width: 100vw;
+    width: 500vw;
     height: 53vh;
     top: 0vh; 
     position: absolute;
     z-index: 0;  
     left: 0px;
+}
+#dialogBox{
+    position: fixed;
+    margin-left: 20vw;
+    margin-right: auto;
+    bottom: 1vh;
+    width: 60vw;
+    height: 20vh;
+    z-index: 1000;
+    background: rgba(0,0,0,0.75);
+    border-radius: 15px;
+    display: inline-block;
+    
+}
+#portrait {
+    position: relative;
+    height:20vh;
+    width: 20vh;
+    float: left;
+       
+}
+#textArea {
+    position: relative;
+    height 20vh;  
+    color: #FFFFFF;
+    font-family: monospace;
+    font-size: 4vh;
+}
+.portraitEmoji {
+    height: 20vh;
+    
+}
+#buildings{
+    position: absolute;
+    left: 1vw;
+    top: -35vh
+}
+.buildingEmoji{
+    position: relative;
+    z-index: 15;
+    height: 40vh;   
 }
