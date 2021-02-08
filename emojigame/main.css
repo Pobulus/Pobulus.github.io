@@ -3,10 +3,49 @@
 }
 #player {
     position: absolute;
+    z-index: 10;
 }
 img.playerMoji{ width: auto; height: 100%; }
+#buttonBox {
+    position: fixed;
+    z-index: 500;
+}
+#Sun {
+    z-index: 3;
+    position: relative;
+    width: 10vh;
+    height: auto;
+    left: 75vw;
+    top: 15vh;
+    
+}
 #world {
     width: 100vw;
     height: auto;
     overflow:hidden;
+}
+#ground {
+    background: linear-gradient(0deg, rgba(27,126,25,1) 0%, rgba(65,221,8,1) 48%, rgba(0,255,29,1) 100%);
+    width: 100vw;
+    height: 55vh;
+    left: 0px;
+    top: 45vh; 
+    position: absolute;
+    z-index: 1;  
+}
+#road {
+    z-index: 2;
+    background-color: darkslategray;
+    height: 35vh;
+    top: 10vh;
+    position: relative;
+}
+#skybox {
+    background-color: lightblue;
+    width: 100vw;
+    height: 53vh;
+    top: 0vh; 
+    position: absolute;
+    z-index: 0;  
+    left: 0px;
 }

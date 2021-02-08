@@ -18,7 +18,10 @@ var female = "♀️";
 var nb = "";
 var gender = nb;
 
-$(document).ready(function(){updatePos();$("#player").append(twemoji.parse('🚶'+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));});
+$(document).ready(function(){updatePos();
+$("#player").append(twemoji.parse('🧍'+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+$("#Sun").append(twemoji.parse("☀️", {className: "skySun",  folder: "svg", ext: ".svg"}));                            
+});
 function updatePos() { 
     $("#player").css("bottom", playerY);
     $("#player").css("left", playerX);
@@ -31,7 +34,11 @@ function updatePos() {
         $(".playerMoji").replaceWith(twemoji.parse('🚶'+race+"‍"+gender, {className: "playerMoji",  folder: "svg", ext: ".svg"}));
      if (prevX==playerX) {
         if (prevY<playerY){
-            $(".playerMoji").replaceWith(twemoji.parse('🏌️'+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+            if (race==skin0){
+                $(".playerMoji").replaceWith(twemoji.parse('🏌️'+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+            }else{
+                $(".playerMoji").replaceWith(twemoji.parse("🏌"+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+            }
         }else {
          $(".playerMoji").replaceWith(twemoji.parse('🧍'+race+"‍"+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
      }
