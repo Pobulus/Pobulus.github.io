@@ -124,7 +124,7 @@ document.addEventListener('keydown', (event) => {
        if (playerY > 10){
        playerY = playerY-playerV;
        }
-   }if (keysPressed['Shift']) {
+   }if (keysPressed['z']) {
        sprint = true;
        console.log(sprint);
    }}if (keysPressed['v']) {
