@@ -15,8 +15,20 @@ img.emoji{ width: auto; height: 100%; }
     text-align: center;
     background-color: rgba(0, 0, 0, 0.9);
 }
+#tablo {
+    object-fit: scale-down;
+}
+td {
+    width: 6vw;
+
+}
+@media only screen and (max-aspect-ratio: 1/1){
+td { 
+    width: 10vw;
+}}
+
 .student {
-width: 100%;
+width: inherit;
 height: auto;
 }
 #classname {
