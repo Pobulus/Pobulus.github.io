@@ -16,7 +16,7 @@ img.emoji{ width: auto; height: 100%; }
     background-color: rgba(0, 0, 0, 0.9);
 }
 .student {
-width: 10vh;
+width: 100%;
 height: auto;
 }
 #classname {
