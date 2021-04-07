@@ -3,7 +3,7 @@
 }
 #player {
     position: absolute;
-    z-index: 10;
+    z-index: 15;
 }
 body {
   overflow: hidden; /* Hide scrollbars */
@@ -122,7 +122,7 @@ font-size: 2vh;
 }
 #textArea {
     position: relative;
-    height 20vh;  
+    height: 20vh;  
     color: #FFFFFF;
     font-family: monospace;
     font-size: 4vh;
@@ -134,12 +134,26 @@ font-size: 2vh;
 #buildings{
     position: absolute;
     left: 1vw;
-    top: -35vh
+    top: -40vh;
+    z-index: 10;
+    height: 50vh;  
+    width: 500vw;
+}#fg-buildings{
+    position: absolute;
+    left: 1vw;
+    top: 0vh;
+    z-index: 20;
+    height: 70vh;  
+    width: 500vw;
+}
+.building {
+    position: relative;
+    height: inherit;
 }
 .buildingEmoji{
     position: relative;
-    z-index: 15;
-    height: 40vh;   
+    height: inherit;
+    width: auto;
 }
 #watermark{
     position: fixed;

@@ -40,7 +40,10 @@ $("#b3").append(twemoji.parse("🏽", {className: "buttonEmoji", folder: "svg", 
 $("#b4").append(twemoji.parse("🏾", {className: "buttonEmoji", folder: "svg", ext: ".svg"})); 
 $("#b5").append(twemoji.parse("🏿", {className: "buttonEmoji", folder: "svg", ext: ".svg"})); 
  $("#portrait").append(twemoji.parse(person+skin4+old, {className: "portraitEmoji", folder: "svg", ext: ".svg"})); 
- $(".building").replaceWith(twemoji.parse($(".building").text(), {className: "buildingEmoji", folder: "svg", ext: ".svg"}))                       
+ $('.building').each(function(i, obj) {
+		console.log(obj);
+		obj.replaceWith(twemoji.parse(obj, {className: "buildingEmoji", folder: "svg", ext: ".svg"}));
+	});
 });
 function scroll_to(div){
 	$('html, body').animate({
@@ -56,7 +59,7 @@ function updatePos() {
     $("#player").css("left", playerX);
     console.log(-playerY.toString()+"%");
     scroll_to();
-    $("#player").css("height", ((-playerY/20)+50).toString(10)+"%");
+    $("#player").css("height", ((-playerY/20)+60).toString(10)+"%");
     if (sprint){
         $(".playerMoji").replaceWith(twemoji.parse('🏃'+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
         console.log("zupa");
