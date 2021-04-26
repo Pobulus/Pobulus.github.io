@@ -33,7 +33,11 @@ function draw() {
   strokeWeight(3);
   line(width/2, height/2, width/2+x, height/2+y);//ray
   noFill();
-  arc(width/2, height/2, r/2, r/2, HALF_PI-angle, 0);
+  if(slider.value()<0){
+  arc(width/2, height/2, r/2, r/2, 0, HALF_PI-angle);
+  }else{
+   arc(width/2, height/2, r/2, r/2, HALF_PI-angle, 0);
+  }
   fill(0);
   stroke(0,255,0);
   line(width/2+x, height/2, width/2+x, height/2+y);//xline
