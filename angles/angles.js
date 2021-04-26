@@ -24,7 +24,7 @@ function draw() {
   console.log(angle);
   text("Kąt "+slider.value(), 210, 15);
   text("Promień: "+r, 210, 45);
-  stroke(255, 0, 0);
+  stroke(255, 0, 255);
   
   x = sin(angle)*r;
   y = cos(angle)*r;
@@ -39,7 +39,7 @@ function draw() {
    arc(width/2, height/2, r/2, r/2, HALF_PI-angle, 0);
   }
   fill(0);
-  stroke(0,255,0);
+  stroke(255,0,0);
   line(width/2+x, height/2, width/2+x, height/2+y);//xline
   text("y: "+int(r*sin(radians(slider.value()))), width/2+x, height/2+y);
   stroke(0,0,255);
