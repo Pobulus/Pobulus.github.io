@@ -48,6 +48,7 @@ function animation( time ) {
 
 }
 document.addEventListener("mousemove", updateDisplay, false);
+document.addEventListener("touchmove", updateDisplay, false);
 var keysPressed = {};
 document.addEventListener('keydown', (event) => {
    keysPressed[event.key] = true;
@@ -99,7 +100,9 @@ var canvas = document.querySelector('canvas');
         canvas.onclick = function() {
         canvas.requestPointerLock();
         }
-      
+        canvas.ontouchend = function() {
+        canvas.requestPointerLock();
+        }
       </script>
       <style>
         canvas {
