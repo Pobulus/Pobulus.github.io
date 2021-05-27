@@ -1,35 +1,122 @@
 <html>
     <head>
-       <script>
-           function main() {
-  const canvas = document.querySelector("#glCanvas");
-  // Initialize the GL context
-  const gl = canvas.getContext("webgl");
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script type="module">
 
-  // Only continue if WebGL is available and working
-  if (gl === null) {
-    alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-    return;
+        // Find the latest version by visiting https://cdn.skypack.dev/three.
+      
+        import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
+        
+        
+        
+        let camera, scene, renderer;
+        let geometry, material, mesh, ground, groundgeometry, ground_material;
+        var x = 0.0;
+        function init() {
+
+        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+        camera.position.z = 0;
+        camera.rotation.x = 0;
+        camera.rotation.y = 0;
+        scene = new THREE.Scene();
+
+        geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
+        material = new THREE.MeshNormalMaterial();
+        ground_material = new THREE.MeshBasicMaterial({color: 0xff0000,side: THREE.DoubleSide});
+        groundgeometry = new THREE.PlaneGeometry(1, 1);
+        mesh = new THREE.Mesh( geometry, material );
+        ground = new THREE.Mesh(groundgeometry, ground_material);
+        ground.position.y=-0.1;
+        ground.rotation.x=-Math.PI/2;
+        console.log(ground.rotation);
+        console.log(camera.rotation);
+        scene.add( mesh );
+         mesh.position.z = 1
+        scene.add( ground );
+
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setAnimationLoop( animation );
+        document.body.appendChild( renderer.domElement );
+
+      }
+
+function animation( time ) {
+
+
+	renderer.render( scene, camera );
+
+}
+document.addEventListener("mousemove", updateDisplay, false);
+var keysPressed = {};
+document.addEventListener('keydown', (event) => {
+   keysPressed[event.key] = true;
+   camera.getWorldDirection(camera_global_direction);
+   if (keysPressed['ArrowUp']) {
+      camera.translateZ(-0.1);  
+    //  camera.translateOnAxis(camera_global_direction, -0.1);
+   } if (keysPressed['ArrowRight']) {
+       camera.translateX(0.1);
+   }if (keysPressed['ArrowLeft']) {
+       camera.translateX(-0.1);
+   }if (keysPressed['ArrowDown']) {
+    // camera.translateOnAxis(camera_global_direction, 0.1);
+    camera.translateZ(0.1);
+   }if (keysPressed['z']) {
+      
+       console.log(camera_global_direction);
+   }
+});
+document.addEventListener('keyup', (event) => {
+   delete keysPressed[event.key];
+});
+function updateDisplay(e){
+  var movementX = e.movementX || e.mozMovementX || 0;
+  var movementY = e.movementY || e.mozMovementY ||  0;
+  rotateCamera(movementX/-100, movementY/-100);
+  
+  
+  
+}
+onclick = function(e){console.log(camera_global_direction.angleTo(global_axis_y));}
+window.onload = init();
+var global_axis_y = new THREE.Vector3(0,1,0);
+var camera_global_direction = new THREE.Vector3();
+function rotateCamera(hor, vert){
+  camera.getWorldDirection(camera_global_direction);
+  camera.rotateOnWorldAxis(global_axis_y, hor);
+  if((camera_global_direction.angleTo(global_axis_y)<0.2&&vert>0) || (camera_global_direction.angleTo(global_axis_y)>3&&vert<0)){
+    console.log("x rotation over");
+  }else{
+    camera.rotateX(vert);
   }
-
-  // Set clear color to black, fully opaque
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  // Clear the color buffer with specified clear color
-  gl.clear(gl.COLOR_BUFFER_BIT);
-  var positions = [
-  0, 0,
-  0, 0.5,
-  0.7, 0,
-];
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-gl.drawArrays();
 }
 
-window.onload = main;
-       </script> 
+var canvas = document.querySelector('canvas');
+        canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
+        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
+        canvas.onclick = function() {
+        canvas.requestPointerLock();
+        }
+      
+      </script>
+      <style>
+        canvas {
+        position: absolute;
+        width : 100vw;
+        height : 100vh;
+        top: 0px;
+        left: 0px;
+        padding : 0;
+        border : none;
+        background-color : black;
+      }
+
+      </style>
     </head>
     <body>
-        <canvas id="glCanvas" width="640" height="480"></canvas>
+        
           
 
     </body>
