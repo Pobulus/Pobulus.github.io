@@ -2,68 +2,63 @@
     <head>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script type="module">
-
-        // Find the latest version by visiting https://cdn.skypack.dev/three.
-      
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
-        
-        
-        
         let camera, scene, renderer;
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         var x = 0.0;
         function init() {
-
         camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
         camera.position.z = 0;
         camera.rotation.x = 0;
         camera.rotation.y = 0;
         scene = new THREE.Scene();
-
         geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
         material = new THREE.MeshNormalMaterial();
-        ground_material = new THREE.MeshBasicMaterial({color: 0xff0000,side: THREE.DoubleSide});
+        ground_material = new THREE.MeshBasicMaterial({color: 0x0022dd,side: THREE.DoubleSide});
         groundgeometry = new THREE.PlaneGeometry(1, 1);
         mesh = new THREE.Mesh( geometry, material );
         ground = new THREE.Mesh(groundgeometry, ground_material);
         ground.position.y=-0.1;
         ground.rotation.x=-Math.PI/2;
-        console.log(ground.rotation);
-        console.log(camera.rotation);
         scene.add( mesh );
-         mesh.position.z = 1
+         mesh.position.z = -0.5
         scene.add( ground );
-
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
         document.body.appendChild( renderer.domElement );
-
       }
 
 function animation( time ) {
-
-
 	renderer.render( scene, camera );
-
 }
+
 document.addEventListener("mousemove", updateDisplay, false);
 document.addEventListener("touchmove", updateDisplay, false);
+
 var keysPressed = {};
 document.addEventListener('keydown', (event) => {
    keysPressed[event.key] = true;
    camera.getWorldDirection(camera_global_direction);
    if (keysPressed['ArrowUp']) {
-      camera.translateZ(-0.1);  
-    //  camera.translateOnAxis(camera_global_direction, -0.1);
+      camera.translateZ(-0.1);
    } if (keysPressed['ArrowRight']) {
        camera.translateX(0.1);
    }if (keysPressed['ArrowLeft']) {
        camera.translateX(-0.1);
    }if (keysPressed['ArrowDown']) {
-    // camera.translateOnAxis(camera_global_direction, 0.1);
     camera.translateZ(0.1);
-   }if (keysPressed['z']) {
+   }
+   if (keysPressed['w']) {
+      camera.translateZ(-0.1);
+   } if (keysPressed['d']) {
+       camera.translateX(0.1);
+   }if (keysPressed['a']) {
+       camera.translateX(-0.1);
+   }if (keysPressed['s']) {
+    camera.translateZ(0.1);
+   }
+   if (keysPressed['z']) {
       
        console.log(camera_global_direction);
    }
@@ -75,11 +70,8 @@ function updateDisplay(e){
   var movementX = e.movementX || e.mozMovementX || 0;
   var movementY = e.movementY || e.mozMovementY ||  0;
   rotateCamera(movementX/-100, movementY/-100);
-  
-  
-  
 }
-onclick = function(e){console.log(camera_global_direction.angleTo(global_axis_y));}
+onclick = function(e){console.log("YOU HAVE CLICKED");}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
