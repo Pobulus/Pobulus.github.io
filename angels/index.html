@@ -1,6 +1,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
@@ -9,10 +10,45 @@
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
   <script>
     function preload(){
-    // SC.Widget(document.getElementById('sc-widget')).bind(SC.Widget.Events.FINISH,function() {
-    // SC.Widget(document.getElementById('sc-widget')).play()});}
-    setTimeout(() => {  songPlay(); }, 2000);
-  
+    SC.Widget(document.getElementById('sc-widget')).bind(SC.Widget.Events.FINISH,function() {
+    SC.Widget(document.getElementById('sc-widget')).play()});
+      dance();
+    
+    
+  }
+  function dance(){
+    songPlay();
+    rotation1();
+      setTimeout(() => {  rotation2(); }, 500);
+      setTimeout(() => {  rotation3(); }, 1000);
+      setTimeout(() => {  rotation4(); }, 1500);
+      setTimeout(() => {  dance(); }, 2000);
+  }
+  function rotation1(){
+    $("#angel1").animate({"right": "+=50vw"}, { duration: 500, queue: false });
+    $("#angel2").animate({"bottom": "+=50vh"}, { duration: 500, queue: false });
+    $("#angel3").animate({"left": "+=50vw"}, { duration: 500, queue: false });
+    $("#cup").animate({"top": "+=50vh"}, { duration: 500, queue: false });
+  }
+  function rotation2(){
+    $("#angel1").animate({"top": "+=50vh"}, { duration: 500, queue: false });
+    $("#angel2").animate({"right": "+=50vw"}, { duration: 500, queue: false });
+    $("#angel3").animate({"bottom": "+=50vh"}, { duration: 500, queue: false });
+    $("#cup").animate({"left": "+=50vw"}, { duration: 500, queue: false });
+
+  }
+  function rotation3(){
+    $("#angel1").animate({"right": "-=50vw"}, { duration: 500, queue: false });
+    $("#angel2").animate({"bottom": "-=50vh"}, { duration: 500, queue: false });
+    $("#angel3").animate({"left": "-=50vw"}, { duration: 500, queue: false });
+    $("#cup").animate({"top": "-=50vh"}, { duration: 500, queue: false });
+  }
+  function rotation4(){
+    $("#angel1").animate({"top": "-=50vh"}, { duration: 500, queue: false });
+    $("#angel2").animate({"right": "-=50vw"}, { duration: 500, queue: false });
+    $("#angel3").animate({"bottom": "-=50vh"}, { duration: 500, queue: false });
+    $("#cup").animate({"left": "-=50vw"}, { duration: 500, queue: false });
+
   }
     function songPlay(){
     SC.Widget(document.getElementById('sc-widget')).play();

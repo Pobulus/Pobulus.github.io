@@ -21,7 +21,7 @@ function draw() {
   line(width/2, 0, width/2, height );
   line(0, height/2, width, height/2 );
   angle = radians(90+slider.value());
-  console.log(angle);
+
   text("Kąt "+slider.value(), 210, 15);
   text("Promień: "+r, 210, 45);
   stroke(255, 0, 255);
