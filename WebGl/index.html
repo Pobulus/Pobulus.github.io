@@ -8,6 +8,7 @@
         var x = 0.0;
         function init() {
           $("#cameraTouchBox").hide();
+          $("#movementTouchBox").hide();
         camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
         camera.position.z = 0;
         camera.rotation.x = 0;
@@ -40,7 +41,7 @@ function animation( time ) {
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", updateDisplayTouch, false);
-document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();}, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show()}, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStart, false);
 document.getElementById("cameraTouchBox").addEventListener("touchend", handleEnd, false);
 var keysPressed = {};
@@ -202,10 +203,10 @@ var canvas = document.querySelector('canvas');
       #cameraTouchBox{
         z-index: 100;
         position: absolute;
-        right:0px;
-        bottom: 0px;
-        width: 30vw;
-        height: 30vw;
+        right:5px;
+        bottom: 5px;
+        width: 27vw;
+        height: 27vw;
         opacity: 33%;
         background-color: black;
         border-radius: 100vw;
@@ -215,6 +216,23 @@ var canvas = document.querySelector('canvas');
         align-items: center;
         justify-content: center;
       }
+
+      #movementTouchBox{
+        z-index: 100;
+        position: absolute;
+        left:50px;
+        bottom: 5px;
+        width: 27vw;
+        height: 27vw;
+        opacity: 33%;
+        background-color: black;
+        border-radius: 100vw;
+
+        font-size: 10vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }      
       
 
       </style>
@@ -223,6 +241,7 @@ var canvas = document.querySelector('canvas');
         
           
       <div id="cameraTouchBox"> 👁️ </div>
+      <div id="movementTouchBox"> 🕹️ </div>
     </body>
 
 
