@@ -1,6 +1,32 @@
 <html>
     <head>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+        var elem = document.documentElement;
+        let fullscr = false;
+        function openFullscreen() {
+          fullscr = true;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+      }
+      function closeFullscreen(){
+        fullscr = false;
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+}
+
+
+      </script>
       <script type="module">
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
         let camera, scene, renderer;
@@ -97,8 +123,6 @@ function updateDisplayTouch(evt) {
     if (idx >= 0) {
       let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
 
-    // var centerY = (document.documentElement.clientHeight - bounds.top)/2
-    // var centerX = (document.documentElement.clientWidth - bounds.left)/2
     movementX = touches[i].clientX-initialTouchX;
     movementY = touches[i].clientY-initialTouchY;
     if (movementX>touchLim){ movementX = touchLim;}
@@ -163,7 +187,7 @@ function handleEnd(evt) {
     }
   }
 }
-onclick = function(e){console.log("YOU HAVE CLICKED");}
+onclick = function(e){openFullscreen();}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
