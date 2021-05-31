@@ -1,33 +1,6 @@
 <html>
     <head>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script>
-        var elem = document.documentElement;
-        let fullscr = false;
-        function openFullscreen() {
-          fullscr = true;
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
-        }
-        renderer.setSize( window.innerWidth, window.innerHeight );
-      }
-      function closeFullscreen(){
-        fullscr = false;
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-            document.msExitFullscreen();
-        }
-}
-
-
-      </script>
       <script type="module">
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
         let camera, scene, renderer;
@@ -57,6 +30,42 @@
         renderer.setAnimationLoop( animation );
         document.body.appendChild( renderer.domElement );
       }
+      var elem = document.documentElement;
+        let fullscr = false;
+        function openFullscreen() {
+          fullscr = true;
+          
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+        if (
+  document.fullscreenElement || /* Standard syntax */
+  document.webkitFullscreenElement || /* Safari and Opera syntax */
+  document.msFullscreenElement /* IE11 syntax */
+) {
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
+      console.log("fullscreen");
+      document.removeEventListener("touchstart", openFullscreen);
+}
+        
+      }
+      function closeFullscreen(){
+        fullscr = false;
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+}
 
 function animation( time ) {
 	renderer.render( scene, camera );
@@ -68,7 +77,8 @@ function animation( time ) {
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", updateDisplayTouch, false);
-document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show()}, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show(); }, false);
+document.addEventListener("touchstart", openFullscreen, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStart, false);
 document.getElementById("cameraTouchBox").addEventListener("touchend", handleEnd, false);
 var keysPressed = {};
@@ -188,7 +198,7 @@ function handleEnd(evt) {
     }
   }
 }
-onclick = function(e){openFullscreen();}
+// onclick = function(e){openFullscreen();}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
