@@ -32,12 +32,17 @@
 
 function animation( time ) {
 	renderer.render( scene, camera );
+  if (cameraTouchMove == true){
+    rotateCamera(movementX/-1000, movementY/-1000);
+  }
+
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", updateDisplayTouch, false);
 document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();}, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStart, false);
+document.getElementById("cameraTouchBox").addEventListener("touchend", handleEnd, false);
 var keysPressed = {};
 document.addEventListener('keydown', (event) => {
    keysPressed[event.key] = true;
@@ -73,7 +78,10 @@ function updateDisplay(e){
   var movementY = e.movementY || e.mozMovementY ||  0;
   rotateCamera(movementX/-100, movementY/-100);
 }
-
+let touchLim = 40;
+let movementX = 0;
+let movementY = 0;
+let cameraTouchMove = false;
 function updateDisplayTouch(evt) {
   console.log("wykryto dotyk");
   console.log(initialTouchX,  initialTouchY);
@@ -90,10 +98,14 @@ function updateDisplayTouch(evt) {
 
     // var centerY = (document.documentElement.clientHeight - bounds.top)/2
     // var centerX = (document.documentElement.clientWidth - bounds.left)/2
-    let movementX = touches[i].clientX-initialTouchX;
-    let movementY = touches[i].clientY-initialTouchY;
+    movementX = touches[i].clientX-initialTouchX;
+    movementY = touches[i].clientY-initialTouchY;
+    if (movementX>touchLim){ movementX = touchLim;}
+    if (movementY>touchLim){ movementY = touchLim;}
+    if (movementX<-touchLim){ movementX = -touchLim;}
+    if (movementY<-touchLim){ movementY = -touchLim;}
       console.log(movementX, movementY);
-      rotateCamera(movementX/-1000, movementY/-1000);
+      
       ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
       console.log(".");
     } else {
@@ -120,10 +132,8 @@ var initialTouchY;
 function handleStart(evt) {
   evt.preventDefault();
   console.log("touchstart.");
-  var el = document.getElementsByTagName("canvas")[0];
-  
   var touches = evt.changedTouches;
-
+  cameraTouchMove = true;
   for (var i = 0; i < touches.length; i++) {
     console.log("touchstart:" + i + "...");
     ongoingTouches.push(copyTouch(touches[i]));
@@ -134,10 +144,30 @@ function handleStart(evt) {
     
   }
 }
+function handleEnd(evt) {
+  evt.preventDefault();
+  console.log("touchend");
+  var touches = evt.changedTouches;
+  rotateCamera(movementX/-1000, movementY/-1000);
+  cameraTouchMove = false;
+
+  for (var i = 0; i < touches.length; i++) {
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+
+    if (idx >= 0) {
+      
+      ongoingTouches.splice(idx, 1);  // remove it; we're done
+    } else {
+      console.log("can't figure out which touch to end");
+    }
+  }
+}
 onclick = function(e){console.log("YOU HAVE CLICKED");}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
+
+
 function rotateCamera(hor, vert){
   camera.getWorldDirection(camera_global_direction);
   camera.rotateOnWorldAxis(global_axis_y, hor);
@@ -176,16 +206,23 @@ var canvas = document.querySelector('canvas');
         bottom: 0px;
         width: 30vw;
         height: 30vw;
-        opacity: 75%;
+        opacity: 33%;
         background-color: black;
+        border-radius: 100vw;
+
+        font-size: 10vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
+      
 
       </style>
     </head>
     <body>
         
           
-      <div id="cameraTouchBox"></div>
+      <div id="cameraTouchBox"> 👁️ </div>
     </body>
 
 
