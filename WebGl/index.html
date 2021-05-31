@@ -7,6 +7,7 @@
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         var x = 0.0;
         function init() {
+          $("#cameraTouchBox").hide();
         camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
         camera.position.z = 0;
         camera.rotation.x = 0;
@@ -32,10 +33,11 @@
 function animation( time ) {
 	renderer.render( scene, camera );
 }
-
+let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.addEventListener("touchmove", updateDisplay, false);
-
+document.getElementById("cameraTouchBox").addEventListener("touchmove", updateDisplayTouch, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();}, false);
+document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStart, false);
 var keysPressed = {};
 document.addEventListener('keydown', (event) => {
    keysPressed[event.key] = true;
@@ -71,6 +73,67 @@ function updateDisplay(e){
   var movementY = e.movementY || e.mozMovementY ||  0;
   rotateCamera(movementX/-100, movementY/-100);
 }
+
+function updateDisplayTouch(evt) {
+  console.log("wykryto dotyk");
+  console.log(initialTouchX,  initialTouchY);
+  evt.preventDefault();
+  var el = document.getElementsByTagName("canvas")[0];
+ 
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+        var idx = ongoingTouchIndexById(touches[i].identifier);
+
+    if (idx >= 0) {
+      let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
+
+    // var centerY = (document.documentElement.clientHeight - bounds.top)/2
+    // var centerX = (document.documentElement.clientWidth - bounds.left)/2
+    let movementX = touches[i].clientX-initialTouchX;
+    let movementY = touches[i].clientY-initialTouchY;
+      console.log(movementX, movementY);
+      rotateCamera(movementX/-1000, movementY/-1000);
+      ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+      console.log(".");
+    } else {
+      console.log("can't figure out which touch to continue");
+    }
+  }
+}
+function ongoingTouchIndexById(idToFind) {
+  for (var i = 0; i < ongoingTouches.length; i++) {
+    var id = ongoingTouches[i].identifier;
+
+    if (id == idToFind) {
+      return i;
+    }
+  }
+  return -1;    // not found
+}
+function copyTouch(touch) {
+  return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+}
+var ongoingTouches = [];
+var initialTouchX;
+var initialTouchY;
+function handleStart(evt) {
+  evt.preventDefault();
+  console.log("touchstart.");
+  var el = document.getElementsByTagName("canvas")[0];
+  
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+    console.log("touchstart:" + i + "...");
+    ongoingTouches.push(copyTouch(touches[i]));
+    initialTouchX = touches[i].clientX;
+    initialTouchY= touches[i].clientY;
+    
+    console.log("touchstart:" + i + ".");
+    
+  }
+}
 onclick = function(e){console.log("YOU HAVE CLICKED");}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
@@ -90,11 +153,10 @@ var canvas = document.querySelector('canvas');
         document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
         canvas.onclick = function() {
-        canvas.requestPointerLock();
+          if(touchscreen==false){
+          canvas.requestPointerLock();
         }
-        canvas.ontouchend = function() {
-        canvas.requestPointerLock();
-        }
+      }
       </script>
       <style>
         canvas {
@@ -107,13 +169,23 @@ var canvas = document.querySelector('canvas');
         border : none;
         background-color : black;
       }
+      #cameraTouchBox{
+        z-index: 100;
+        position: absolute;
+        right:0px;
+        bottom: 0px;
+        width: 30vw;
+        height: 30vw;
+        opacity: 75%;
+        background-color: black;
+      }
 
       </style>
     </head>
     <body>
         
           
-
+      <div id="cameraTouchBox"></div>
     </body>
 
 
