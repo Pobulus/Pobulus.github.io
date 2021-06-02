@@ -55,7 +55,7 @@
       // console.log("fullscreen");
       document.removeEventListener("touchstart", openFullscreen);
 }
-
+        }
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
@@ -64,7 +64,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
         
-      }
+      
       function closeFullscreen(){
         fullscr = false;
         if (document.exitFullscreen) {
@@ -276,7 +276,7 @@ function handleEndCamera(evt) {
 function handleStartMovement(evt) {
   evt.preventDefault();
   var touches = evt.changedTouches;
-  cameraTouchMove = true;
+  
   for (var i = 0; i < touches.length; i++) {
     MongoingTouches.push(copyTouch(touches[i]));
     initialTouchXmovement = touches[i].clientX;
@@ -315,7 +315,7 @@ function handleEndMovement(evt) {
   camera_acceleration.x = 0;
   var touches = evt.changedTouches;
   camera;
-  cameraTouchMove = false;
+ 
   for (var i = 0; i < touches.length; i++) {
     var idx = MongoingTouchIndexById(touches[i].identifier);
     if (idx >= 0) {
