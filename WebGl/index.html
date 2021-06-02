@@ -42,17 +42,26 @@
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
+        sleep(1000);
         if (
   document.fullscreenElement || /* Standard syntax */
   document.webkitFullscreenElement || /* Safari and Opera syntax */
   document.msFullscreenElement /* IE11 syntax */
 ) {
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
+      renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
       // console.log("fullscreen");
       document.removeEventListener("touchstart", openFullscreen);
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
 }
         
       }
@@ -72,22 +81,29 @@ function animation( time ) {
   if (cameraTouchMove == true){
     rotateCamera(movementX/-1000, movementY/-1000);
   }
-  applyAcceleration(camera_velocity, camera_acceleration);
   resistanceDeceleration(camera_velocity);
+  applyAcceleration(camera_velocity, camera_acceleration);
   applyVelocity(camera, camera_velocity);
-  camera_acceleration = new THREE.Vector3(0,0,0);
+  if(debug){console.log(camera_acceleration, camera_velocity);}
+  // camera_acceleration = new THREE.Vector3(0,0,0);
   
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.getElementById("cameraTouchBox").addEventListener("touchmove", updateDisplayTouch, false);
-document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show(); }, false);
+
 document.addEventListener("touchstart", openFullscreen, false);
-document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStart, false);
-document.getElementById("cameraTouchBox").addEventListener("touchend", handleEnd, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show(); }, false);
+document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
+document.getElementById("cameraTouchBox").addEventListener("touchend", handleEndCamera, false);
+document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMoveCamera, false);
+document.getElementById("movementTouchBox").addEventListener("touchstart", handleStartMovement, false);
+document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
+document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
 var keysPressed = {};
-const acc_val = 0.03;
-document.addEventListener('keypress', (event) => {
+const acc_val = 0.1;
+
+document.addEventListener('keydown', handleKeydown);
+function handleKeydown(event){
    keysPressed[event.key] = true;
    camera.getWorldDirection(camera_global_direction);
    if (keysPressed['ArrowUp']||keysPressed['w']) {
@@ -99,42 +115,59 @@ document.addEventListener('keypress', (event) => {
    }if (keysPressed['ArrowDown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
    }
-   console.log(camera_acceleration, camera_velocity);
+  
    if (keysPressed['z']) {
-      
-       console.log(camera_global_direction);
+      toggleDebug();
+    
    }
-
-});
+   event.preventDefault();
+}
+var debug = false;
+function toggleDebug(){
+  debug = !debug;
+}
 document.addEventListener('keyup', (event) => {
-  // if (keysPressed['ArrowUp']||keysPressed['w']) {
-  //    camera_acceleration.z =  0;
-  //  } if (keysPressed['ArrowRight']||keysPressed['d']) {
-  //   camera_acceleration.x = 0;
-  //  }if (keysPressed['ArrowLeft']||keysPressed['a']) {
-  //   camera_acceleration.x= 0;
-  //  }if (keysPressed['ArrowDown']||keysPressed['s']) {
-  //   camera_acceleration.z = 0;
-  //  }
+  if (event.key =='ArrowUp'||event.key == 'w') {
+     camera_acceleration.z =  0;
+     if (keysPressed['ArrowDown']||keysPressed['s']) {
+    camera_acceleration.z = acc_val;
+   }
+  
+   } if (event.key =='ArrowRight'||event.key =='d') {
+    camera_acceleration.x = 0;
+    if (keysPressed['ArrowLeft']||keysPressed['a']) {
+    camera_acceleration.x= -acc_val;
+    }
+   }if (event.key =='ArrowLeft'||event.key =='a') {
+    camera_acceleration.x= 0;
+    if (keysPressed['ArrowRight']||keysPressed['d']) {
+    camera_acceleration.x = acc_val;
+   }
+   }if (event.key =='ArrowDown'||event.key =='s') {
+    camera_acceleration.z = 0;
+    if (keysPressed['ArrowUp']||keysPressed['w']) {
+     camera_acceleration.z = -acc_val;
+    }
+   }
     
    delete keysPressed[event.key];
-   console.log(keysPressed);
-
+   event.preventDefault();
     //  camera_velocity.x = 0;
     //  camera_velocity.z = 0;
 
 });
 
 function applyVelocity(obj, vel){
-  if (Math.abs(vel.x) < 0.0001){
+  var vst = 0.007;
+  if (Math.abs(vel.x) < vst){
     vel.x = 0;
   }else{
   obj.translateX(vel.x);}
-  if (Math.abs(vel.y) < 0.001){
+  if (Math.abs(vel.y) < vst){
     vel.y = 0;
   }else{
   obj.translateY(vel.y);}
-  if (Math.abs(vel.z) < 0.001){
+  if (Math.abs(vel.z) < vst){
     vel.z = 0;
   }else{
   obj.translateZ(vel.z);}
@@ -142,10 +175,10 @@ function applyVelocity(obj, vel){
   
 }
 function applyAcceleration(vel, acc){
-  vel.add(acc);
+  vel.addScaledVector(acc, 0.1);
 }
 function resistanceDeceleration(vel){
-  const rf = 20;
+  const rf = 50;
   applyAcceleration(vel, new THREE.Vector3(-rf*Math.sign(vel.x)*(vel.x**2), -rf*Math.sign(vel.y)*(vel.y**2), -rf*Math.sign(vel.z)*(vel.z**2)));
 }
 function updateDisplay(e){
@@ -157,34 +190,7 @@ let touchLim = 40;
 let movementX = 0;
 let movementY = 0;
 let cameraTouchMove = false;
-function updateDisplayTouch(evt) {
-  // console.log("wykryto dotyk");
-  // console.log(initialTouchX,  initialTouchY);
-  evt.preventDefault();
- 
-  var touches = evt.changedTouches;
 
-  for (var i = 0; i < touches.length; i++) {
-        var idx = ongoingTouchIndexById(touches[i].identifier);
-
-    if (idx >= 0) {
-      let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
-
-    movementX = touches[i].clientX-initialTouchX;
-    movementY = touches[i].clientY-initialTouchY;
-    if (movementX>touchLim){ movementX = touchLim;}
-    if (movementY>touchLim){ movementY = touchLim;}
-    if (movementX<-touchLim){ movementX = -touchLim;}
-    if (movementY<-touchLim){ movementY = -touchLim;}
-      // console.log(movementX, movementY);
-      
-      ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-      // console.log(".");
-    } else {
-      // console.log("can't figure out which touch to continue");
-    }
-  }
-}
 function ongoingTouchIndexById(idToFind) {
   for (var i = 0; i < ongoingTouches.length; i++) {
     var id = ongoingTouches[i].identifier;
@@ -199,42 +205,113 @@ function copyTouch(touch) {
   return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
 }
 var ongoingTouches = [];
-var initialTouchX;
-var initialTouchY;
-function handleStart(evt) {
+var initialTouchXcamera;
+var initialTouchYcamera;
+var initialTouchXmovement;
+var initialTouchYmovement;
+function handleStartCamera(evt) {
   evt.preventDefault();
-  // console.log("touchstart.");
   var touches = evt.changedTouches;
   cameraTouchMove = true;
   for (var i = 0; i < touches.length; i++) {
-    // console.log("touchstart:" + i + "...");
     ongoingTouches.push(copyTouch(touches[i]));
-    initialTouchX = touches[i].clientX;
-    initialTouchY= touches[i].clientY;
-    
-    // console.log("touchstart:" + i + ".");
-    
+    initialTouchXcamera = touches[i].clientX;
+    initialTouchYcamera= touches[i].clientY;   
   }
 }
-function handleEnd(evt) {
+function handleMoveCamera(evt) {
+  // console.log("wykryto dotyk");
+  // console.log(initialTouchXcamera,  initialTouchYcamera);
   evt.preventDefault();
-  // console.log("touchend");
+ 
   var touches = evt.changedTouches;
-  rotateCamera(movementX/-1000, movementY/-1000);
-  cameraTouchMove = false;
 
   for (var i = 0; i < touches.length; i++) {
-    var idx = ongoingTouchIndexById(touches[i].identifier);
+        var idx = ongoingTouchIndexById(touches[i].identifier);
 
     if (idx >= 0) {
+      let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
+
+    movementX = touches[i].clientX-initialTouchXcamera;
+    movementY = touches[i].clientY-initialTouchYcamera;
+    if (movementX>touchLim){ movementX = touchLim;}
+    if (movementY>touchLim){ movementY = touchLim;}
+    if (movementX<-touchLim){ movementX = -touchLim;}
+    if (movementY<-touchLim){ movementY = -touchLim;}
+      // console.log(movementX, movementY);
       
-      ongoingTouches.splice(idx, 1);  // remove it; we're done
+      ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+      // console.log(".");
     } else {
-      // console.log("can't figure out which touch to end");
+      // console.log("can't figure out which touch to continue");
     }
   }
 }
-// onclick = function(e){openFullscreen();}
+function handleEndCamera(evt) {
+  evt.preventDefault();
+
+  var touches = evt.changedTouches;
+  rotateCamera(movementX/-1000, movementY/-1000);
+  cameraTouchMove = false;
+  for (var i = 0; i < touches.length; i++) {
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    if (idx >= 0) {
+      ongoingTouches.splice(idx, 1);  // remove it; we're done
+    } 
+  }
+}
+function handleStartMovement(evt) {
+  evt.preventDefault();
+  var touches = evt.changedTouches;
+  cameraTouchMove = true;
+  for (var i = 0; i < touches.length; i++) {
+    ongoingTouches.push(copyTouch(touches[i]));
+    initialTouchXmovement = touches[i].clientX;
+    initialTouchYmovement= touches[i].clientY;   
+  }
+}
+function handleMoveMovement(evt) {
+  // console.log("wykryto dotyk");
+  // console.log(initialTouchXcamera,  initialTouchYcamera);
+  evt.preventDefault();
+ 
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+        var idx = ongoingTouchIndexById(touches[i].identifier);
+
+    if (idx >= 0) {
+      let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
+
+    camera_acceleration.x = 0.1*(touches[i].clientX-initialTouchXmovement)/4;
+    camera_acceleration.z = 0.1(touches[i].clientY-initialTouchYmovement)/4;
+    // if (camera_acceleration.x>touchLim){ camera_acceleration.x = touchLim;}
+    // if (camera_acceleration.z>touchLim){ camera_acceleration.z = touchLim;}
+    // if (camera_acceleration.x<-touchLim){ camera_acceleration.x = -touchLim;}
+    // if (camera_acceleration.z<-touchLim){ camera_acceleration.z = -touchLim;}
+      // console.log(movementX, movementY);
+      
+      ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+      // console.log(".");
+    } 
+  }
+}
+function handleEndMovement(evt) {
+  evt.preventDefault();
+  camera_acceleration.z = 0;
+  camera_acceleration.x = 0;
+  var touches = evt.changedTouches;
+  camera;
+  cameraTouchMove = false;
+  for (var i = 0; i < touches.length; i++) {
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    if (idx >= 0) {
+      ongoingTouches.splice(idx, 1);  // remove it; we're done
+    } 
+  }
+}
+
+ondblclick = function(e){openFullscreen();}
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
