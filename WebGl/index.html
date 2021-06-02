@@ -201,10 +201,23 @@ function ongoingTouchIndexById(idToFind) {
   }
   return -1;    // not found
 }
+
+function MongoingTouchIndexById(idToFind) {
+  for (var i = 0; i < MongoingTouches.length; i++) {
+    var id = MongoingTouches[i].identifier;
+
+    if (id == idToFind) {
+      return i;
+    }
+  }
+  return -1;    // not found
+}
 function copyTouch(touch) {
   return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
 }
 var ongoingTouches = [];
+var MongoingTouches = [];
+
 var initialTouchXcamera;
 var initialTouchYcamera;
 var initialTouchXmovement;
@@ -265,7 +278,7 @@ function handleStartMovement(evt) {
   var touches = evt.changedTouches;
   cameraTouchMove = true;
   for (var i = 0; i < touches.length; i++) {
-    ongoingTouches.push(copyTouch(touches[i]));
+    MongoingTouches.push(copyTouch(touches[i]));
     initialTouchXmovement = touches[i].clientX;
     initialTouchYmovement= touches[i].clientY;   
   }
@@ -278,20 +291,20 @@ function handleMoveMovement(evt) {
   var touches = evt.changedTouches;
 
   for (var i = 0; i < touches.length; i++) {
-        var idx = ongoingTouchIndexById(touches[i].identifier);
+        var idx = MongoingTouchIndexById(touches[i].identifier);
 
     if (idx >= 0) {
       let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
 
-    camera_acceleration.x = 0.1*(touches[i].clientX-initialTouchXmovement)/4;
-    camera_acceleration.z = 0.1(touches[i].clientY-initialTouchYmovement)/4;
-    // if (camera_acceleration.x>touchLim){ camera_acceleration.x = touchLim;}
-    // if (camera_acceleration.z>touchLim){ camera_acceleration.z = touchLim;}
-    // if (camera_acceleration.x<-touchLim){ camera_acceleration.x = -touchLim;}
-    // if (camera_acceleration.z<-touchLim){ camera_acceleration.z = -touchLim;}
+    camera_acceleration.x = 0.01*(touches[i].clientX-initialTouchXmovement)/4;
+    camera_acceleration.z = 0.01*(touches[i].clientY-initialTouchYmovement)/4;
+    if (camera_acceleration.x>acc_val){ camera_acceleration.x = acc_val;}
+    if (camera_acceleration.z>acc_val){ camera_acceleration.z = acc_val;}
+    if (camera_acceleration.x<-acc_val){ camera_acceleration.x = -acc_val;}
+    if (camera_acceleration.z<-acc_val){ camera_acceleration.z = -acc_val;}
       // console.log(movementX, movementY);
       
-      ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+      MongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
       // console.log(".");
     } 
   }
@@ -304,9 +317,9 @@ function handleEndMovement(evt) {
   camera;
   cameraTouchMove = false;
   for (var i = 0; i < touches.length; i++) {
-    var idx = ongoingTouchIndexById(touches[i].identifier);
+    var idx = MongoingTouchIndexById(touches[i].identifier);
     if (idx >= 0) {
-      ongoingTouches.splice(idx, 1);  // remove it; we're done
+      MongoingTouches.splice(idx, 1);  // remove it; we're done
     } 
   }
 }
