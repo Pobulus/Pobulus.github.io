@@ -5,6 +5,8 @@
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
         let camera, scene, renderer;
         let geometry, material, mesh, ground, groundgeometry, ground_material;
+        const loader = new THREE.TextureLoader();
+        const textureWater = loader.load("resources/water.png");
         var x = 0.0;
         function init() {
           $("#cameraTouchBox").hide();
@@ -16,8 +18,8 @@
         scene = new THREE.Scene();
         geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
         material = new THREE.MeshNormalMaterial();
-        ground_material = new THREE.MeshBasicMaterial({color: 0x0022dd,side: THREE.DoubleSide});
-        groundgeometry = new THREE.PlaneGeometry(1, 1);
+        ground_material = new THREE.MeshBasicMaterial({opacity: 0.5, map: loader.load('https://previews.123rf.com/images/theseamuss/theseamuss1306/theseamuss130600127/20535219-seamless-water-texture-computer-graphic-big-collection.jpg'),side: THREE.DoubleSide});
+        groundgeometry = new THREE.PlaneGeometry(10, 10);
         mesh = new THREE.Mesh( geometry, material );
         ground = new THREE.Mesh(groundgeometry, ground_material);
         ground.position.y=-0.1;
@@ -114,6 +116,10 @@ function handleKeydown(event){
     camera_acceleration.x= -acc_val;
    }if (keysPressed['ArrowDown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
+   }if (keysPressed[' ']) {
+    camera_acceleration.y = acc_val;
+   }if (keysPressed['Shift']) {
+    camera_acceleration.y = -acc_val;
    }
   
    if (keysPressed['z']) {
@@ -148,9 +154,19 @@ document.addEventListener('keyup', (event) => {
     if (keysPressed['ArrowUp']||keysPressed['w']) {
      camera_acceleration.z = -acc_val;
     }
+   }if (event.key ==' ') {
+    camera_acceleration.y = 0;
+    if (keysPressed['Shift']) {
+     camera_acceleration.y = -acc_val;
+    }
+   }if (event.key =='Shift') {
+    camera_acceleration.y = 0;
+    if (keysPressed[' ']) {
+     camera_acceleration.y = acc_val;
+    }
    }
-    
-   delete keysPressed[event.key];
+    console.log(event.key);
+       delete keysPressed[event.key];
    event.preventDefault();
     //  camera_velocity.x = 0;
     //  camera_velocity.z = 0;
