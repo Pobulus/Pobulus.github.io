@@ -4,28 +4,31 @@
       <script type="module">
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
         let camera, scene, renderer;
+        let step;
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         const loader = new THREE.TextureLoader();
-        const textureWater = loader.load("resources/water.png");
+        const textureWater = loader.load("https://pobulus.github.io/WebGl/resources/water.png");
         var x = 0.0;
         function init() {
           $("#cameraTouchBox").hide();
           $("#movementTouchBox").hide();
-        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+          $("#jumpTouchBox").hide();
+        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
         camera.position.z = 0;
         camera.rotation.x = 0;
         camera.rotation.y = 0;
         scene = new THREE.Scene();
         geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
-        material = new THREE.MeshNormalMaterial();
-        ground_material = new THREE.MeshBasicMaterial({opacity: 0.5, map: loader.load('https://previews.123rf.com/images/theseamuss/theseamuss1306/theseamuss130600127/20535219-seamless-water-texture-computer-graphic-big-collection.jpg'),side: THREE.DoubleSide});
+        
+        textureWater.wrapS = THREE.RepeatWrapping;
+        textureWater.wrapT = THREE.RepeatWrapping;
+        ground_material = new THREE.MeshBasicMaterial({opacity: 0.5, map: textureWater,side: THREE.DoubleSide});
         groundgeometry = new THREE.PlaneGeometry(10, 10);
-        mesh = new THREE.Mesh( geometry, material );
+        
         ground = new THREE.Mesh(groundgeometry, ground_material);
         ground.position.y=-0.1;
         ground.rotation.x=-Math.PI/2;
-        scene.add( mesh );
-         mesh.position.z = -0.5
+        makeRandomBoxes(20);
         scene.add( ground );
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
@@ -58,6 +61,19 @@
       document.removeEventListener("touchstart", openFullscreen);
 }
         }
+function makeRandomBoxes(ammount){
+  for (var dubstep = 0; dubstep<ammount; dubstep++){
+    for (step = 0; step<ammount; step++){
+      geometry = new THREE.BoxGeometry( Math.random(),  Math.random(),  Math.random());
+      material = new THREE.MeshNormalMaterial();
+      mesh = new THREE.Mesh( geometry, material );
+      scene.add( mesh );
+      mesh.position.y = 0.5;
+      mesh.position.x = step-ammount/2;
+      mesh.position.z = dubstep-ammount/2;
+    }
+}
+}
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
@@ -85,8 +101,11 @@ function animation( time ) {
   }
   resistanceDeceleration(camera_velocity);
   applyAcceleration(camera_velocity, camera_acceleration);
+
   applyVelocity(camera, camera_velocity);
-  if(debug){console.log(camera_acceleration, camera_velocity);}
+  applyAcceleration(camera_velocity, gravity);
+  if(camera.position.y<0.5) camera.position.y = 0.5;
+  if(debug){console.log(camera_acceleration, camera_velocity);console.log(keysPressed);}
   // camera_acceleration = new THREE.Vector3(0,0,0);
   
 }
@@ -94,7 +113,7 @@ let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 
 document.addEventListener("touchstart", openFullscreen, false);
-document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show(); }, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
 document.getElementById("cameraTouchBox").addEventListener("touchend", handleEndCamera, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMoveCamera, false);
@@ -102,72 +121,76 @@ document.getElementById("movementTouchBox").addEventListener("touchstart", handl
 document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
 var keysPressed = {};
-const acc_val = 0.1;
-
+const acc_val = 0.2;
+const jump_lim = 1;
 document.addEventListener('keydown', handleKeydown);
 function handleKeydown(event){
-   keysPressed[event.key] = true;
+   keysPressed[event.key.toLowerCase()] = true;
    camera.getWorldDirection(camera_global_direction);
-   if (keysPressed['ArrowUp']||keysPressed['w']) {
+   if (keysPressed['arrowup']||keysPressed['w']) {
      camera_acceleration.z = -acc_val;
-   } if (keysPressed['ArrowRight']||keysPressed['d']) {
+   } if (keysPressed['arrowright']||keysPressed['d']) {
     camera_acceleration.x = acc_val;
-   }if (keysPressed['ArrowLeft']||keysPressed['a']) {
+   }if (keysPressed['arrowleft']||keysPressed['a']) {
     camera_acceleration.x= -acc_val;
-   }if (keysPressed['ArrowDown']||keysPressed['s']) {
+   }if (keysPressed['arrowdown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
    }if (keysPressed[' ']) {
-    camera_acceleration.y = acc_val;
-   }if (keysPressed['Shift']) {
+    if(camera.position.y < jump_lim){ camera_acceleration.y = 5*acc_val;delete keysPressed[event.key.toLowerCase()]}else{camera_acceleration.y = 0;}
+   }if (keysPressed['shift']) {
     camera_acceleration.y = -acc_val;
    }
   
    if (keysPressed['z']) {
       toggleDebug();
-    
+      //console.log(keysPressed);
    }
-   event.preventDefault();
+  //  event.preventDefault();
 }
 var debug = false;
 function toggleDebug(){
   debug = !debug;
 }
+var releasedKey="";
 document.addEventListener('keyup', (event) => {
-  if (event.key =='ArrowUp'||event.key == 'w') {
+  console.log(event.key);
+  releasedKey = event.key.toLowerCase();
+  if (releasedKey =='arrowup'||releasedKey == 'w') {
      camera_acceleration.z =  0;
-     if (keysPressed['ArrowDown']||keysPressed['s']) {
+     if (keysPressed['arrowdown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
    }
   
-   } if (event.key =='ArrowRight'||event.key =='d') {
+   } if (releasedKey =='arrowright'||releasedKey =='d') {
     camera_acceleration.x = 0;
-    if (keysPressed['ArrowLeft']||keysPressed['a']) {
+    if (keysPressed['arrowleft']||keysPressed['a']) {
     camera_acceleration.x= -acc_val;
     }
-   }if (event.key =='ArrowLeft'||event.key =='a') {
+   }if (releasedKey =='arrowleft'||releasedKey =='a') {
     camera_acceleration.x= 0;
-    if (keysPressed['ArrowRight']||keysPressed['d']) {
+    if (keysPressed['arrowright']||keysPressed['d']) {
     camera_acceleration.x = acc_val;
    }
-   }if (event.key =='ArrowDown'||event.key =='s') {
+   }if (releasedKey =='arrowdown'||releasedKey =='s') {
     camera_acceleration.z = 0;
-    if (keysPressed['ArrowUp']||keysPressed['w']) {
+    if (keysPressed['arrowup']||keysPressed['w']) {
      camera_acceleration.z = -acc_val;
     }
-   }if (event.key ==' ') {
+   }if (releasedKey ==' ') {
     camera_acceleration.y = 0;
-    if (keysPressed['Shift']) {
+    if (keysPressed['shift']) {
      camera_acceleration.y = -acc_val;
     }
-   }if (event.key =='Shift') {
+   }if (releasedKey=='shift') {
     camera_acceleration.y = 0;
+    console.log("got here!");
     if (keysPressed[' ']) {
      camera_acceleration.y = acc_val;
     }
    }
-    console.log(event.key);
-       delete keysPressed[event.key];
-   event.preventDefault();
+    
+       delete keysPressed[event.key.toLowerCase()];
+  //  event.preventDefault();
     //  camera_velocity.x = 0;
     //  camera_velocity.z = 0;
 
@@ -175,20 +198,34 @@ document.addEventListener('keyup', (event) => {
 
 function applyVelocity(obj, vel){
   var vst = 0.007;
+  var orientation = new THREE.Vector3();
+  obj.getWorldDirection(orientation);
+  
+  
+  orientation.y = 0;
+  var k = (orientation.x*100)/(orientation.z*100);
+
+  var d = 1/Math.sqrt(k**2+1);
+  if (d==NaN){
+    d = 0;
+  }
+  // if(debug)console.log(d, k, orientation.x*1000, orientation.z);
+  // obj.localToWorld(orientation);
   if (Math.abs(vel.x) < vst){
     vel.x = 0;
   }else{
-  obj.translateX(vel.x);}
+    obj.position.x -= vel.x*d*Math.sign(orientation.z);
+  obj.position.z -= -vel.x*d*Math.abs(k)*Math.sign(orientation.x)}
   if (Math.abs(vel.y) < vst){
     vel.y = 0;
   }else{
-  obj.translateY(vel.y);}
+  obj.position.y +=vel.y;}
+
   if (Math.abs(vel.z) < vst){
     vel.z = 0;
   }else{
-  obj.translateZ(vel.z);}
-
-  
+    obj.position.z -= vel.z*d*Math.sign(orientation.z);
+  obj.position.x -= vel.z*d*Math.abs(k)*Math.sign(orientation.x)}
 }
 function applyAcceleration(vel, acc){
   vel.addScaledVector(acc, 0.1);
@@ -346,6 +383,7 @@ var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
 var camera_velocity = new THREE.Vector3(0 ,0, 0);
 var camera_acceleration = new THREE.Vector3(0,0,0);
+var gravity = new THREE.Vector3(0,-1.5,0);
 
 function rotateCamera(hor, vert){
   camera.getWorldDirection(camera_global_direction);
@@ -412,7 +450,22 @@ var canvas = document.querySelector('canvas');
         justify-content: center;
       }      
       
+      #jumpTouchBox{
+        z-index: 100;
+        position: absolute;
+        left:28vw;
+        bottom: 5px;
+        width: 10vw;
+        height: 10vw;
+        opacity: 33%;
+        background-color: black;
+        border-radius: 100vw;
 
+        font-size: 10vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }    
       </style>
     </head>
     <body>
@@ -420,6 +473,7 @@ var canvas = document.querySelector('canvas');
           
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
+      <div id="jumpTouchBox"> 🆙 </div>
     </body>
 
 
