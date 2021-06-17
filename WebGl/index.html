@@ -14,7 +14,7 @@
         new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png")}),  
         new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_bottom.png")}),  
         new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_left.png")}),  
-        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png")})
       ];
           var x = 0.0;
         function init() {
@@ -31,13 +31,22 @@
         textureWater.wrapS = THREE.RepeatWrapping;
         textureWater.wrapT = THREE.RepeatWrapping;
         ground_material = new THREE.MeshBasicMaterial({opacity: 0.5, map: textureWater,side: THREE.DoubleSide});
-        groundgeometry = new THREE.PlaneGeometry(10, 10);
+        groundgeometry = new THREE.PlaneGeometry(40, 40);
         
         ground = new THREE.Mesh(groundgeometry, ground_material);
         ground.position.y=-0.1;
         ground.rotation.x=-Math.PI/2;
         makeRandomBoxes(20);
         scene.add( ground );
+        
+        const texture = loader.load(
+          'https://pobulus.github.io/WebGl/resources/skybox.png',
+          () => {
+            const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
+            rt.fromEquirectangularTexture(renderer, texture);
+            scene.background = rt.texture;
+          });
+      }
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
@@ -72,15 +81,17 @@
 function makeRandomBoxes(ammount){
   for (var dubstep = 0; dubstep<ammount; dubstep++){
     for (step = 0; step<ammount; step++){
-      geometry = new THREE.BoxGeometry( Math.random(),  Math.random(),  Math.random());
-      material = new THREE.MeshBasicMaterial();
-      material.map = texture_vending_machine;
-      material.needsUpdate = true;
-      mesh = new THREE.Mesh( geometry, material );
+      var size = 0.5;
+      // Math.random()/2;
+      geometry = new THREE.BoxGeometry( size,  size*2,  size);
+      
+     
+      mesh = new THREE.Mesh( geometry, texture_vending_machine);
       scene.add( mesh );
       mesh.position.y = 0.5;
-      mesh.position.x = step-ammount/2;
-      mesh.position.z = dubstep-ammount/2;
+      mesh.position.x = 2*(step-ammount/2);
+      mesh.position.z = 2*(dubstep-ammount/2);
+      mesh.rotation.y = Math.random()*2*Math.PI;
     }
 }
 }
