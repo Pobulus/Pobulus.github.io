@@ -8,6 +8,7 @@
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         const loader = new THREE.TextureLoader();
         const textureWater = loader.load("https://pobulus.github.io/WebGl/resources/water.png");
+        const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
         var x = 0.0;
         function init() {
           $("#cameraTouchBox").hide();
@@ -66,6 +67,7 @@ function makeRandomBoxes(ammount){
     for (step = 0; step<ammount; step++){
       geometry = new THREE.BoxGeometry( Math.random(),  Math.random(),  Math.random());
       material = new THREE.MeshNormalMaterial();
+      material.map = texture_vending_machine_front;
       mesh = new THREE.Mesh( geometry, material );
       scene.add( mesh );
       mesh.position.y = 0.5;
