@@ -8,8 +8,15 @@
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         const loader = new THREE.TextureLoader();
         const textureWater = loader.load("https://pobulus.github.io/WebGl/resources/water.png");
-        const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
-        var x = 0.0;
+        const texture_vending_machine = [
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_bottom.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_left.png")}),  
+        new THREE.MeshBasicMaterial({map: loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png")}),  
+      ];
+          var x = 0.0;
         function init() {
           $("#cameraTouchBox").hide();
           $("#movementTouchBox").hide();
@@ -66,8 +73,9 @@ function makeRandomBoxes(ammount){
   for (var dubstep = 0; dubstep<ammount; dubstep++){
     for (step = 0; step<ammount; step++){
       geometry = new THREE.BoxGeometry( Math.random(),  Math.random(),  Math.random());
-      material = new THREE.MeshNormalMaterial();
-      material.map = texture_vending_machine_front;
+      material = new THREE.MeshBasicMaterial();
+      material.map = texture_vending_machine;
+      material.needsUpdate = true;
       mesh = new THREE.Mesh( geometry, material );
       scene.add( mesh );
       mesh.position.y = 0.5;
