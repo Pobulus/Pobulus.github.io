@@ -73,13 +73,12 @@
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
-        document.body.appendChild( renderer.domElement );
+        document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
       }
       var elem = document.documentElement;
         let fullscr = false;
-        function openFullscreen() {
+      function openFullscreen() {
           fullscr = true;
-          
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -87,18 +86,20 @@
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
-        sleep(1000);
+        // sleep(500);
         if (
   document.fullscreenElement || /* Standard syntax */
   document.webkitFullscreenElement || /* Safari and Opera syntax */
   document.msFullscreenElement /* IE11 syntax */
 ) {
-      renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-      renderer.setSize( window.innerWidth, window.innerHeight );
-      document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
+      // renderer = new THREE.WebGLRenderer( { antialias: true } );
+      //   renderer.setSize( window.innerWidth, window.innerHeight );
+      // renderer.setSize( window.innerWidth, window.innerHeight );
+      // document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
       // console.log("fullscreen");
       document.removeEventListener("touchstart", openFullscreen);
+      console.log("Resizing...")
+      init();
 }
         }
 var boxes = [];
@@ -572,7 +573,7 @@ var canvas = document.querySelector('canvas');
       </style>
     </head>
     <body>
-        
+      <canvas></canvas>
       <div id="clock">00:00</div>
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
