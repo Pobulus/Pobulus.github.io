@@ -5,6 +5,7 @@
         import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
         let camera, scene, renderer;
         let step;
+        let jumped = false;
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         let sun, sun_geometry, sun_material;
         const loader = new THREE.TextureLoader();
@@ -42,7 +43,7 @@
         camera.rotation.y = 0;
         scene = new THREE.Scene();
         geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
-        
+        texture_tiles.magFilter = THREE.NearestFilter;
         texture_tiles.wrapS = THREE.RepeatWrapping;
         texture_tiles.wrapT = THREE.RepeatWrapping;
         texture_tiles.repeat.set( 100,100 );
@@ -147,9 +148,10 @@ function animation( time ) {
   sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
   sun.position.z = camera.position.z+10;
   sun.position.y = camera.position.y+40*Math.cos(time/dayLength);
-  scene.background.r = 0.9*Math.abs(Math.sin(time/dayLength))-0.3;
+  scene.background.r = 0.9*Math.sin(time/dayLength)**6-0.4;
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
+  $("#clock").text(String(Math.round(11.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*11.5))+":00");
   for (const objId in boxes){
   // scene.getObjectById(boxes[objId]).rotation.y += 0.01;
   // scene.getObjectById(boxes[objId]).lookAt(camera.position.x, 0.5, camera.position.z);
@@ -160,13 +162,15 @@ function animation( time ) {
   if (cameraTouchMove == true){
     rotateCamera(movementX/-1000, movementY/-1000);
   }
+  // applyAcceleration(camera_velocity, gravity);
   resistanceDeceleration(camera_velocity);
+  if(camera.position.y>jump_lim&&debug != true){camera_acceleration.y = 0;}
   applyAcceleration(camera_velocity, camera_acceleration);
 
-  applyVelocity(camera, camera_velocity);
-  applyAcceleration(camera_velocity, gravity);
-  if(camera.position.y<0.5) camera.position.y = 0.5;
-  if(debug){console.log(camera_acceleration, camera_velocity);console.log(keysPressed);}
+  applyVelocity(camera, camera_velocity, debug);
+  
+  if(camera.position.y<0.5&&!debug){camera.position.y = 0.5; jumped = false;};
+  // if(debug){console.log(camera_acceleration, camera_velocity);console.log(keysPressed);}
   // camera_acceleration = new THREE.Vector3(0,0,0);
   
 }
@@ -176,14 +180,18 @@ document.addEventListener("mousemove", updateDisplay, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
+document.getElementById("jumpTouchBox").addEventListener("touchstart", handleStartJump, false);
+document.getElementById("jumpTouchBox").addEventListener("touchend", handleEndJump, false);
 document.getElementById("cameraTouchBox").addEventListener("touchend", handleEndCamera, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMoveCamera, false);
 document.getElementById("movementTouchBox").addEventListener("touchstart", handleStartMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
 var keysPressed = {};
+
 const acc_val = 0.2;
-const jump_lim = 1;
+const jump_lim = 2.5;
+
 document.addEventListener('keydown', handleKeydown);
 function handleKeydown(event){
    keysPressed[event.key.toLowerCase()] = true;
@@ -197,7 +205,8 @@ function handleKeydown(event){
    }if (keysPressed['arrowdown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
    }if (keysPressed[' ']) {
-    if(camera.position.y = 0.5){ camera_acceleration.y = 5*acc_val;}else{camera_acceleration.y = 0;}
+    if(jumped == false||debug){ camera_acceleration.y = 7*acc_val; jumped = true;}
+    if(debug)camera_acceleration.y = acc_val;
    }if (keysPressed['shift']) {
     camera_acceleration.y = -acc_val;
    }
@@ -211,6 +220,7 @@ function handleKeydown(event){
 var debug = false;
 function toggleDebug(){
   debug = !debug;
+  if(debug)acc_val = 1;else acc_val = 0.2;
 }
 var releasedKey="";
 document.addEventListener('keyup', (event) => {
@@ -244,7 +254,6 @@ document.addEventListener('keyup', (event) => {
     }
    }if (releasedKey=='shift') {
     camera_acceleration.y = 0;
-    console.log("got here!");
     if (keysPressed[' ']) {
      camera_acceleration.y = acc_val;
     }
@@ -257,7 +266,7 @@ document.addEventListener('keyup', (event) => {
 
 });
 
-function applyVelocity(obj, vel){
+function applyVelocity(obj, vel, flight){
   var vst = 0.007;
   var orientation = new THREE.Vector3();
   obj.getWorldDirection(orientation);
@@ -275,26 +284,33 @@ function applyVelocity(obj, vel){
   if (Math.abs(vel.x) < vst){
     vel.x = 0;
   }else{
-    obj.position.x -= vel.x*d*Math.sign(orientation.z);
-  obj.position.z -= -vel.x*d*Math.abs(k)*Math.sign(orientation.x)}
+    if(flight) obj.translateX(vel.x); else {
+  obj.position.x -= vel.x*d*Math.sign(orientation.z);
+  obj.position.z -= -vel.x*d*Math.abs(k)*Math.sign(orientation.x)}}
   if (Math.abs(vel.y) < vst){
     vel.y = 0;
-  }else{
-  obj.position.y +=vel.y;}
+  }else{ if (flight) obj.position.y +=vel.y;else{
+  obj.position.y +=vel.y;}}
 
   if (Math.abs(vel.z) < vst){
     vel.z = 0;
   }else{
+    if (flight){obj.translateZ(vel.z)}else{
     obj.position.z -= vel.z*d*Math.sign(orientation.z);
-  obj.position.x -= vel.z*d*Math.abs(k)*Math.sign(orientation.x)}
+  obj.position.x -= vel.z*d*Math.abs(k)*Math.sign(orientation.x)}}
 }
+
 function applyAcceleration(vel, acc){
   vel.addScaledVector(acc, 0.1);
 }
+
 function resistanceDeceleration(vel){
   const rf = 50;
-  applyAcceleration(vel, new THREE.Vector3(-rf*Math.sign(vel.x)*(vel.x**2), -rf*Math.sign(vel.y)*(vel.y**2), -rf*Math.sign(vel.z)*(vel.z**2)));
+  // console.log(-rf*(Math.sign(vel.y)*(vel.y**2)-gravity.y));
+  if(debug)var g=0;else var g = gravity.y;
+  applyAcceleration(vel, new THREE.Vector3(-rf*Math.sign(vel.x)*(vel.x**2), -rf*(Math.sign(vel.y)*(vel.y**2)-g), -rf*Math.sign(vel.z)*(vel.z**2)));
 }
+
 function updateDisplay(e){
   var movementX = e.movementX || e.mozMovementX || 0;
   var movementY = e.movementY || e.mozMovementY ||  0;
@@ -346,11 +362,22 @@ function handleStartCamera(evt) {
     initialTouchYcamera= touches[i].clientY;   
   }
 }
+function handleStartJump(evt) {
+  evt.preventDefault();
+  if(jumped == false||debug){ camera_acceleration.y = 7*acc_val; jumped = true;}
+  if(debug)camera_acceleration.y = acc_val;
+  
+}
+function handleEndJump(evt) {
+  evt.preventDefault();
+  if(debug)camera_acceleration.y = 0;
+  
+}
 function handleMoveCamera(evt) {
   // console.log("wykryto dotyk");
   // console.log(initialTouchXcamera,  initialTouchYcamera);
   evt.preventDefault();
- 
+  
   var touches = evt.changedTouches;
 
   for (var i = 0; i < touches.length; i++) {
@@ -444,7 +471,7 @@ var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
 var camera_velocity = new THREE.Vector3(0 ,0, 0);
 var camera_acceleration = new THREE.Vector3(0,0,0);
-var gravity = new THREE.Vector3(0,-1.5,0);
+var gravity = new THREE.Vector3(0,-0.02,0);
 
 function rotateCamera(hor, vert){
   camera.getWorldDirection(camera_global_direction);
@@ -509,12 +536,27 @@ var canvas = document.querySelector('canvas');
         display: flex;
         align-items: center;
         justify-content: center;
-      }      
-      
+      }
+      @font-face{
+        font-family: "dogicabold";
+        src: url("resources/dogicabold.ttf")
+      }
+      #clock{
+        z-index: 100;
+        position: absolute;
+        font-size: 5vw;
+        color: white;
+        background-color: black;
+        padding: 1vw;
+        opacity: 75%;
+        border-radius: 10vw;
+        left: 0px;
+        font-family: "dogicabold", monospace;
+      }
       #jumpTouchBox{
         z-index: 100;
         position: absolute;
-        left:28vw;
+        right:28vw;
         bottom: 5px;
         width: 10vw;
         height: 10vw;
@@ -531,7 +573,7 @@ var canvas = document.querySelector('canvas');
     </head>
     <body>
         
-          
+      <div id="clock">00:00</div>
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
       <div id="jumpTouchBox"> 🆙 </div>
