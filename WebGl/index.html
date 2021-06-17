@@ -96,7 +96,7 @@ function openFullscreen() {
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
-        // sleep(500);
+        sleep(500);//give it time to resize
         if (
   document.fullscreenElement || /* Standard syntax */
   document.webkitFullscreenElement || /* Safari and Opera syntax */
