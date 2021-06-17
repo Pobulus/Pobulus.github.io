@@ -25,12 +25,12 @@
         texture_vending_machine_left.magFilter = THREE.NearestFilter;
         texture_vending_machine_right.magFilter = THREE.NearestFilter;
         const texture_vending_machine = [
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_front}),  
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_back}),  
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_top}),  
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_bottom}),  
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_left}),  
-        new THREE.MeshBasicMaterial({map: texture_vending_machine_right})
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_front, metalness: 1}),  
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_back, metalness: 1}),  
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_top, metalness: 1}),  
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_bottom, metalness: 1}),  
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_left, metalness: 1}),  
+        new THREE.MeshStandardMaterial({map: texture_vending_machine_right, metalness: 1})
       ];
       const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources/table_top.png");
         const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
@@ -38,15 +38,16 @@
         
         texture_table_top.magFilter = THREE.NearestFilter;
         texture_table_side.magFilter = THREE.NearestFilter;
-        
-       
+        const material_table_top = new THREE.MeshStandardMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5,
+    side: THREE.DoubleSide, });
+        const material_table_side = new THREE.MeshStandardMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5,
+    side: THREE.DoubleSide});
+        const material_empty = new THREE.MeshStandardMaterial({map: texture_empty, transparent: true, alphaTest: 0.5,
+    side: THREE.DoubleSide});
         const texture_table = [
-        new THREE.MeshBasicMaterial({map: texture_table_side}),  
-        new THREE.MeshBasicMaterial({map: texture_table_side}),  
-        new THREE.MeshBasicMaterial({map: texture_table_top}),  
-        new THREE.MeshBasicMaterial({map: texture_empty}),  
-        new THREE.MeshBasicMaterial({map: texture_table_side}),  
-        new THREE.MeshBasicMaterial({map: texture_table_side})
+        material_table_side, material_table_side,
+        material_table_top, material_empty,
+        material_table_side, material_table_side
       ];
       // texture_vending_machine.magFilter = THREE.NearestFilter;
       console.log("dupa",texture_vending_machine.magFilter, THREE.NearestFilter);
@@ -65,20 +66,25 @@
         texture_tiles.wrapS = THREE.RepeatWrapping;
         texture_tiles.wrapT = THREE.RepeatWrapping;
         texture_tiles.repeat.set( 100,100 );
-        ground_material = new THREE.MeshBasicMaterial({map: texture_tiles,side: THREE.DoubleSide});
+        ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
         groundgeometry = new THREE.PlaneGeometry(100, 100);
         
         ground = new THREE.Mesh(groundgeometry, ground_material);
         ground.position.y=-0.1;
         ground.rotation.x=-Math.PI/2;
         makeRandomBoxes(2,2);
+        makeATable(0.4);
+        ground.receiveShadow = true;
+        ground.castShadow = true;
         scene.add( ground );
+        
         sun_geometry = new THREE.CircleGeometry(2, 64);
         sun_material = new THREE.MeshBasicMaterial({color: 0xffff00});
         sun = new THREE.Mesh(sun_geometry, sun_material);
         scene.background = new THREE.Color(0.3, 0.7, 0.9)
         
-       
+        const amb_light = new THREE.AmbientLight( 0x404040, 0.5 ); // soft white light
+        scene.add( amb_light ); 
         scene.add(sun);
         // const texture = loader.load(
         //   'https://pobulus.github.io/WebGl/resources/skybox1.png',
@@ -87,7 +93,7 @@
         //     rt.fromEquirectangularTexture(renderer, texture);
         //     scene.background = rt.texture;
         //   });
-      
+        
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
@@ -132,11 +138,29 @@ function openFullscreen() {
   }
 }
 var boxes = [];
+var light;
+function addLight(x, y, z) {
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    light = new THREE.PointLight(color, intensity);
+    light.position.set(x, y, z);
+    scene.add(light);
+    light.shadow.mapSize.width = 512; // default
+light.shadow.mapSize.height = 512; // default
+light.shadow.camera.near = 0.5; // default
+light.shadow.camera.far = 500; // default
+  }
+ 
 function makeATable(size){
   geometry = new THREE.BoxGeometry( size,  size,  size);
   mesh = new THREE.Mesh( geometry, texture_table);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
       scene.add( mesh );
-      mesh.position.y = 0.5;
+      mesh.position.y = size/2;
+      mesh.position.x = 5;
+      addLight(-1,  2,  4);
+
 }
 function makeRandomBoxes(rows, cols){
   for (var dubstep = 0; dubstep<rows; dubstep++){
@@ -178,12 +202,14 @@ function sleep(milliseconds) {
             document.msExitFullscreen();
         }
 }
+
 var dayLength = 24000;
 function animation( time ) {
 	renderer.render( scene, camera );
   sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
   sun.position.z = camera.position.z+10;
   sun.position.y = camera.position.y+40*Math.cos(time/dayLength);
+  light.position.set(sun.position.x, sun.position.y, sun.position.z);
   scene.background.r = 0.9*Math.sin(time/dayLength)**6-0.4;
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
