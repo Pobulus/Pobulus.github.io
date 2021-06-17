@@ -9,6 +9,8 @@
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         let sun, sun_geometry, sun_material;
         const loader = new THREE.TextureLoader();
+        const texture_empty = loader.load("https://pobulus.github.io/WebGl/resources/empty.png");
+        texture_empty.magFilter = THREE.NearestFilter;
         const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/tiles.png");
         const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
         const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
@@ -29,6 +31,22 @@
         new THREE.MeshBasicMaterial({map: texture_vending_machine_bottom}),  
         new THREE.MeshBasicMaterial({map: texture_vending_machine_left}),  
         new THREE.MeshBasicMaterial({map: texture_vending_machine_right})
+      ];
+      const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources/table_top.png");
+        const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
+        
+        
+        texture_table_top.magFilter = THREE.NearestFilter;
+        texture_table_side.magFilter = THREE.NearestFilter;
+        
+       
+        const texture_table = [
+        new THREE.MeshBasicMaterial({map: texture_table_side}),  
+        new THREE.MeshBasicMaterial({map: texture_table_side}),  
+        new THREE.MeshBasicMaterial({map: texture_table_top}),  
+        new THREE.MeshBasicMaterial({map: texture_empty}),  
+        new THREE.MeshBasicMaterial({map: texture_table_side}),  
+        new THREE.MeshBasicMaterial({map: texture_table_side})
       ];
       // texture_vending_machine.magFilter = THREE.NearestFilter;
       console.log("dupa",texture_vending_machine.magFilter, THREE.NearestFilter);
@@ -114,6 +132,12 @@ function openFullscreen() {
   }
 }
 var boxes = [];
+function makeATable(size){
+  geometry = new THREE.BoxGeometry( size,  size,  size);
+  mesh = new THREE.Mesh( geometry, texture_table);
+      scene.add( mesh );
+      mesh.position.y = 0.5;
+}
 function makeRandomBoxes(rows, cols){
   for (var dubstep = 0; dubstep<rows; dubstep++){
     for (step = 0; step<cols; step++){
