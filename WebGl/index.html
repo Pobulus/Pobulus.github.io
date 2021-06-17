@@ -8,7 +8,7 @@
         let geometry, material, mesh, ground, groundgeometry, ground_material;
         let sun, sun_geometry, sun_material;
         const loader = new THREE.TextureLoader();
-        const textureWater = loader.load("https://pobulus.github.io/WebGl/resources/water.png");
+        const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/tiles.png");
         const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
         const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
         const texture_vending_machine_top = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png");
@@ -43,9 +43,10 @@
         scene = new THREE.Scene();
         geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
         
-        textureWater.wrapS = THREE.RepeatWrapping;
-        textureWater.wrapT = THREE.RepeatWrapping;
-        ground_material = new THREE.MeshBasicMaterial({map: textureWater,side: THREE.DoubleSide});
+        texture_tiles.wrapS = THREE.RepeatWrapping;
+        texture_tiles.wrapT = THREE.RepeatWrapping;
+        texture_tiles.repeat.set( 100,100 );
+        ground_material = new THREE.MeshBasicMaterial({map: texture_tiles,side: THREE.DoubleSide});
         groundgeometry = new THREE.PlaneGeometry(100, 100);
         
         ground = new THREE.Mesh(groundgeometry, ground_material);
