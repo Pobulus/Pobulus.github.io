@@ -74,10 +74,20 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
         document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
+        var canvas = document.querySelector('canvas');
+        canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
+        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
+        canvas.onclick = function() {
+          if(touchscreen==false){
+          canvas.requestPointerLock();
+        }
       }
-      var elem = document.documentElement;
-        let fullscr = false;
-      function openFullscreen() {
+}
+var elem = document.documentElement;
+let fullscr = false;
+
+function openFullscreen() {
           fullscr = true;
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
@@ -98,10 +108,11 @@
       // document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
       // console.log("fullscreen");
       document.removeEventListener("touchstart", openFullscreen);
+      document.removeEventListener("dblclick", openFullscreen);
       console.log("Resizing...")
       init();
+  }
 }
-        }
 var boxes = [];
 function makeRandomBoxes(rows, cols){
   for (var dubstep = 0; dubstep<rows; dubstep++){
@@ -177,7 +188,8 @@ function animation( time ) {
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-
+// ondblclick = function(e){openFullscreen();}
+document.addEventListener("dblclick", openFullscreen, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
@@ -466,7 +478,7 @@ function handleEndMovement(evt) {
   }
 }
 
-ondblclick = function(e){openFullscreen();}
+
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
@@ -484,15 +496,7 @@ function rotateCamera(hor, vert){
   }
 }
 
-var canvas = document.querySelector('canvas');
-        canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
-        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
-        canvas.onclick = function() {
-          if(touchscreen==false){
-          canvas.requestPointerLock();
-        }
-      }
       </script>
       <style>
         canvas {
