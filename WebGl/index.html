@@ -40,13 +40,13 @@
         scene.add( ground );
         
         const texture = loader.load(
-          'https://pobulus.github.io/WebGl/resources/skybox.png',
+          'https://pobulus.github.io/WebGl/resources/skybox1.png',
           () => {
             const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
             rt.fromEquirectangularTexture(renderer, texture);
             scene.background = rt.texture;
           });
-      }
+      
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setAnimationLoop( animation );
