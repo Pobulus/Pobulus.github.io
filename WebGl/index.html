@@ -221,7 +221,7 @@ function animation( time ) {
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   
-  console.log(scene.background);
+  // console.log(scene.background);
   npc.lookAt(camera.position.x, npc.position.y, camera.position.z);
   scene.background.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   scene.background.g = 0.7*Math.cos(time/dayLength);
