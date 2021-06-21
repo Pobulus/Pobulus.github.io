@@ -1,112 +1,117 @@
 <html>
     <head>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script type="module">
-        import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
-        let camera, scene, renderer;
-        let step;
-        let jumped = false;
-        let geometry, material, mesh, ground, groundgeometry, ground_material;
-        let sun, sun_geometry, sun_material;
-        const loader = new THREE.TextureLoader();
-        const texture_empty = loader.load("https://pobulus.github.io/WebGl/resources/empty.png");
-        texture_empty.magFilter = THREE.NearestFilter;
-        const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/tiles.png");
-        const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
-        const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
-        const texture_vending_machine_top = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png");
-        const texture_vending_machine_bottom = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_bottom.png");
-        const texture_vending_machine_left = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_left.png");
-        const texture_vending_machine_right = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png");
-        texture_vending_machine_front.magFilter = THREE.NearestFilter;
-        texture_vending_machine_back.magFilter = THREE.NearestFilter;
-        texture_vending_machine_top.magFilter = THREE.NearestFilter;
-        texture_vending_machine_bottom.magFilter = THREE.NearestFilter;
-        texture_vending_machine_left.magFilter = THREE.NearestFilter;
-        texture_vending_machine_right.magFilter = THREE.NearestFilter;
-        const texture_vending_machine = [
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_front, metalness: 1}),  
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_back, metalness: 1}),  
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_top, metalness: 1}),  
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_bottom, metalness: 1}),  
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_left, metalness: 1}),  
-        new THREE.MeshStandardMaterial({map: texture_vending_machine_right, metalness: 1})
-      ];
-      const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources/table_top.png");
-        const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
-        
-        
-        texture_table_top.magFilter = THREE.NearestFilter;
-        texture_table_side.magFilter = THREE.NearestFilter;
-        const material_table_top = new THREE.MeshStandardMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5,
-    side: THREE.DoubleSide, });
-        const material_table_side = new THREE.MeshStandardMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5,
-    side: THREE.DoubleSide});
-        const material_empty = new THREE.MeshStandardMaterial({map: texture_empty, transparent: true, alphaTest: 0.5,
-    side: THREE.DoubleSide});
-        const texture_table = [
-        material_table_side, material_table_side,
-        material_table_top, material_empty,
-        material_table_side, material_table_side
-      ];
-      // texture_vending_machine.magFilter = THREE.NearestFilter;
-      console.log("dupa",texture_vending_machine.magFilter, THREE.NearestFilter);
-          var x = 0.0;
-        function init() {
-          $("#cameraTouchBox").hide();
-          $("#movementTouchBox").hide();
-          $("#jumpTouchBox").hide();
-        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
-        camera.position.z = 0;
-        camera.rotation.x = 0;
-        camera.rotation.y = 0;
-        scene = new THREE.Scene();
-        geometry = new THREE.BoxGeometry( 0.1, 0.2, 0.2);
-        texture_tiles.magFilter = THREE.NearestFilter;
-        texture_tiles.wrapS = THREE.RepeatWrapping;
-        texture_tiles.wrapT = THREE.RepeatWrapping;
-        texture_tiles.repeat.set( 100,100 );
-        ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
-        groundgeometry = new THREE.PlaneGeometry(100, 100);
-        
-        ground = new THREE.Mesh(groundgeometry, ground_material);
-        ground.position.y=-0.1;
-        ground.rotation.x=-Math.PI/2;
-        makeRandomBoxes(2,2);
-        makeATable(0.4);
-        ground.receiveShadow = true;
-        ground.castShadow = true;
-        scene.add( ground );
-        
-        sun_geometry = new THREE.CircleGeometry(2, 64);
-        sun_material = new THREE.MeshBasicMaterial({color: 0xffff00});
-        sun = new THREE.Mesh(sun_geometry, sun_material);
-        scene.background = new THREE.Color(0.3, 0.7, 0.9)
-        
-        const amb_light = new THREE.AmbientLight( 0x404040, 0.5 ); // soft white light
-        scene.add( amb_light ); 
-        scene.add(sun);
-        // const texture = loader.load(
-        //   'https://pobulus.github.io/WebGl/resources/skybox1.png',
-        //   () => {
-        //     const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
-        //     rt.fromEquirectangularTexture(renderer, texture);
-        //     scene.background = rt.texture;
-        //   });
-        
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        renderer.setAnimationLoop( animation );
-        document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
-        var canvas = document.querySelector('canvas');
-        canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
-        document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
-        canvas.onclick = function() {
-          if(touchscreen==false){
-          canvas.requestPointerLock();
-        }
-      }
+      <script type="module">
+      
+import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
+let camera, scene, renderer;
+let step;
+let jumped = false;
+let geometry, material, mesh, ground, groundgeometry, ground_material;
+let sun, sun_geometry, sun_material, amb_light;
+var x = 0.0;
+//Textures
+const loader = new THREE.TextureLoader();
+const texture_empty = loader.load("https://pobulus.github.io/WebGl/resources/empty.png");
+  texture_empty.magFilter = THREE.NearestFilter;
+const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/tiles.png");
+  texture_tiles.magFilter = THREE.NearestFilter;
+  texture_tiles.wrapS = THREE.RepeatWrapping;
+  texture_tiles.wrapT = THREE.RepeatWrapping;
+  texture_tiles.repeat.set( 100,100 );
+const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
+const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
+const texture_vending_machine_top = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png");
+const texture_vending_machine_bottom = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_bottom.png");
+const texture_vending_machine_left = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_left.png");
+const texture_vending_machine_right = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png");
+  texture_vending_machine_front.magFilter = THREE.NearestFilter;
+  texture_vending_machine_back.magFilter = THREE.NearestFilter;
+  texture_vending_machine_top.magFilter = THREE.NearestFilter;
+  texture_vending_machine_bottom.magFilter = THREE.NearestFilter;
+  texture_vending_machine_left.magFilter = THREE.NearestFilter;
+  texture_vending_machine_right.magFilter = THREE.NearestFilter;
+
+const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources/table_top.png");
+const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
+  texture_table_top.magFilter = THREE.NearestFilter;
+  texture_table_side.magFilter = THREE.NearestFilter;
+
+//Materials
+const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
+const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+
+//Box Textures
+const texture_table = [
+  material_table_side, material_table_side,
+  material_table_top, material_empty,
+  material_table_side, material_table_side
+];
+const texture_vending_machine = [
+  new THREE.MeshToonMaterial({map: texture_vending_machine_front, }),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_back,}),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_top,}),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_bottom, }),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_left, }),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_right, })
+];
+
+
+
+function init() {
+  //Hide touch controls
+  $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();
+  
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
+  camera.position.z = 0;
+  camera.rotation.x = 0;
+  camera.rotation.y = 0;
+  
+  scene = new THREE.Scene();
+  
+  ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
+  groundgeometry = new THREE.PlaneGeometry(100, 100);
+  
+  ground = new THREE.Mesh(groundgeometry, ground_material);
+  ground.position.y=-0.1;
+  ground.rotation.x=-Math.PI/2;
+  ground.receiveShadow = true;
+  ground.castShadow = true;
+  scene.add( ground );
+
+  sun_geometry = new THREE.CircleGeometry(2, 64);
+  sun_material = new THREE.MeshBasicMaterial({color: 0xffff00});
+  sun = new THREE.Mesh(sun_geometry, sun_material);
+  scene.background = new THREE.Color(0.3, 0.7, 0.9)
+  amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
+  const general_light = new THREE.AmbientLight( 0xffffff, 0.9 ); // soft white light
+  scene.add( amb_light ); 
+  scene.add(general_light);
+  scene.add(sun);
+
+  makeRandomBoxes(2,2);
+  makeATable(0.3);
+
+  
+  
+  
+
+  
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setAnimationLoop( animation );
+  document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
+  var canvas = document.querySelector('canvas');
+  canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
+  document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+
+  canvas.onclick = function() {
+    if(touchscreen==false){
+    canvas.requestPointerLock();
+  }
+}
 }
 var elem = document.documentElement;
 let fullscr = false;
@@ -159,7 +164,7 @@ function makeATable(size){
       scene.add( mesh );
       mesh.position.y = size/2;
       mesh.position.x = 5;
-      addLight(-1,  2,  4);
+      // addLight(0,  0,  0);
 
 }
 function makeRandomBoxes(rows, cols){
@@ -203,23 +208,25 @@ function sleep(milliseconds) {
         }
 }
 
-var dayLength = 24000;
+var dayLength = 5000;
 function animation( time ) {
 	renderer.render( scene, camera );
-  sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
-  sun.position.z = camera.position.z+10;
-  sun.position.y = camera.position.y+40*Math.cos(time/dayLength);
-  light.position.set(sun.position.x, sun.position.y, sun.position.z);
-  scene.background.r = 0.9*Math.sin(time/dayLength)**6-0.4;
+  sun.position.x = camera.position.x+80*Math.sin(time/dayLength);
+  sun.position.z = camera.position.z+20;
+  sun.position.y = camera.position.y+80*Math.cos(time/dayLength);
+  // light.position.set(sun.position.x, sun.position.y, sun.position.z);
+  amb_light.color.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
+  console.log(amb_light.color);
+  scene.background.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
   $("#clock").text(String(Math.round(11.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*11.5))+":00");
-  for (const objId in boxes){
+  // for (const objId in boxes){
   // scene.getObjectById(boxes[objId]).rotation.y += 0.01;
   // scene.getObjectById(boxes[objId]).lookAt(camera.position.x, 0.5, camera.position.z);
   // scene.getObjectById(boxes[objId]).rotateY(Math.PI/2+Math.PI);
 
-  }
+  // }
   sun.lookAt(camera.position);
   if (cameraTouchMove == true){
     rotateCamera(movementX/-1000, movementY/-1000);
@@ -232,8 +239,7 @@ function animation( time ) {
   applyVelocity(camera, camera_velocity, debug);
   
   if(camera.position.y<0.5&&!debug){camera.position.y = 0.5; jumped = false;};
-  // if(debug){console.log(camera_acceleration, camera_velocity);console.log(keysPressed);}
-  // camera_acceleration = new THREE.Vector3(0,0,0);
+
   
 }
 let touchscreen = false;
