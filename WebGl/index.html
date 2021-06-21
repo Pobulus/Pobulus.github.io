@@ -9,7 +9,7 @@ let camera, scene, renderer;
 let step;
 let jumped = false;
 let geometry, material, mesh, ground, groundgeometry, ground_material;
-let sun, sun_geometry, sun_material, amb_light;
+let sun, sun_geometry, sun_material, amb_light, general_light;
 let npc
 var x = 0.0;
 //Textures
@@ -88,7 +88,7 @@ function init() {
   sun = new THREE.Mesh(sun_geometry, sun_material);
   scene.background = new THREE.Color(0.3, 0.7, 0.9)
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
-  const general_light = new THREE.AmbientLight( 0xffffff, 0.9 ); // soft white light
+  general_light = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
   scene.add( amb_light ); 
   scene.add(general_light);
   scene.add(sun);
@@ -220,11 +220,13 @@ function animation( time ) {
   sun.position.y = camera.position.y+80*Math.cos(time/dayLength);
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
-  console.log(amb_light.color);
+  
+  console.log(scene.background);
   npc.lookAt(camera.position.x, npc.position.y, camera.position.z);
   scene.background.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
+  general_light.intensity = Math.max(scene.background.b, 0.3);
   $("#clock").text(String(Math.round(11.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*11.5))+":00");
   // for (const objId in boxes){
   // scene.getObjectById(boxes[objId]).rotation.y += 0.01;
