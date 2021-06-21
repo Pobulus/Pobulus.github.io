@@ -10,6 +10,7 @@ let step;
 let jumped = false;
 let geometry, material, mesh, ground, groundgeometry, ground_material;
 let sun, sun_geometry, sun_material, amb_light;
+let npc
 var x = 0.0;
 //Textures
 const loader = new THREE.TextureLoader();
@@ -37,12 +38,13 @@ const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources
 const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
   texture_table_top.magFilter = THREE.NearestFilter;
   texture_table_side.magFilter = THREE.NearestFilter;
-
+const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_1_front.png");
+  texture_npc_1_front.magFilter = THREE.NearestFilter;
 //Materials
 const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
 const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
-
+const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 //Box Textures
 const texture_table = [
   material_table_side, material_table_side,
@@ -91,10 +93,12 @@ function init() {
   scene.add(general_light);
   scene.add(sun);
 
-  makeRandomBoxes(2,2);
+  // makeRandomBoxes(2,2);
   makeATable(0.3);
-
-  
+  let npc_geometry = new THREE.PlaneGeometry(0.5, 0.9);
+  npc = new THREE.Mesh(npc_geometry, material_npc_1_front);
+  npc.position.y = 0.4;
+  scene.add(npc);
   
   
 
@@ -217,6 +221,7 @@ function animation( time ) {
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   console.log(amb_light.color);
+  npc.lookAt(camera.position.x, npc.position.y, camera.position.z);
   scene.background.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
