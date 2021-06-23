@@ -43,18 +43,25 @@ const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources
 const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
   texture_table_top.magFilter = THREE.NearestFilter;
   texture_table_side.magFilter = THREE.NearestFilter;
-
+const texture_classroom_1_top = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_top.png");
+const texture_classroom_1_front = loader.load("https://pobulus.github.io/WebGl/resources/crassroom_1_front.png");
+  texture_classroom_1_top.magFilter = THREE.NearestFilter;
+  texture_classroom_1_front.magFilter = THREE.NearestFilter;
 const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_1_front.png");
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   const texture_npc_2_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_2_front.png");
   texture_npc_2_front.magFilter = THREE.NearestFilter;
 
 //Materials
-const material_player = new THREE.MeshBasicMaterial({wireframe:true});
+const material_player = new THREE.MeshBasicMaterial({wireframe:false});
 // var hitboxGeometry = new THREE.CylinderGeometry(0.5, 0.15, 1.5, 16,16);
 var hitboxGeometry = new THREE.SphereGeometry(0.65, 16, 20);
 const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
 const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+
+const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classroom_1_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
+const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_2_front = new THREE.MeshToonMaterial({map: texture_npc_2_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
@@ -66,11 +73,17 @@ const npc_materials = [
   material_npc_2_front
 ];
 //Box Textures
+const texture_classroom_1 = [
+  material_classroom_1_front, material_classroom_1_front,
+  material_classroom_1_top, material_empty,
+  material_classroom_1_front, material_classroom_1_front
+];
 const texture_table = [
   material_table_side, material_table_side,
   material_table_top, material_empty,
   material_table_side, material_table_side
 ];
+
 const texture_vending_machine = [
   new THREE.MeshToonMaterial({map: texture_vending_machine_front, }),  
   new THREE.MeshToonMaterial({map: texture_vending_machine_back,}),  
@@ -92,11 +105,11 @@ function init() {
   camera.rotation.y = 0;
   
   scene = new THREE.Scene();
-  building_geometry = new THREE.BoxGeometry(10, 10, 10,);
+  building_geometry = new THREE.BoxGeometry(10, 5, 10,);
   building_material = new THREE.MeshToonMaterial({color:0x404040,side: THREE.DoubleSide, wireframe:false});
   building = new THREE.Mesh(building_geometry, building_material);
   scene.add(building);
-  building.translateY(-3);
+  building.translateY(-1);
   collidableMeshList.push(building);
   ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
   groundgeometry = new THREE.PlaneGeometry(100, 100);
@@ -208,7 +221,7 @@ function makeATable(size){
   mesh.receiveShadow = true;
   scene.add( mesh );
   mesh.position.y = size/2;
-  mesh.position.x = 5;
+  mesh.position.x = 3;
   collidableMeshList.push(mesh);
       // addLight(0,  0,  0);
 
