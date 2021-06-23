@@ -135,6 +135,12 @@ function init() {
   door = new THREE.Mesh(new THREE.BoxGeometry(1, 1.5, 0.02), material_door);
   door.position.y = 0.7;
   door.position.z = 5;
+  door.position.x = 0.5;
+  door2 = new THREE.Mesh(new THREE.BoxGeometry(1, 1.5, 0.02), material_door);
+  door2.position.y = 0.7;
+  door.position.z = 5;
+  door.position.x = -0.5;
+  door.scale.x=-1;
   scene.add(door);
   antiCollidableMeshList.push(door);
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
