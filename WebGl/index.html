@@ -16,7 +16,7 @@ let geometry, material, mesh, ground, groundgeometry, ground_material;
 let sun, sun_geometry, material_sun, amb_light, general_light;
 let npc;
 let building, building_geometry, building_material;
-let door, door_material;
+let door, door2, door_material;
 var x = 0.0;
 var previousPoint = new THREE.Vector3();
 //Textures
@@ -54,7 +54,9 @@ const texture_npc_2_front = loader.load("https://pobulus.github.io/WebGl/resourc
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   texture_npc_2_front.magFilter = THREE.NearestFilter;
 const texture_door = loader.load("https://pobulus.github.io/WebGl/resources/door.png")
+const texture_door_double = loader.load("https://pobulus.github.io/WebGl/resources/door_double.png")
   texture_door.magFilter = THREE.NearestFilter;
+  texture_door_double.magFilter = THREE.NearestFilter;
 //Materials
 const material_player = new THREE.MeshBasicMaterial({wireframe:false});
 // var hitboxGeometry = new THREE.CylinderGeometry(0.4, 0.15, 1.8, 16,16);
@@ -70,7 +72,7 @@ const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transpare
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_2_front = new THREE.MeshToonMaterial({map: texture_npc_2_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_door = new THREE.MeshToonMaterial({map: texture_door, side: THREE.DoubleSide});
-
+const material_door_double = new THREE.MeshToonMaterial({map: texture_door_double, side: THREE.DoubleSide});
  
 const npc_materials = [
   material_npc_1_front,
@@ -132,15 +134,9 @@ function init() {
   material_sun = new THREE.MeshBasicMaterial({color: 0xffff00});
   sun = new THREE.Mesh(sun_geometry, material_sun);
   scene.background = new THREE.Color(0.3, 0.7, 0.9)
-  door = new THREE.Mesh(new THREE.BoxGeometry(1, 1.5, 0.02), material_door);
+  door = new THREE.Mesh(new THREE.BoxGeometry(2, 1.5, 0.02), material_door_double);
   door.position.y = 0.7;
   door.position.z = 5;
-  door.position.x = 0.5;
-  door2 = new THREE.Mesh(new THREE.BoxGeometry(1, 1.5, 0.02), material_door);
-  door2.position.y = 0.7;
-  door.position.z = 5;
-  door.position.x = -0.5;
-  door.scale.x=-1;
   scene.add(door);
   antiCollidableMeshList.push(door);
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
