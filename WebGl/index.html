@@ -7,11 +7,16 @@
 import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
 let camera, scene, renderer;
 let step;
+var grounded = true;
 let jumped = false;
+let playerHitbox;
+var collidableMeshList = [];
 let geometry, material, mesh, ground, groundgeometry, ground_material;
 let sun, sun_geometry, sun_material, amb_light, general_light;
 let npc;
+let building, building_geometry, building_material
 var x = 0.0;
+var previousPoint = new THREE.Vector3();
 //Textures
 const loader = new THREE.TextureLoader();
 const texture_empty = loader.load("https://pobulus.github.io/WebGl/resources/empty.png");
@@ -43,15 +48,23 @@ const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resourc
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   const texture_npc_2_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_2_front.png");
   texture_npc_2_front.magFilter = THREE.NearestFilter;
-const npc_textures = [
-  texture_npc_1_front,
-  texture_npc_2_front
-];
+
 //Materials
+const material_player = new THREE.MeshBasicMaterial({wireframe:true});
+// var hitboxGeometry = new THREE.CylinderGeometry(0.5, 0.15, 1.5, 16,16);
+var hitboxGeometry = new THREE.SphereGeometry(0.65, 16, 20);
 const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
 const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_npc_2_front = new THREE.MeshToonMaterial({map: texture_npc_2_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+
+
+ 
+const npc_materials = [
+  material_npc_1_front,
+  material_npc_2_front
+];
 //Box Textures
 const texture_table = [
   material_table_side, material_table_side,
@@ -71,15 +84,20 @@ const texture_vending_machine = [
 
 function init() {
   //Hide touch controls
-  $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();
+  $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
   
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
-  camera.position.z = 0;
+  camera.position.y = 0.7;
   camera.rotation.x = 0;
   camera.rotation.y = 0;
   
   scene = new THREE.Scene();
-  
+  building_geometry = new THREE.BoxGeometry(10, 10, 10,);
+  building_material = new THREE.MeshToonMaterial({color:0x404040,side: THREE.DoubleSide, wireframe:false});
+  building = new THREE.Mesh(building_geometry, building_material);
+  scene.add(building);
+  building.translateY(-3);
+  collidableMeshList.push(building);
   ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
   groundgeometry = new THREE.PlaneGeometry(100, 100);
   
@@ -89,7 +107,9 @@ function init() {
   ground.receiveShadow = true;
   ground.castShadow = true;
   scene.add( ground );
-
+  collidableMeshList.push(ground);
+  playerHitbox = new THREE.Mesh(hitboxGeometry, material_player);
+  scene.add(playerHitbox);
   sun_geometry = new THREE.CircleGeometry(2, 64);
   sun_material = new THREE.MeshBasicMaterial({color: 0xffff00});
   sun = new THREE.Mesh(sun_geometry, sun_material);
@@ -100,14 +120,11 @@ function init() {
   scene.add(general_light);
   scene.add(sun);
 
-  // makeRandomBoxes(2,2);
-  makeATable(0.3);
-  let npc_geometry = new THREE.PlaneGeometry(0.5, 0.9);
-  console.log(npc_textures[1]);
-  npc = new THREE.Mesh(npc_geometry, npc_textures[0]);
-  npc.position.y = 0.4;
-  scene.add(npc);
-  
+  makeRandomBoxes(2,2);
+  makeATable(0.5);
+  for (var cnt = 0; cnt<100; cnt++){
+  // makeNPC(Math.round(Math.random()), 10*Math.random()-5, 10*Math.random()-5);
+  }
   
 
   
@@ -127,6 +144,8 @@ function init() {
 }
 var elem = document.documentElement;
 let fullscr = false;
+
+
 
 function openFullscreen() {
           fullscr = true;
@@ -167,15 +186,30 @@ light.shadow.mapSize.height = 512; // default
 light.shadow.camera.near = 0.5; // default
 light.shadow.camera.far = 500; // default
   }
- 
+var lookaters = [];
+function makeNPC(version, x=0, z=0, y=0.4, n="default"){
+
+  let npc_geometry = new THREE.PlaneGeometry(0.5, 0.9);
+  npc = new THREE.Mesh(npc_geometry, npc_materials[version]);
+  npc.position.y = y;
+  npc.position.x = x;
+  npc.position.z = z;
+  lookaters.push(npc.id);
+  npc.name = n;
+  scene.add(npc);
+  // collidableMeshList.push(npc);
+  
+
+}
 function makeATable(size){
   geometry = new THREE.BoxGeometry( size,  size,  size);
   mesh = new THREE.Mesh( geometry, texture_table);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
-      scene.add( mesh );
-      mesh.position.y = size/2;
-      mesh.position.x = 5;
+  scene.add( mesh );
+  mesh.position.y = size/2;
+  mesh.position.x = 5;
+  collidableMeshList.push(mesh);
       // addLight(0,  0,  0);
 
 }
@@ -191,10 +225,10 @@ function makeRandomBoxes(rows, cols){
       scene.add( mesh );
       
       // mesh.name = String(step)+"-"+String(dubstep);
-      boxes.push(mesh.id);
+      collidableMeshList.push(mesh);
       // console.log(mesh.name);
       mesh.position.y = 0.5;
-      mesh.position.x = 2*(step-cols/2);
+      mesh.position.x = 2*(step-cols/2)+0.5;
       mesh.position.z = 2*(dubstep-rows/2);
       mesh.rotation.y = Math.random()*2*Math.PI;
     }
@@ -219,47 +253,87 @@ function sleep(milliseconds) {
             document.msExitFullscreen();
         }
 }
-
-var dayLength = 5000;
+var hour = 0;
+var dayLength = 100000;
+function parseHour(x){
+  // console.log(hour);
+  return String(Math.floor(hour/6))+":"+String(hour%6)+"0";
+}
 function animation( time ) {
 	renderer.render( scene, camera );
-  sun.position.x = camera.position.x+80*Math.sin(time/dayLength);
+  
+  sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
   sun.position.z = camera.position.z+20;
   sun.position.y = camera.position.y+80*Math.cos(time/dayLength);
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
-  amb_light.color.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
+  amb_light.color.r = Math.max(1*Math.sin(time/dayLength)**6-0.4, 0);
   
   // console.log(scene.background);
-  npc.lookAt(camera.position.x, npc.position.y, camera.position.z);
-  scene.background.r = Math.max(0.9*Math.sin(time/dayLength)**6-0.4, 0);
+  
+  scene.background.r = Math.max(0.85*Math.sin(time/dayLength)**6-0.4, 0);
   scene.background.g = 0.7*Math.cos(time/dayLength);
   scene.background.b = 0.9*Math.cos(time/dayLength);
   general_light.intensity = Math.max(scene.background.b, 0.3);
-  $("#clock").text(String(Math.round(11.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*11.5))+":00");
-  // for (const objId in boxes){
+  hour = Math.round(71.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*71.5);
+  $("#clock").text(String(parseHour(hour)));
+  for (const objId in lookaters){
   // scene.getObjectById(boxes[objId]).rotation.y += 0.01;
   // scene.getObjectById(boxes[objId]).lookAt(camera.position.x, 0.5, camera.position.z);
   // scene.getObjectById(boxes[objId]).rotateY(Math.PI/2+Math.PI);
-
-  // }
+  var curObj = scene.getObjectById(lookaters[objId]);
+  curObj.lookAt(camera.position.x, curObj.position.y, camera.position.z);
+  }
+  // $("#console").html(String(camera.position.x)+"<br>"+String(camera.position.y)+"<br>"+String(camera.position.z)+"<br>");
   sun.lookAt(camera.position);
   if (cameraTouchMove == true){
     rotateCamera(movementX/-1000, movementY/-1000);
   }
   // applyAcceleration(camera_velocity, gravity);
   resistanceDeceleration(camera_velocity);
-  if(camera.position.y>jump_lim&&debug != true){camera_acceleration.y = 0;}
+  if(camera.position.y>jump_lim&&debug != true){camera_acceleration.y = 0; jumped = true;}
   applyAcceleration(camera_velocity, camera_acceleration);
 
   applyVelocity(camera, camera_velocity, debug);
-  
-  if(camera.position.y<0.5&&!debug){camera.position.y = 0.5; jumped = false;};
+  playerHitbox.position.copy(camera.position);
+  playerHitbox.translateY(-0.4)
+  // playerHitbox.position.y = 0.9
+  // console.log(playerHitbox.geometry);
+  var originPoint = playerHitbox.position.clone();
+  grounded = false;
+  if(!debug){
+    for (var vertexIndex = 0; vertexIndex < playerHitbox.geometry.attributes.position.count; vertexIndex++)
+    {
+        var localVertex = new THREE.Vector3();
+        var globalVertex = new THREE.Vector3();
+        localVertex.fromBufferAttribute( playerHitbox.geometry.attributes.position, vertexIndex ); 
+        globalVertex = localVertex.applyMatrix4( playerHitbox.matrix );
+        var directionVector = globalVertex.sub( playerHitbox.position );
+        var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+        var collisionResults = ray.intersectObjects( collidableMeshList );
+        if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
+          $("#console").html(String(directionVector.y)+"<br>"+String( camera_velocity.y)+"<br>"+String(jumped));
+          if(directionVector.y>0.5&&jumped){
+            // console.log("dupa");
+            camera.position.y -= 0.005;
+            jumped = true; jump_lim = camera.position.y-0.5;}
+          if(directionVector.y<-0.4){
+            applyAcceleration(camera_velocity, repulsion_vector); jumped = false; jump_lim = camera.position.y+2.5; grounded = true;}
 
-  
+          if(directionVector.y>-0.2&&directionVector.y<0.3){
+            jumped = true;
+            camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/40).x;
+            camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/40).z;
+          }
+         
+      }
+    }
+    if (grounded)jumped = false;else jumped = true;	
+  }
 }
+
+const repulsion_vector = new THREE.Vector3(0, 0.01,0);
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-// ondblclick = function(e){openFullscreen();}
 document.addEventListener("dblclick", openFullscreen, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
@@ -274,7 +348,7 @@ document.getElementById("movementTouchBox").addEventListener("touchmove", handle
 var keysPressed = {};
 
 const acc_val = 0.2;
-const jump_lim = 2.5;
+var jump_lim = 2.5;
 
 document.addEventListener('keydown', handleKeydown);
 function handleKeydown(event){
@@ -288,10 +362,12 @@ function handleKeydown(event){
     camera_acceleration.x= -acc_val;
    }if (keysPressed['arrowdown']||keysPressed['s']) {
     camera_acceleration.z = acc_val;
+   }if (keysPressed['`']) {
+    $("#console").show();
    }if (keysPressed[' ']) {
     if(jumped == false||debug){ camera_acceleration.y = 7*acc_val; jumped = true;}
     if(debug)camera_acceleration.y = acc_val;
-   }if (keysPressed['shift']) {
+   }if (keysPressed['shift']&&debug) {
     camera_acceleration.y = -acc_val;
    }
   
@@ -333,7 +409,7 @@ document.addEventListener('keyup', (event) => {
     }
    }if (releasedKey ==' ') {
     camera_acceleration.y = 0;
-    if (keysPressed['shift']) {
+    if (keysPressed['shift']&&debug) {
      camera_acceleration.y = -acc_val;
     }
    }if (releasedKey=='shift') {
@@ -555,11 +631,13 @@ var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
 var camera_velocity = new THREE.Vector3(0 ,0, 0);
 var camera_acceleration = new THREE.Vector3(0,0,0);
-var gravity = new THREE.Vector3(0,-0.02,0);
+var gravity = new THREE.Vector3(0,-0.01,0);
 
 function rotateCamera(hor, vert){
+  
   camera.getWorldDirection(camera_global_direction);
   camera.rotateOnWorldAxis(global_axis_y, hor);
+  playerHitbox.rotation.y = camera.rotation.y;
   if((camera_global_direction.angleTo(global_axis_y)<0.2&&vert>0) || (camera_global_direction.angleTo(global_axis_y)>3&&vert<0)){
     // console.log("x rotation over");
   }else{
@@ -629,6 +707,18 @@ function rotateCamera(hor, vert){
         right: 0px;
         font-family: "dogicabold", monospace;
       }
+      #console{
+        z-index: 100;
+        position: absolute;
+        font-size: 2.5vw;
+        color: white;
+        background-color: black;
+        padding: 1vw;
+        opacity: 75%;
+        border-radius: 10vw;
+        left: 0px;
+        font-family: "dogicabold", monospace;
+      }
       #jumpTouchBox{
         z-index: 100;
         position: absolute;
@@ -650,6 +740,7 @@ function rotateCamera(hor, vert){
     <body>
       <canvas></canvas>
       <div id="clock">00:00</div>
+      <div id="console">.</div>
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
       <div id="jumpTouchBox"> 🆙 </div>
