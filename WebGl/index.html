@@ -25,7 +25,7 @@ const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/til
   texture_tiles.magFilter = THREE.NearestFilter;
   texture_tiles.wrapS = THREE.RepeatWrapping;
   texture_tiles.wrapT = THREE.RepeatWrapping;
-  texture_tiles.repeat.set( 100,100 );
+  texture_tiles.repeat.set( 10,10 );
 const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
 const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
 const texture_vending_machine_top = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png");
@@ -54,13 +54,14 @@ const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resourc
 
 //Materials
 const material_player = new THREE.MeshBasicMaterial({wireframe:false});
-// var hitboxGeometry = new THREE.CylinderGeometry(0.5, 0.15, 1.5, 16,16);
-var hitboxGeometry = new THREE.SphereGeometry(0.65, 16, 20);
+// var hitboxGeometry = new THREE.CylinderGeometry(0.4, 0.15, 1.8, 16,16);
+var hitboxGeometry = new THREE.SphereGeometry(0.6, 16, 16);
 const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
 const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 
 const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classroom_1_top, transparent: true, side: THREE.DoubleSide, });
 const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, side: THREE.DoubleSide});
+const material_tiles = new THREE.MeshToonMaterial({map: texture_tiles, side: THREE.DoubleSide});
 
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
@@ -75,7 +76,7 @@ const npc_materials = [
 //Box Textures
 const texture_classroom_1 = [
   material_classroom_1_front, material_classroom_1_front,
-  material_classroom_1_top, material_empty,
+  material_classroom_1_top, material_tiles,
   material_classroom_1_front, material_classroom_1_front
 ];
 const texture_table = [
@@ -105,13 +106,14 @@ function init() {
   camera.rotation.y = 0;
   
   scene = new THREE.Scene();
-  building_geometry = new THREE.BoxGeometry(10, 4, 10,);
+  building_geometry = new THREE.BoxGeometry(10, 3, 10,);
 
   building = new THREE.Mesh(building_geometry, texture_classroom_1);
   scene.add(building);
-  building.translateY(1.0625);
+  building.scale.x = -1;
+  building.translateY(1.45);
   collidableMeshList.push(building);
-  ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
+  ground_material = new THREE.MeshBasicMaterial({color: 0x22aa33});
   groundgeometry = new THREE.PlaneGeometry(100, 100);
   
   ground = new THREE.Mesh(groundgeometry, ground_material);
@@ -134,9 +136,9 @@ function init() {
   scene.add(sun);
 
   makeRandomBoxes(2,2);
-  makeATable(0.5);
-  for (var cnt = 0; cnt<100; cnt++){
-  // makeNPC(Math.round(Math.random()), 10*Math.random()-5, 10*Math.random()-5);
+  makeATable(0.7);
+  for (var cnt = 0; cnt<50; cnt++){
+  makeNPC(Math.round(Math.random()), 10*Math.random()-5, 10*Math.random()-5);
   }
   
 
@@ -220,7 +222,7 @@ function makeATable(size){
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   scene.add( mesh );
-  mesh.position.y = size/2;
+  mesh.position.y = size/2+0.5;
   mesh.position.x = 3;
   collidableMeshList.push(mesh);
       // addLight(0,  0,  0);
@@ -308,11 +310,11 @@ function animation( time ) {
 
   applyVelocity(camera, camera_velocity, debug);
   playerHitbox.position.copy(camera.position);
-  playerHitbox.translateY(-0.4)
+  playerHitbox.translateY(-0.4);
   // playerHitbox.position.y = 0.9
   // console.log(playerHitbox.geometry);
   var originPoint = playerHitbox.position.clone();
-  grounded = false;
+  grounded = 0;
   if(!debug){
     for (var vertexIndex = 0; vertexIndex < playerHitbox.geometry.attributes.position.count; vertexIndex++)
     {
@@ -324,23 +326,24 @@ function animation( time ) {
         var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
         var collisionResults = ray.intersectObjects( collidableMeshList );
         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
-          $("#console").html(String(directionVector.y)+"<br>"+String( camera_velocity.y)+"<br>"+String(jumped));
-          if(directionVector.y>0.5&&jumped){
+          
+          if(directionVector.y>0.4&&jumped){
             // console.log("dupa");
-            camera.position.y -= 0.005;
-            jumped = true; jump_lim = camera.position.y-0.5;}
-          if(directionVector.y<-0.4){
-            applyAcceleration(camera_velocity, repulsion_vector); jumped = false; jump_lim = camera.position.y+2.5; grounded = true;}
+            camera.position.y -= 0.0005;
+            jumped = true; jump_lim = camera.position.y-2;}
+          if(directionVector.y<-0.35){
+            applyAcceleration(camera_velocity, repulsion_vector); grounded++; jump_lim = camera.position.y+2; }
 
           if(directionVector.y>-0.2&&directionVector.y<0.3){
             jumped = true;
-            camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/40).x;
-            camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/40).z;
+            camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
+            camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
           }
-         
+        
       }
     }
-    if (grounded)jumped = false;else jumped = true;	
+    $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
+    if (grounded>80)jumped = false;else jumped = true;	
   }
 }
 
