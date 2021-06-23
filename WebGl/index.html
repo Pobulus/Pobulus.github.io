@@ -44,7 +44,7 @@ const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resource
   texture_table_top.magFilter = THREE.NearestFilter;
   texture_table_side.magFilter = THREE.NearestFilter;
 const texture_classroom_1_top = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_top.png");
-const texture_classroom_1_front = loader.load("https://pobulus.github.io/WebGl/resources/crassroom_1_front.png");
+const texture_classroom_1_front = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_front.png");
   texture_classroom_1_top.magFilter = THREE.NearestFilter;
   texture_classroom_1_front.magFilter = THREE.NearestFilter;
 const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_1_front.png");
@@ -59,8 +59,8 @@ var hitboxGeometry = new THREE.SphereGeometry(0.65, 16, 20);
 const material_table_top = new THREE.MeshToonMaterial({map: texture_table_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
 const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 
-const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classroom_1_top, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide, });
-const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classroom_1_top, transparent: true, side: THREE.DoubleSide, });
+const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, side: THREE.DoubleSide});
 
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
@@ -105,11 +105,11 @@ function init() {
   camera.rotation.y = 0;
   
   scene = new THREE.Scene();
-  building_geometry = new THREE.BoxGeometry(10, 5, 10,);
-  building_material = new THREE.MeshToonMaterial({color:0x404040,side: THREE.DoubleSide, wireframe:false});
-  building = new THREE.Mesh(building_geometry, building_material);
+  building_geometry = new THREE.BoxGeometry(10, 4, 10,);
+
+  building = new THREE.Mesh(building_geometry, texture_classroom_1);
   scene.add(building);
-  building.translateY(-1);
+  building.translateY(1.0625);
   collidableMeshList.push(building);
   ground_material = new THREE.MeshStandardMaterial({map: texture_tiles,side: THREE.DoubleSide});
   groundgeometry = new THREE.PlaneGeometry(100, 100);
