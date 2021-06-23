@@ -131,10 +131,12 @@ function init() {
   playerHitbox = new THREE.Mesh(hitboxGeometry, material_player);
   scene.add(playerHitbox);
   sun_geometry = new THREE.CircleGeometry(2, 64);
-  material_sun = new THREE.MeshBasicMaterial({color: 0xffff00});
+  material_sun = new THREE.MeshBasicMaterial({color: new THREE.Color(0.8, 0.8, 0)});
+ 
   sun = new THREE.Mesh(sun_geometry, material_sun);
+  console.log(sun.material.color);
   scene.background = new THREE.Color(0.3, 0.7, 0.9)
-  door = new THREE.Mesh(new THREE.BoxGeometry(2, 1.5, 0.02), material_door_double);
+  door = new THREE.Mesh(new THREE.BoxGeometry(2, 1.55, 0.02), material_door_double);
   door.position.y = 0.7;
   door.position.z = 5;
   scene.add(door);
@@ -145,9 +147,9 @@ function init() {
   scene.add(general_light);
   scene.add(sun);
 
-  makeRandomBoxes(2,2);
+  makeRandomBoxes(1,1);
   makeATable(0.7);
-  for (var cnt = 0; cnt<50; cnt++){
+  for (var cnt = 0; cnt<3; cnt++){
   makeNPC(Math.round(Math.random()), (9.8*Math.random()-4.9), (9.8*Math.random()-4.9));
   }
   
@@ -288,16 +290,17 @@ function animation( time ) {
 	renderer.render( scene, camera );
   
   sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
-  sun.position.z = camera.position.z+20;
-  sun.position.y = camera.position.y+80*Math.cos(time/dayLength);
+  sun.position.z = camera.position.z+40*Math.sin(time/dayLength);
+  sun.position.y = camera.position.y+60*Math.cos(time/dayLength);
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(1*Math.sin(time/dayLength)**6-0.4, 0);
   
   // console.log(scene.background);
   
-  scene.background.r = Math.max(0.85*Math.sin(time/dayLength)**6-0.4, 0);
-  scene.background.g = 0.7*Math.cos(time/dayLength);
-  scene.background.b = 0.9*Math.cos(time/dayLength);
+  scene.background.r = Math.max(0.8*Math.sin(time/dayLength)**6-0.4, 0);
+  sun.material.color = new THREE.Color(((0.4*Math.sin(time/dayLength)**6)+0.6), 0.7, 0.3);
+  scene.background.g = 0.6*Math.cos(time/dayLength);
+  scene.background.b = 0.8*Math.cos(time/dayLength);
   general_light.intensity = Math.max(scene.background.b, 0.3);
   hour = Math.round(71.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*71.5);
   $("#clock").text(String(parseHour(hour)));
