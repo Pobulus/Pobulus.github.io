@@ -11,10 +11,12 @@ var grounded = true;
 let jumped = false;
 let playerHitbox;
 var collidableMeshList = [];
+var antiCollidableMeshList = [];
 let geometry, material, mesh, ground, groundgeometry, ground_material;
-let sun, sun_geometry, sun_material, amb_light, general_light;
+let sun, sun_geometry, material_sun, amb_light, general_light;
 let npc;
-let building, building_geometry, building_material
+let building, building_geometry, building_material;
+let door, door_material;
 var x = 0.0;
 var previousPoint = new THREE.Vector3();
 //Textures
@@ -63,7 +65,7 @@ const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classr
 const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, side: THREE.DoubleSide});
 const material_tiles = new THREE.MeshToonMaterial({map: texture_tiles, side: THREE.DoubleSide});
 
-const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.BackSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_2_front = new THREE.MeshToonMaterial({map: texture_npc_2_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 
@@ -113,9 +115,9 @@ function init() {
   building.scale.x = -1;
   building.translateY(1.45);
   collidableMeshList.push(building);
-  ground_material = new THREE.MeshBasicMaterial({color: 0x22aa33});
-  groundgeometry = new THREE.PlaneGeometry(100, 100);
-  
+  ground_material = new THREE.MeshBasicMaterial({color: 0x22aa33, side: THREE.DoubleSide});
+  groundgeometry = new THREE.CircleGeometry(20, 100);
+
   ground = new THREE.Mesh(groundgeometry, ground_material);
   ground.position.y=-0.1;
   ground.rotation.x=-Math.PI/2;
@@ -126,9 +128,14 @@ function init() {
   playerHitbox = new THREE.Mesh(hitboxGeometry, material_player);
   scene.add(playerHitbox);
   sun_geometry = new THREE.CircleGeometry(2, 64);
-  sun_material = new THREE.MeshBasicMaterial({color: 0xffff00});
-  sun = new THREE.Mesh(sun_geometry, sun_material);
+  material_sun = new THREE.MeshBasicMaterial({color: 0xffff00});
+  sun = new THREE.Mesh(sun_geometry, material_sun);
   scene.background = new THREE.Color(0.3, 0.7, 0.9)
+  door = new THREE.Mesh(new THREE.BoxGeometry(2,1.6, 0.02), new THREE.MeshBasicMaterial({color: 0x552200, side: THREE.DoubleSide}));
+  door.position.y = 0.7;
+  door.position.z = 5;
+  scene.add(door);
+  antiCollidableMeshList.push(door);
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
   general_light = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
   scene.add( amb_light ); 
@@ -138,7 +145,7 @@ function init() {
   makeRandomBoxes(2,2);
   makeATable(0.7);
   for (var cnt = 0; cnt<50; cnt++){
-  makeNPC(Math.round(Math.random()), 10*Math.random()-5, 10*Math.random()-5);
+  makeNPC(Math.round(Math.random()), (9.8*Math.random()-4.9), (9.8*Math.random()-4.9));
   }
   
 
@@ -217,12 +224,12 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
 
 }
 function makeATable(size){
-  geometry = new THREE.BoxGeometry( size,  size,  size);
+  geometry = new THREE.BoxGeometry( size,  2*size/3,  size);
   mesh = new THREE.Mesh( geometry, texture_table);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   scene.add( mesh );
-  mesh.position.y = size/2+0.5;
+  mesh.position.y = size/4;
   mesh.position.x = 3;
   collidableMeshList.push(mesh);
       // addLight(0,  0,  0);
@@ -335,15 +342,20 @@ function animation( time ) {
             applyAcceleration(camera_velocity, repulsion_vector); grounded++; jump_lim = camera.position.y+2; }
 
           if(directionVector.y>-0.2&&directionVector.y<0.3){
+            var antiCollisionResults = ray.intersectObjects( antiCollidableMeshList );
+            
+            if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
+              $("#console").html(String(antiCollisionResults[0].distance));}else{
             jumped = true;
             camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
             camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
+            }
           }
         
       }
     }
-    $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
-    if (grounded>80)jumped = false;else jumped = true;	
+    // $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
+    if (grounded>65)jumped = false;else jumped = true;	
   }
 }
 
