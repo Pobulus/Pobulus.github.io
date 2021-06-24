@@ -163,12 +163,21 @@ function init() {
   door = new THREE.Mesh(new THREE.BoxGeometry(2, 1.55, 0.02), material_door_double);
   door.position.y = 0.7;
   door.position.z = 5;
+  interactive.push(door);
+  actions[door.id] = function(x){
+        var self = scene.getObjectById(x);
+        console.log(self.material.map.image.src);
+        
+        $("#portrait").attr("src", self.material.map.image.src);
+        $("#speaker-name").html("<b>Drzwi</b>");
+        $("#text-area").html("<i>Jestem drzwiami.<br> Łączę wnętrze z zewnętrzem. <br> Jestem potrzebny.</i>");
+        $("#textbox").show();
+  }
   scene.add(door);
   antiCollidableMeshList.push(door);
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
   general_light = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
   scene.fog = new THREE.Fog(0x000000, 10, 100);
-  // scene.add(fog);
   scene.add( amb_light ); 
   scene.add(general_light);
   scene.add(sun);
@@ -179,10 +188,6 @@ function init() {
   for (var cnt = 0; cnt<25; cnt++){
   makeNPC(Math.round(Math.random()), (9.8*Math.random()-4.9), (9.8*Math.random()-4.9));
   }
-  
-  
-
-  
   renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animation );
@@ -218,17 +223,10 @@ function openFullscreen() {
   document.webkitFullscreenElement || /* Safari and Opera syntax */
   document.msFullscreenElement /* IE11 syntax */
 ) {
-      // renderer = new THREE.WebGlRenderer( { antialias: true } );
-      //   renderer.setSize( window.innerWidth, window.innerHeight );
-      // renderer.setSize( window.innerWidth, window.innerHeight );
-      // document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
-      // console.log("fullscreen");
       document.removeEventListener("touchstart", openFullscreen);
       document.removeEventListener("dblclick", openFullscreen);
       console.log("Resizing...")
       init();
-      
-
   }
 }
 var boxes = [];
@@ -265,56 +263,60 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
         $("#textbox").show();
       }
   scene.add(npc);
-  // collidableMeshList.push(npc);
-  
-
 }
+
 function makeATable(size){
   geometry = new THREE.BoxGeometry( size,  2*size/3,  size);
   mesh = new THREE.Mesh( geometry, texture_table);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
+  interactive.push(mesh);
+      actions[mesh.id] = function(x) {
+        var self = scene.getObjectById(x);
+        console.log("Success!");
+        
+        $("#portrait").attr("src", self.material[2].map.image.src);
+        $("#speaker-name").html("<b>Stolik</b>");
+        $("#text-area").html("<i>*stoi*</i>");
+        $("#textbox").show();
+      }
   scene.add( mesh );
   mesh.position.y = size/4;
   mesh.position.x = 3;
   collidableMeshList.push(mesh);
-      // addLight(0,  0,  0);
-
 }
+
 function makeRandomBoxes(rows, cols){
   for (var dubstep = 0; dubstep<rows; dubstep++){
     for (step = 0; step<cols; step++){
       var size = 0.5;
-      
       geometry = new THREE.BoxGeometry( size,  size*2,  size);
-      
-     
       mesh = new THREE.Mesh( geometry, texture_vending_machine);
       interactive.push(mesh);
       actions[mesh.id] = function(x) {
         var self = scene.getObjectById(x);
         console.log("Success!");
         stare(self);
-        $("#portrait").attr("src", "resources/vending_machine_front.png");
+       console.log(self.material);
+        $("#portrait").attr("src", self.material[4].map.image.src);
         $("#speaker-name").html("<b>Automat z przekąskami</b>");
         $("#text-area").html("Hej! Chcesz paluchy wariacie?");
         $("#textbox").show();
       }
       scene.add( mesh );
-      
       collidableMeshList.push(mesh);
-
-      // console.log(mesh.name);
       mesh.position.y = 0.5;
       mesh.position.x = 2*(step-cols/2)+0.5;
       mesh.position.z = 2*(dubstep-rows/2);
       mesh.rotation.y = Math.random()*2*Math.PI;
     }
+  }
 }
-}
+
 function stare(obj){
   obj.lookAt(new THREE.Vector3(camera.position.x, obj.position.y, camera.position.z));
 }
+
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
@@ -322,9 +324,8 @@ function sleep(milliseconds) {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
 }
-        
-      
-      function closeFullscreen(){
+
+function closeFullscreen(){
         fullscr = false;
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -334,23 +335,19 @@ function sleep(milliseconds) {
             document.msExitFullscreen();
         }
 }
+
 var hour = 0;
 var dayLength = 100000;
 function parseHour(x){
-  // console.log(hour);
   return String(Math.floor(hour/6))+":"+String(hour%6)+"0";
 }
+
 function animation( time ) {
 	renderer.render( scene, camera );
-  
   sun.position.x = camera.position.x+30*Math.sin(time/dayLength);
   sun.position.z = camera.position.z+30*Math.sin(time/dayLength);
   sun.position.y = camera.position.y+50*Math.cos(time/dayLength);
-  // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(1*Math.sin(time/dayLength)**6-0.4, 0);
-  
-  // console.log(scene.background);
-  
   scene.background.r = Math.max(0.8*Math.sin(time/dayLength)**6-0.4, 0);
   sun.material.color = new THREE.Color(((0.4*Math.sin(time/dayLength)**6)+0.6), 0.7, 0.3);
   scene.background.g = 0.6*Math.cos(time/dayLength);
@@ -360,27 +357,19 @@ function animation( time ) {
   hour = Math.round(71.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*71.5);
   $("#clock").text(String(parseHour(hour)));
   for (const objId in lookaters){
-  // scene.getObjectById(boxes[objId]).rotation.y += 0.01;
-  // scene.getObjectById(boxes[objId]).lookAt(camera.position.x, 0.5, camera.position.z);
-  // scene.getObjectById(boxes[objId]).rotateY(Math.PI/2+Math.PI);
-  var curObj = scene.getObjectById(lookaters[objId]);
-  stare(curObj);
+    var curObj = scene.getObjectById(lookaters[objId]);
+    stare(curObj);
   }
-  // $("#console").html(String(camera.position.x)+"<br>"+String(camera.position.y)+"<br>"+String(camera.position.z)+"<br>");
   sun.lookAt(camera.position);
   if (cameraTouchMove == true){
     rotateCamera(movementX/-1000, movementY/-1000);
   }
-  // applyAcceleration(camera_velocity, gravity);
   resistanceDeceleration(camera_velocity);
   if(camera.position.y>jump_lim&&debug != true){camera_acceleration.y = 0; jumped = true;}
   applyAcceleration(camera_velocity, camera_acceleration);
-
   applyVelocity(camera, camera_velocity, debug);
   playerHitbox.position.copy(camera.position);
   playerHitbox.translateY(-0.4);
-  // playerHitbox.position.y = 0.9
-  // console.log(playerHitbox.geometry);
   var originPoint = playerHitbox.position.clone();
   grounded = 0;
   if(!debug){
@@ -394,28 +383,22 @@ function animation( time ) {
         var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
         var collisionResults = ray.intersectObjects( collidableMeshList );
         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
-          
           if(directionVector.y>0.4&&jumped){
-            // console.log("dupa");
             camera.position.y -= 0.0005;
             jumped = true; jump_lim = camera.position.y-2;}
           if(directionVector.y<-0.35){
             applyAcceleration(camera_velocity, repulsion_vector); grounded++; jump_lim = camera.position.y+2; }
-
           if(directionVector.y>-0.2&&directionVector.y<0.3){
             var antiCollisionResults = ray.intersectObjects( antiCollidableMeshList );
-            
             if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
               }else{
-            jumped = true;
             camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
             camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
             }
           }
-        
       }
     }
-    // $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
+    $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
     if (grounded>65)jumped = false;else jumped = true;	
   }
 }
@@ -481,11 +464,11 @@ function handleKeydown(event){
    }
    if (keysPressed['z']) {
       toggleDebug();
-      //console.log(keysPressed);
    }
-  //  event.preventDefault();
 }
+
 var debug = false;
+
 function toggleDebug(){
   debug = !debug;
   if(debug)acc_val = 1;else acc_val = 0.2;
@@ -525,13 +508,8 @@ document.addEventListener('keyup', (event) => {
     if (keysPressed[' ']) {
      camera_acceleration.y = acc_val;
     }
-   }
-    
-       delete keysPressed[event.key.toLowerCase()];
-  //  event.preventDefault();
-    //  camera_velocity.x = 0;
-    //  camera_velocity.z = 0;
-
+  }
+  delete keysPressed[event.key.toLowerCase()];
 });
 
 function applyVelocity(obj, vel, flight){
@@ -547,8 +525,6 @@ function applyVelocity(obj, vel, flight){
   if (d==NaN){
     d = 0;
   }
-  // if(debug)console.log(d, k, orientation.x*1000, orientation.z);
-  // obj.localToWorld(orientation);
   if (Math.abs(vel.x) < vst){
     vel.x = 0;
   }else{
@@ -574,7 +550,6 @@ function applyAcceleration(vel, acc){
 
 function resistanceDeceleration(vel){
   const rf = 50;
-  // console.log(-rf*(Math.sign(vel.y)*(vel.y**2)-gravity.y));
   if(debug)var g=0;else var g = gravity.y;
   applyAcceleration(vel, new THREE.Vector3(-rf*Math.sign(vel.x)*(vel.x**2), -rf*(Math.sign(vel.y)*(vel.y**2)-g), -rf*Math.sign(vel.z)*(vel.z**2)));
 }
@@ -650,30 +625,22 @@ function handleEndInteract(evt) {
 
 }
 function handleMoveCamera(evt) {
-  // console.log("wykryto dotyk");
-  // console.log(initialTouchXcamera,  initialTouchYcamera);
   evt.preventDefault();
   
   var touches = evt.changedTouches;
 
   for (var i = 0; i < touches.length; i++) {
-        var idx = ongoingTouchIndexById(touches[i].identifier);
-
+    var idx = ongoingTouchIndexById(touches[i].identifier);
     if (idx >= 0) {
       let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
-
-    movementX = touches[i].clientX-initialTouchXcamera;
-    movementY = touches[i].clientY-initialTouchYcamera;
-    if (movementX>touchLim){ movementX = touchLim;}
-    if (movementY>touchLim){ movementY = touchLim;}
-    if (movementX<-touchLim){ movementX = -touchLim;}
-    if (movementY<-touchLim){ movementY = -touchLim;}
-      // console.log(movementX, movementY);
-      
+      movementX = touches[i].clientX-initialTouchXcamera;
+      movementY = touches[i].clientY-initialTouchYcamera;
+      if (movementX>touchLim){ movementX = touchLim;}
+      if (movementY>touchLim){ movementY = touchLim;}
+      if (movementX<-touchLim){ movementX = -touchLim;}
+      if (movementY<-touchLim){ movementY = -touchLim;}
       ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-      // console.log(".");
     } else {
-      // console.log("can't figure out which touch to continue");
     }
   }
 }
@@ -701,28 +668,19 @@ function handleStartMovement(evt) {
   }
 }
 function handleMoveMovement(evt) {
-  // console.log("wykryto dotyk");
-  // console.log(initialTouchXcamera,  initialTouchYcamera);
   evt.preventDefault();
- 
   var touches = evt.changedTouches;
-
   for (var i = 0; i < touches.length; i++) {
         var idx = MongoingTouchIndexById(touches[i].identifier);
-
     if (idx >= 0) {
       let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
-
     camera_acceleration.x = 0.01*(touches[i].clientX-initialTouchXmovement)/4;
     camera_acceleration.z = 0.01*(touches[i].clientY-initialTouchYmovement)/4;
     if (camera_acceleration.x>acc_val){ camera_acceleration.x = acc_val;}
     if (camera_acceleration.z>acc_val){ camera_acceleration.z = acc_val;}
     if (camera_acceleration.x<-acc_val){ camera_acceleration.x = -acc_val;}
     if (camera_acceleration.z<-acc_val){ camera_acceleration.z = -acc_val;}
-      // console.log(movementX, movementY);
-      
       MongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-      // console.log(".");
     } 
   }
 }
@@ -741,7 +699,6 @@ function handleEndMovement(evt) {
   }
 }
 
-
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
@@ -750,12 +707,10 @@ var camera_acceleration = new THREE.Vector3(0,0,0);
 var gravity = new THREE.Vector3(0,-0.01,0);
 
 function rotateCamera(hor, vert){
-  
   camera.getWorldDirection(camera_global_direction);
   camera.rotateOnWorldAxis(global_axis_y, hor);
   playerHitbox.rotation.y = camera.rotation.y;
   if((camera_global_direction.angleTo(global_axis_y)<0.2&&vert>0) || (camera_global_direction.angleTo(global_axis_y)>3&&vert<0)){
-    // console.log("x rotation over");
   }else{
     camera.rotateX(vert);
   }
@@ -870,7 +825,6 @@ function rotateCamera(hor, vert){
         position: absolute;
         left: 2vw;
         width: 96vw;
-        /* height: 30vh; */
         background-color: #002e5a;
         opacity: 95%;
         border-radius: 2vw;
@@ -883,7 +837,6 @@ function rotateCamera(hor, vert){
         height: 29vh;
         width: 27vh;
         object-fit: cover;
-        border-radius: 2vh;
       }
       #portrait{
         image-rendering: pixelated;
@@ -891,7 +844,8 @@ function rotateCamera(hor, vert){
         height: 29vh;
         width: 100%;
         object-fit: cover;
-        object-position: 20% 10%; 
+        object-position: 50% 0%; 
+        border-radius: 2vw;
         
       }
       #speaker-name{
@@ -910,37 +864,33 @@ function rotateCamera(hor, vert){
       }
       
       </style>
-    </head>
-    <body>
-      <canvas></canvas>
-      <div id="clock">00:00</div>
-      <div id="console">
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="clock">00:00</div>
+    <div id="console">
         dayLength<input type="range" id="dayLength" value="100000" min="1000" max="100000"step="100"></input><br>
 
 
 
-      </div>
-      <div id="cameraTouchBox"> 👁️ </div>
-      <div id="movementTouchBox"> 🕹️ </div>
-      <div id="jumpTouchBox"> 🆙 </div>
-      <div id="interactTouchBox"> 👆 </div>
-      <div id="textbox">
-        <table>
-          <tr>
-        <td rowspan="2" style="border:3px solid white;background:#aaa;opacity: 100%; border-radius: 2vh;"><div id="portrait-box"><img id="portrait"src="resources/npc_2_front.png"></img></div></td>
-        <td><div id="speaker-name">Studenci UŚ</div></td>
+    </div>
+    <div id="cameraTouchBox"> 👁️ </div>
+    <div id="movementTouchBox"> 🕹️ </div>
+    <div id="jumpTouchBox"> 🆙 </div>
+    <div id="interactTouchBox"> 👆 </div>
+    <div id="textbox">
+      <table>
+        <tr>
+         <td rowspan="2" style="border:4px solid white;background:#aaa;opacity: 100%; border-radius: 2vw;"><div id="portrait-box"><img id="portrait"src="resources/npc_2_front.png"></img></div></td>
+          <td><div id="speaker-name">Studenci UŚ</div></td>
         </tr>
         <tr>
-
           <td>
             <div id="text-area">Hej! Daj paluszka...
             </div>
-          </td> 
-          
+          </td>
         </tr>
       </table>
-      </div>
-    </body>
-
-
+    </div>
+  </body>
 </html>
