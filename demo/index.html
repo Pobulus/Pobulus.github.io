@@ -254,6 +254,16 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
   npc.position.z = z;
   lookaters.push(npc.id);
   npc.name = n;
+  interactive.push(npc);
+      actions[npc.id] = function(x) {
+        var self = scene.getObjectById(x);
+        console.log(self.material.map.image.src);
+        stare(self);
+        $("#portrait").attr("src", self.material.map.image.src);
+        $("#speaker-name").html("<b>Student UŚ</b>");
+        $("#text-area").html("Masz dla mnie jakieś paluszki?");
+        $("#textbox").show();
+      }
   scene.add(npc);
   // collidableMeshList.push(npc);
   
@@ -275,7 +285,7 @@ function makeRandomBoxes(rows, cols){
   for (var dubstep = 0; dubstep<rows; dubstep++){
     for (step = 0; step<cols; step++){
       var size = 0.5;
-      // Math.random()/2;
+      
       geometry = new THREE.BoxGeometry( size,  size*2,  size);
       
      
@@ -285,12 +295,13 @@ function makeRandomBoxes(rows, cols){
         var self = scene.getObjectById(x);
         console.log("Success!");
         stare(self);
-
+        $("#portrait").attr("src", "resources/vending_machine_front.png");
+        $("#speaker-name").html("<b>Automat z przekąskami</b>");
+        $("#text-area").html("Hej! Chcesz paluchy wariacie?");
+        $("#textbox").show();
       }
-      console.log(actions);
       scene.add( mesh );
       
-      // mesh.name = String(step)+"-"+String(dubstep);
       collidableMeshList.push(mesh);
 
       // console.log(mesh.name);
@@ -418,6 +429,9 @@ function interact(){
         var intersected = ray.intersectObjects( interactive );
         if ( intersected.length > 0 && intersected[0].distance < interactRange ){
           actions[intersected[0].object.id](intersected[0].object.id);
+        }
+        else{
+          $("#textbox").hide();
         }
 }
 let touchscreen = false;
