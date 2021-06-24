@@ -22,19 +22,19 @@ var x = 0.0;
 var previousPoint = new THREE.Vector3();
 //Textures
 const loader = new THREE.TextureLoader();
-const texture_empty = loader.load("https://pobulus.github.io/WebGl/resources/empty.png");
+const texture_empty = loader.load("https://pobulus.github.io/demo/resources/empty.png");
   texture_empty.magFilter = THREE.NearestFilter;
-const texture_tiles = loader.load("https://pobulus.github.io/WebGl/resources/tiles.png");
+const texture_tiles = loader.load("https://pobulus.github.io/demo/resources/tiles.png");
   texture_tiles.magFilter = THREE.NearestFilter;
   texture_tiles.wrapS = THREE.RepeatWrapping;
   texture_tiles.wrapT = THREE.RepeatWrapping;
   texture_tiles.repeat.set( 10,10 );
-const texture_vending_machine_front = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_front.png");
-const texture_vending_machine_back = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_back.png");
-const texture_vending_machine_top = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_top.png");
-const texture_vending_machine_bottom = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_bottom.png");
-const texture_vending_machine_left = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_left.png");
-const texture_vending_machine_right = loader.load("https://pobulus.github.io/WebGl/resources/vending_machine_right.png");
+const texture_vending_machine_front = loader.load("https://pobulus.github.io/demo/resources/vending_machine_front.png");
+const texture_vending_machine_back = loader.load("https://pobulus.github.io/demo/resources/vending_machine_back.png");
+const texture_vending_machine_top = loader.load("https://pobulus.github.io/demo/resources/vending_machine_top.png");
+const texture_vending_machine_bottom = loader.load("https://pobulus.github.io/demo/resources/vending_machine_bottom.png");
+const texture_vending_machine_left = loader.load("https://pobulus.github.io/demo/resources/vending_machine_left.png");
+const texture_vending_machine_right = loader.load("https://pobulus.github.io/demo/resources/vending_machine_right.png");
   texture_vending_machine_front.magFilter = THREE.NearestFilter;
   texture_vending_machine_back.magFilter = THREE.NearestFilter;
   texture_vending_machine_top.magFilter = THREE.NearestFilter;
@@ -42,22 +42,22 @@ const texture_vending_machine_right = loader.load("https://pobulus.github.io/Web
   texture_vending_machine_left.magFilter = THREE.NearestFilter;
   texture_vending_machine_right.magFilter = THREE.NearestFilter;
 
-const texture_table_top = loader.load("https://pobulus.github.io/WebGl/resources/table_top.png");
-const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resources/table_side.png");
+const texture_table_top = loader.load("https://pobulus.github.io/demo/resources/table_top.png");
+const texture_table_side = loader.load("https://pobulus.github.io/demo/resources/table_side.png");
   texture_table_top.magFilter = THREE.NearestFilter;
   texture_table_side.magFilter = THREE.NearestFilter;
-const texture_classroom_1_top = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_top.png");
-const texture_classroom_1_front = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_front.png");
-const texture_classroom_1_out_front = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_out_front.png");
+const texture_classroom_1_top = loader.load("https://pobulus.github.io/demo/resources/classroom_1_top.png");
+const texture_classroom_1_front = loader.load("https://pobulus.github.io/demo/resources/classroom_1_front.png");
+const texture_classroom_1_out_front = loader.load("https://pobulus.github.io/demo/resources/classroom_1_out_front.png");
   texture_classroom_1_top.magFilter = THREE.NearestFilter;
   texture_classroom_1_front.magFilter = THREE.NearestFilter;
   texture_classroom_1_out_front.magFilter = THREE.NearestFilter;
-const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_1_front.png");
-const texture_npc_2_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_2_front.png");
+const texture_npc_1_front = loader.load("https://pobulus.github.io/demo/resources/npc_1_front.png");
+const texture_npc_2_front = loader.load("https://pobulus.github.io/demo/resources/npc_2_front.png");
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   texture_npc_2_front.magFilter = THREE.NearestFilter;
-const texture_door = loader.load("https://pobulus.github.io/WebGl/resources/door.png")
-const texture_door_double = loader.load("https://pobulus.github.io/WebGl/resources/door_double.png")
+const texture_door = loader.load("https://pobulus.github.io/demo/resources/door.png")
+const texture_door_double = loader.load("https://pobulus.github.io/demo/resources/door_double.png")
   texture_door.magFilter = THREE.NearestFilter;
   texture_door_double.magFilter = THREE.NearestFilter;
 //Materials
@@ -175,7 +175,7 @@ function init() {
   
 
   
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer = new THREE.demoRenderer( { antialias: true } );
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animation );
   document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
@@ -210,7 +210,7 @@ function openFullscreen() {
   document.webkitFullscreenElement || /* Safari and Opera syntax */
   document.msFullscreenElement /* IE11 syntax */
 ) {
-      // renderer = new THREE.WebGLRenderer( { antialias: true } );
+      // renderer = new THREE.demoRenderer( { antialias: true } );
       //   renderer.setSize( window.innerWidth, window.innerHeight );
       // renderer.setSize( window.innerWidth, window.innerHeight );
       // document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
