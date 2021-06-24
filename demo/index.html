@@ -5,6 +5,7 @@
       <script type="module">
       
 import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 let camera, scene, renderer;
 let step;
 var grounded = true;
@@ -175,7 +176,7 @@ function init() {
   
 
   
-  renderer = new THREE.demoRenderer( { antialias: true } );
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.setAnimationLoop( animation );
   document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
@@ -210,7 +211,7 @@ function openFullscreen() {
   document.webkitFullscreenElement || /* Safari and Opera syntax */
   document.msFullscreenElement /* IE11 syntax */
 ) {
-      // renderer = new THREE.demoRenderer( { antialias: true } );
+      // renderer = new THREE.WebGlRenderer( { antialias: true } );
       //   renderer.setSize( window.innerWidth, window.innerHeight );
       // renderer.setSize( window.innerWidth, window.innerHeight );
       // document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0] );
@@ -219,6 +220,9 @@ function openFullscreen() {
       document.removeEventListener("dblclick", openFullscreen);
       console.log("Resizing...")
       init();
+      document.body.appendChild( VRButton.createButton( renderer ) );
+      renderer.xr.enabled = true;
+
 
   }
 }
