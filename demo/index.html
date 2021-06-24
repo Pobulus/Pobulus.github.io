@@ -104,12 +104,15 @@ const texture_table = [
 ];
 
 const texture_vending_machine = [
-  new THREE.MeshToonMaterial({map: texture_vending_machine_front, }),  
-  new THREE.MeshToonMaterial({map: texture_vending_machine_back,}),  
-  new THREE.MeshToonMaterial({map: texture_vending_machine_top,}),  
-  new THREE.MeshToonMaterial({map: texture_vending_machine_bottom, }),  
   new THREE.MeshToonMaterial({map: texture_vending_machine_left, }),  
-  new THREE.MeshToonMaterial({map: texture_vending_machine_right, })
+  new THREE.MeshToonMaterial({map: texture_vending_machine_right, }),
+  new THREE.MeshToonMaterial({map: texture_vending_machine_top,}),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_bottom, }), 
+  new THREE.MeshToonMaterial({map: texture_vending_machine_front, }),  
+  new THREE.MeshToonMaterial({map: texture_vending_machine_back,}),
+   
+
+  
 ];
 
 
@@ -118,12 +121,14 @@ let building_outside;
 function init() {
   //Hide touch controls
   $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
-  $("#textbox").hide()
+  $("#textbox").hide();$("#interactTouchBox").hide();
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
   camera.position.y = 0.7;
   camera.rotation.x = 0;
   camera.rotation.y = 0;
-  
+  collidableMeshList = [];
+  actions = {};
+ interactive = [];
   scene = new THREE.Scene();
   building_geometry = new THREE.BoxGeometry(10, 3, 10,);
 
@@ -277,10 +282,10 @@ function makeRandomBoxes(rows, cols){
       mesh = new THREE.Mesh( geometry, texture_vending_machine);
       interactive.push(mesh);
       actions[mesh.id] = function(x) {
+        var self = scene.getObjectById(x);
         console.log("Success!");
-        
-        console.log(scene.getObjectById(mesh.id));
-        scene.getObjectById(x).rotateX(1);
+        stare(self);
+
       }
       console.log(actions);
       scene.add( mesh );
@@ -295,6 +300,9 @@ function makeRandomBoxes(rows, cols){
       mesh.rotation.y = Math.random()*2*Math.PI;
     }
 }
+}
+function stare(obj){
+  obj.lookAt(new THREE.Vector3(camera.position.x, obj.position.y, camera.position.z));
 }
 function sleep(milliseconds) {
   const date = Date.now();
@@ -345,7 +353,7 @@ function animation( time ) {
   // scene.getObjectById(boxes[objId]).lookAt(camera.position.x, 0.5, camera.position.z);
   // scene.getObjectById(boxes[objId]).rotateY(Math.PI/2+Math.PI);
   var curObj = scene.getObjectById(lookaters[objId]);
-  curObj.lookAt(camera.position.x, curObj.position.y, camera.position.z);
+  stare(curObj);
   }
   // $("#console").html(String(camera.position.x)+"<br>"+String(camera.position.y)+"<br>"+String(camera.position.z)+"<br>");
   sun.lookAt(camera.position);
@@ -416,10 +424,12 @@ let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 document.addEventListener("dblclick", openFullscreen, false);
 document.addEventListener("touchstart", openFullscreen, false);
-document.addEventListener("touchstart", function(e){touchscreen=true; $("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
+document.addEventListener("touchstart", function(e){touchscreen=true; $("#interactTouchBox").show();$("#cameraTouchBox").show();$("#movementTouchBox").show();$("#jumpTouchBox").show(); }, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
 document.getElementById("jumpTouchBox").addEventListener("touchstart", handleStartJump, false);
 document.getElementById("jumpTouchBox").addEventListener("touchend", handleEndJump, false);
+document.getElementById("interactTouchBox").addEventListener("touchstart", handleStartInteract, false);
+document.getElementById("interactTouchBox").addEventListener("touchend", handleEndInteract, false);
 document.getElementById("cameraTouchBox").addEventListener("touchend", handleEndCamera, false);
 document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMoveCamera, false);
 document.getElementById("movementTouchBox").addEventListener("touchstart", handleStartMovement, false);
@@ -616,6 +626,14 @@ function handleEndJump(evt) {
   evt.preventDefault();
   if(debug)camera_acceleration.y = 0;
   
+}
+function handleStartInteract(evt) {
+  evt.preventDefault();
+  interact();
+  
+}
+function handleEndInteract(evt) {
+
 }
 function handleMoveCamera(evt) {
   // console.log("wykryto dotyk");
@@ -815,9 +833,21 @@ function rotateCamera(hor, vert){
         height: 10vw;
         opacity: 33%;
         background-color: black;
-        border-radius: 100vw;
-
-        font-size: 10vw;
+        font-size: 8vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #interactTouchBox{
+        z-index: 100;
+        position: absolute;
+        left:5px;
+        bottom: 29vw;
+        z-index: 100;
+        height: 10vw;
+        opacity: 33%;
+        background-color: black;
+        font-size: 8vw;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -879,6 +909,7 @@ function rotateCamera(hor, vert){
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
       <div id="jumpTouchBox"> 🆙 </div>
+      <div id="interactTouchBox"> 👆 </div>
       <div id="textbox">
         <table>
           <tr>
