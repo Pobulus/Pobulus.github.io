@@ -21,6 +21,8 @@ let building, building_geometry, building_material;
 let door, door2, door_material;
 var x = 0.0;
 var previousPoint = new THREE.Vector3();
+var actions = {};
+var interactive = [];
 //Textures
 const loader = new THREE.TextureLoader();
 const texture_empty = loader.load("https://pobulus.github.io/demo/resources/empty.png");
@@ -116,7 +118,7 @@ let building_outside;
 function init() {
   //Hide touch controls
   $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
-  
+  $("#textbox").hide()
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
   camera.position.y = 0.7;
   camera.rotation.x = 0;
@@ -273,10 +275,19 @@ function makeRandomBoxes(rows, cols){
       
      
       mesh = new THREE.Mesh( geometry, texture_vending_machine);
+      interactive.push(mesh);
+      actions[mesh.id] = function(x) {
+        console.log("Success!");
+        
+        console.log(scene.getObjectById(mesh.id));
+        scene.getObjectById(x).rotateX(1);
+      }
+      console.log(actions);
       scene.add( mesh );
       
       // mesh.name = String(step)+"-"+String(dubstep);
       collidableMeshList.push(mesh);
+
       // console.log(mesh.name);
       mesh.position.y = 0.5;
       mesh.position.x = 2*(step-cols/2)+0.5;
@@ -391,6 +402,16 @@ function animation( time ) {
 }
 
 const repulsion_vector = new THREE.Vector3(0, 0.01,0);
+const interactRange = 2;
+function interact(){
+        var rayDirection = new THREE.Vector3();
+        camera.getWorldDirection(rayDirection);
+        var ray = new THREE.Raycaster( camera.position, rayDirection.normalize() );
+        var intersected = ray.intersectObjects( interactive );
+        if ( intersected.length > 0 && intersected[0].distance < interactRange ){
+          actions[intersected[0].object.id](intersected[0].object.id);
+        }
+}
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
 document.addEventListener("dblclick", openFullscreen, false);
@@ -409,6 +430,7 @@ var keysPressed = {};
 
 var acc_val = 0.2;
 var jump_lim = 2.5;
+
 
 document.addEventListener('keydown', handleKeydown);
 function handleKeydown(event){
@@ -430,7 +452,9 @@ function handleKeydown(event){
    }if (keysPressed['shift']&&debug) {
     camera_acceleration.y = -acc_val;
    }
-  
+   if (keysPressed['e']) {
+      interact();
+   }
    if (keysPressed['z']) {
       toggleDebug();
       //console.log(keysPressed);
