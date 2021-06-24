@@ -48,8 +48,10 @@ const texture_table_side = loader.load("https://pobulus.github.io/WebGl/resource
   texture_table_side.magFilter = THREE.NearestFilter;
 const texture_classroom_1_top = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_top.png");
 const texture_classroom_1_front = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_front.png");
+const texture_classroom_1_out_front = loader.load("https://pobulus.github.io/WebGl/resources/classroom_1_out_front.png");
   texture_classroom_1_top.magFilter = THREE.NearestFilter;
   texture_classroom_1_front.magFilter = THREE.NearestFilter;
+  texture_classroom_1_out_front.magFilter = THREE.NearestFilter;
 const texture_npc_1_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_1_front.png");
 const texture_npc_2_front = loader.load("https://pobulus.github.io/WebGl/resources/npc_2_front.png");
   texture_npc_1_front.magFilter = THREE.NearestFilter;
@@ -67,6 +69,8 @@ const material_table_side = new THREE.MeshToonMaterial({map: texture_table_side,
 
 const material_classroom_1_top = new THREE.MeshToonMaterial({map: texture_classroom_1_top, transparent: true, side: THREE.DoubleSide, });
 const material_classroom_1_front = new THREE.MeshToonMaterial({map: texture_classroom_1_front, transparent: true, side: THREE.DoubleSide});
+const material_classroom_1_out_front = new THREE.MeshToonMaterial({map: texture_classroom_1_out_front, transparent: true);
+
 const material_tiles = new THREE.MeshToonMaterial({map: texture_tiles, side: THREE.DoubleSide});
 
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.BackSide});
@@ -85,6 +89,11 @@ const texture_classroom_1 = [
   material_classroom_1_top, material_tiles,
   material_classroom_1_front, material_classroom_1_front
 ];
+const texture_classroom_1_out = [
+  material_classroom_1_out_front, material_classroom_1_out_front,
+  material_classroom_1_top, material_tiles,
+  material_classroom_1_out_front, material_classroom_1_out_front
+];
 const texture_table = [
   material_table_side, material_table_side,
   material_table_top, material_empty,
@@ -102,6 +111,7 @@ const texture_vending_machine = [
 
 
 
+let building_outside;
 function init() {
   //Hide touch controls
   $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
@@ -118,6 +128,11 @@ function init() {
   scene.add(building);
   building.scale.x = -1;
   building.translateY(1.45);
+  building_outside = new THREE.Mesh(building_geometry, texture_classroom_1_out);
+  building_outside.scale.x = 1.001;
+  building_outside.scale.z = 1.001;
+  building_outside.scale.y = 1.001;
+  building.add(building_outside);
   collidableMeshList.push(building);
   ground_material = new THREE.MeshBasicMaterial({color: 0x22aa33, side: THREE.DoubleSide});
   groundgeometry = new THREE.CircleGeometry(20, 100);
@@ -144,6 +159,8 @@ function init() {
   antiCollidableMeshList.push(door);
   amb_light = new THREE.AmbientLight( 0x000000, 0.25 ); // soft white light
   general_light = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
+  scene.fog = new THREE.Fog(0x000000, 10, 100);
+  // scene.add(fog);
   scene.add( amb_light ); 
   scene.add(general_light);
   scene.add(sun);
@@ -151,7 +168,7 @@ function init() {
   makeRandomBoxes(1,1);
   makeATable(0.7);
   lookaters = [];
-  for (var cnt = 0; cnt<3; cnt++){
+  for (var cnt = 0; cnt<25; cnt++){
   makeNPC(Math.round(Math.random()), (9.8*Math.random()-4.9), (9.8*Math.random()-4.9));
   }
   
@@ -202,6 +219,7 @@ function openFullscreen() {
       document.removeEventListener("dblclick", openFullscreen);
       console.log("Resizing...")
       init();
+
   }
 }
 var boxes = [];
@@ -293,9 +311,9 @@ function parseHour(x){
 function animation( time ) {
 	renderer.render( scene, camera );
   
-  sun.position.x = camera.position.x+40*Math.sin(time/dayLength);
-  sun.position.z = camera.position.z+40*Math.sin(time/dayLength);
-  sun.position.y = camera.position.y+60*Math.cos(time/dayLength);
+  sun.position.x = camera.position.x+30*Math.sin(time/dayLength);
+  sun.position.z = camera.position.z+30*Math.sin(time/dayLength);
+  sun.position.y = camera.position.y+50*Math.cos(time/dayLength);
   // light.position.set(sun.position.x, sun.position.y, sun.position.z);
   amb_light.color.r = Math.max(1*Math.sin(time/dayLength)**6-0.4, 0);
   
@@ -305,6 +323,7 @@ function animation( time ) {
   sun.material.color = new THREE.Color(((0.4*Math.sin(time/dayLength)**6)+0.6), 0.7, 0.3);
   scene.background.g = 0.6*Math.cos(time/dayLength);
   scene.background.b = 0.8*Math.cos(time/dayLength);
+  scene.fog.color = scene.background;
   general_light.intensity = Math.max(scene.background.b, 0.3);
   hour = Math.round(71.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*71.5);
   $("#clock").text(String(parseHour(hour)));
@@ -355,7 +374,7 @@ function animation( time ) {
             var antiCollisionResults = ray.intersectObjects( antiCollidableMeshList );
             
             if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
-              $("#console").html(String(antiCollisionResults[0].distance));}else{
+              }else{
             jumped = true;
             camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
             camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
@@ -383,9 +402,10 @@ document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMo
 document.getElementById("movementTouchBox").addEventListener("touchstart", handleStartMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
+document.getElementById("dayLength").addEventListener("change", function(){dayLength = document.getElementById("dayLength").value});
 var keysPressed = {};
 
-const acc_val = 0.2;
+var acc_val = 0.2;
 var jump_lim = 2.5;
 
 document.addEventListener('keydown', handleKeydown);
@@ -745,6 +765,9 @@ function rotateCamera(hor, vert){
         right: 0px;
         font-family: "dogicabold", monospace;
       }
+      body{
+        font-family:  monospace;
+      }
       #console{
         z-index: 100;
         position: absolute;
@@ -755,14 +778,14 @@ function rotateCamera(hor, vert){
         opacity: 75%;
         border-radius: 10vw;
         left: 0px;
-        font-family: "dogicabold", monospace;
+        
       }
       #jumpTouchBox{
         z-index: 100;
         position: absolute;
         right:5px;
         bottom: 29vw;
-        width: 10vw;
+        z-index: 100;
         height: 10vw;
         opacity: 33%;
         background-color: black;
@@ -772,16 +795,80 @@ function rotateCamera(hor, vert){
         display: flex;
         align-items: center;
         justify-content: center;
-      }    
+      }
+      #textbox{
+        position: absolute;
+        left: 2vw;
+        width: 96vw;
+        /* height: 30vh; */
+        background-color: #002e5a;
+        opacity: 95%;
+        border-radius: 2vw;
+        z-index: 200;
+        bottom: 2vw;
+        
+        
+      }
+      #portrait-box{
+        height: 29vh;
+        width: 27vh;
+        object-fit: cover;
+        border-radius: 2vh;
+      }
+      #portrait{
+        image-rendering: pixelated;
+        position: relative;
+        height: 29vh;
+        width: 100%;
+        object-fit: cover;
+        object-position: 20% 10%; 
+        
+      }
+      #speaker-name{
+        position: relative;
+        font-size: 5vh;
+        color: white;
+      }
+      #text-area{
+        position: relative;
+        top: 0px;
+        height: 15vh;
+        font-size: 4vh;
+        color: white;
+        font-family: monospace;
+        vertical-align: top;
+      }
+      
       </style>
     </head>
     <body>
       <canvas></canvas>
       <div id="clock">00:00</div>
-      <div id="console">.</div>
+      <div id="console">
+        dayLength<input type="range" id="dayLength" value="100000" min="1000" max="100000"step="100"></input><br>
+
+
+
+      </div>
       <div id="cameraTouchBox"> 👁️ </div>
       <div id="movementTouchBox"> 🕹️ </div>
       <div id="jumpTouchBox"> 🆙 </div>
+      <div id="textbox">
+        <table>
+          <tr>
+        <td rowspan="2" style="border:3px solid white;background:#aaa;opacity: 100%; border-radius: 2vh;"><div id="portrait-box"><img id="portrait"src="resources/npc_2_front.png"></img></div></td>
+        <td><div id="speaker-name">Studenci UŚ</div></td>
+        </tr>
+        <tr>
+
+          <td>
+            <div id="text-area">Hej! Daj paluszka...
+            </div>
+          </td> 
+          
+        </tr>
+      </table>
+      </div>
     </body>
 
 
