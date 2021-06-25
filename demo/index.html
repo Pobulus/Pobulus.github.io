@@ -446,7 +446,7 @@ function collisionDetection(){
       }
     }
   }
-    // $("#console").html(String(ingameTime)+"<br>"+String( grounded)+"<br>"+String(jumped));
+
     if (grounded>65)jumped = false;else jumped = true;	
 }
 
@@ -464,7 +464,7 @@ function interact(){
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-// document.addEventListener("dblclick", openFullscreen, false);
+document.getElementById("welcome").addEventListener("click", function(e){openFullscreen(); $("#welcome").hide(); paused = false;document.querySelector('canvas').requestPointerLock();}, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", touchControlsInit, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
@@ -483,9 +483,6 @@ document.getElementById("movementTouchBox").addEventListener("touchmove", handle
 document.getElementById("timeSpeed").addEventListener("input", function(){timeSpeed = parseFloat(document.getElementById("timeSpeed").value); $("#timeSpeedValue").text(timeSpeed)});
 document.getElementById("playerSpeed").addEventListener("input", function(){playerSpeed = parseFloat(document.getElementById("playerSpeed").value); $("#playerSpeedValue").text(playerSpeed)});
 document.getElementById("debugC").addEventListener("click", function(){debug = document.getElementById("debug").checked; $("#debugValue").text(debug)});
-
-// document.getElementById("dayLength").addEventListener("change", function(){dayLength = document.getElementById("dayLength").value});
-
 function touchControlsInit(){
   touchscreen=true;
   $("#menuTouchBox").show();
@@ -1015,6 +1012,20 @@ function rotateCamera(hor, vert){
         vertical-align: middle;
         font-size: 20vw;
       }
+      #welcome{
+        z-index: 1100;
+        background-color: #002e5a;
+        color: white;
+        position: absolute;
+        top: 0px;
+        opacity: 90%;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 7vw;
+      }
       #menu{
         overflow-y: auto;
         z-index: 1000;
@@ -1241,7 +1252,13 @@ input[type=range]:focus::-ms-fill-upper {
     </style>
   </head>
   <body>
-    <div id="curtain"><p class="center">LOADING</p></div>
+    <div id="curtain"><h0 class="center">ŁADOWANIE<br/></h0>
+      <p style="font-size: 20px;text-align: center"> Jezeli ten napis nie znika to twoja przegladarka moze byc przestarzala </p>
+    </div>
+    <div id="welcome">Witamy!<br>
+    Kliknij lub dotknij w dowolnym miejscu aby rozpocząć.<br>
+    Sugerujemy poziomą orientację ekranu.
+    </div>
       <div id="menu"> 
         <button class="tablink" onclick="openPage('Inventory', this, '#002e5a')" id="Inventory-link">Inventory</button>
         <button  class="tablink" onclick="openPage('Quests', this, '#002e5a')"id="Quests-link">Quests</button>
