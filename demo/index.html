@@ -521,7 +521,7 @@ function handleKeydown(event){
    }if (keysPressed['`']) {
     $("#console").show();
    }if (keysPressed[' ']) {
-    if(jumped == false||debug){ camera_acceleration.y = 7*playerSpeed; jumped = true;}
+    if(jumped == false||debug){ camera_acceleration.y = 1.4; jumped = true;}
     if(debug)camera_acceleration.y = playerSpeed;
    }if (keysPressed['shift']&&debug) {
     camera_acceleration.y = -playerSpeed;
