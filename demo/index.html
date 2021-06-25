@@ -24,7 +24,7 @@
 }
 
 // Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
+
       </script>
       <script type="module">
       
@@ -146,6 +146,10 @@ let building_outside;
 
 function init() {
   //Hide touch controls
+  $("body").on("contextmenu",function(e){
+     return false;
+});
+  $("#Settings-link").click();
   $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
   $("#textbox").hide();$("#interactTouchBox").hide();$("#menu").hide();$("#menuTouchBox").hide();
   camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
@@ -227,7 +231,7 @@ function init() {
   document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
   canvas.onclick = function() {
-    if(!touchscreen){
+    if(!touchscreen&&!paused){
     canvas.requestPointerLock();
   }
 }
@@ -436,8 +440,8 @@ function collisionDetection(){
         if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
       
           }else{
-          camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
-          camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
+          camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(playerSpeed/25).x;
+          camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(playerSpeed/25).z;
         }
       }
     }
@@ -460,7 +464,7 @@ function interact(){
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.addEventListener("dblclick", openFullscreen, false);
+// document.addEventListener("dblclick", openFullscreen, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", touchControlsInit, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
@@ -477,6 +481,9 @@ document.getElementById("movementTouchBox").addEventListener("touchstart", handl
 document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
 document.getElementById("timeSpeed").addEventListener("input", function(){timeSpeed = parseFloat(document.getElementById("timeSpeed").value); $("#timeSpeedValue").text(timeSpeed)});
+document.getElementById("playerSpeed").addEventListener("input", function(){playerSpeed = parseFloat(document.getElementById("playerSpeed").value); $("#playerSpeedValue").text(playerSpeed)});
+document.getElementById("debugC").addEventListener("click", function(){debug = document.getElementById("debug").checked; $("#debugValue").text(debug)});
+
 // document.getElementById("dayLength").addEventListener("change", function(){dayLength = document.getElementById("dayLength").value});
 
 function touchControlsInit(){
@@ -492,32 +499,38 @@ function touchControlsInit(){
 
 var keysPressed = {};
 
-var acc_val = 0.2;
+var playerSpeed = 0.2;
 var jump_lim = 2.5;
 
 
 document.addEventListener('keydown', handleKeydown);
 function handleKeydown(event){
    keysPressed[event.key.toLowerCase()] = true;
+   if (keysPressed['tab']) {
+    event.preventDefault();
+   }
    camera.getWorldDirection(camera_global_direction);
    if (keysPressed['arrowup']||keysPressed['w']) {
-     camera_acceleration.z = -acc_val;
+     camera_acceleration.z = -playerSpeed;
    } if (keysPressed['arrowright']||keysPressed['d']) {
-    camera_acceleration.x = acc_val;
+    camera_acceleration.x = playerSpeed;
    }if (keysPressed['arrowleft']||keysPressed['a']) {
-    camera_acceleration.x= -acc_val;
+    camera_acceleration.x= -playerSpeed;
    }if (keysPressed['arrowdown']||keysPressed['s']) {
-    camera_acceleration.z = acc_val;
+    camera_acceleration.z = playerSpeed;
    }if (keysPressed['`']) {
     $("#console").show();
    }if (keysPressed[' ']) {
-    if(jumped == false||debug){ camera_acceleration.y = 7*acc_val; jumped = true;}
-    if(debug)camera_acceleration.y = acc_val;
+    if(jumped == false||debug){ camera_acceleration.y = 7*playerSpeed; jumped = true;}
+    if(debug)camera_acceleration.y = playerSpeed;
    }if (keysPressed['shift']&&debug) {
-    camera_acceleration.y = -acc_val;
+    camera_acceleration.y = -playerSpeed;
    }
    if (keysPressed['e']) {
       interact();
+   }
+   if (keysPressed['q']){
+     $("#textbox").hide();
    }
    if (keysPressed['z']) {
       toggleDebug();
@@ -541,7 +554,7 @@ function togglePause(){
 }
 function toggleDebug(){
   debug = !debug;
-  if(debug)acc_val = 1;else acc_val = 0.2;
+  if(debug)playerSpeed = 1;else playerSpeed = 0.2;
 }
 var releasedKey="";
 document.addEventListener('keyup', (event) => {
@@ -551,36 +564,68 @@ document.addEventListener('keyup', (event) => {
   if (releasedKey =='enter') {
     togglePause();
   }
+  if (releasedKey =='tab') {
+    event.preventDefault();
+    if(!paused){
+      togglePause();
+      $("#Inventory-link").click();
+    }
+    else{
+      if($("#Inventory")[0].style.display == "block" )togglePause();
+      else{$("#Inventory-link").click();}
+  }
+}
+    if (releasedKey =='f') {
+    if(!paused){
+      togglePause();
+      $("#Quests-link").click();
+    }
+    else{
+      if($("#Quests")[0].style.display == "block" )togglePause();
+      else{$("#Quests-link").click();}
+  }
+}
+  if (releasedKey =='h') {
+    event.preventDefault();
+    if(!paused){
+      togglePause();
+      $("#Help-link").click();
+    }
+    else{
+      if($("#Help")[0].style.display == "block" )togglePause();
+      else{$("#Help-link").click();}
+  }
+  }
   if (releasedKey =='arrowup'||releasedKey == 'w') {
      camera_acceleration.z =  0;
      if (keysPressed['arrowdown']||keysPressed['s']) {
-    camera_acceleration.z = acc_val;
+    camera_acceleration.z = playerSpeed;
    }
   
    } if (releasedKey =='arrowright'||releasedKey =='d') {
     camera_acceleration.x = 0;
     if (keysPressed['arrowleft']||keysPressed['a']) {
-    camera_acceleration.x= -acc_val;
+    camera_acceleration.x= -playerSpeed;
     }
    }if (releasedKey =='arrowleft'||releasedKey =='a') {
     camera_acceleration.x= 0;
     if (keysPressed['arrowright']||keysPressed['d']) {
-    camera_acceleration.x = acc_val;
+    camera_acceleration.x = playerSpeed;
    }
    }if (releasedKey =='arrowdown'||releasedKey =='s') {
     camera_acceleration.z = 0;
     if (keysPressed['arrowup']||keysPressed['w']) {
-     camera_acceleration.z = -acc_val;
+     camera_acceleration.z = -playerSpeed;
     }
    }if (releasedKey ==' ') {
     camera_acceleration.y = 0;
     if (keysPressed['shift']&&debug) {
-     camera_acceleration.y = -acc_val;
+     camera_acceleration.y = -playerSpeed;
     }
    }if (releasedKey=='shift') {
     camera_acceleration.y = 0;
     if (keysPressed[' ']) {
-     camera_acceleration.y = acc_val;
+     camera_acceleration.y = playerSpeed;
     }
   }
   delete keysPressed[event.key.toLowerCase()];
@@ -681,8 +726,8 @@ function handleStartCamera(evt) {
 }
 function handleStartJump(evt) {
   evt.preventDefault();
-  if(jumped == false||debug){ camera_acceleration.y = 7*acc_val; jumped = true;}
-  if(debug)camera_acceleration.y = acc_val;
+  if(jumped == false||debug){ camera_acceleration.y = 7*playerSpeed; jumped = true;}
+  if(debug)camera_acceleration.y = playerSpeed;
   
 }
 function handleEndJump(evt) {
@@ -755,10 +800,10 @@ function handleMoveMovement(evt) {
       let bounds = document.getElementById("cameraTouchBox").getBoundingClientRect();
     camera_acceleration.x = 0.01*(touches[i].clientX-initialTouchXmovement)/4;
     camera_acceleration.z = 0.01*(touches[i].clientY-initialTouchYmovement)/4;
-    if (camera_acceleration.x>acc_val){ camera_acceleration.x = acc_val;}
-    if (camera_acceleration.z>acc_val){ camera_acceleration.z = acc_val;}
-    if (camera_acceleration.x<-acc_val){ camera_acceleration.x = -acc_val;}
-    if (camera_acceleration.z<-acc_val){ camera_acceleration.z = -acc_val;}
+    if (camera_acceleration.x>playerSpeed){ camera_acceleration.x = playerSpeed;}
+    if (camera_acceleration.z>playerSpeed){ camera_acceleration.z = playerSpeed;}
+    if (camera_acceleration.x<-playerSpeed){ camera_acceleration.x = -playerSpeed;}
+    if (camera_acceleration.z<-playerSpeed){ camera_acceleration.z = -playerSpeed;}
       MongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
     } 
   }
@@ -795,6 +840,15 @@ function rotateCamera(hor, vert){
 }
     </script>
     <style>
+      body{
+        -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+      }
         canvas {
         position: absolute;
         width : 100vw;
@@ -906,6 +960,7 @@ function rotateCamera(hor, vert){
         font-size: 8vw;
         color: white;
         display: flex;
+        border-radius: 3vw;
         align-items: center;
         justify-content: center;
       }
@@ -961,7 +1016,7 @@ function rotateCamera(hor, vert){
         font-size: 20vw;
       }
       #menu{
-        overflow-y: scroll;
+        overflow-y: auto;
         z-index: 1000;
         background-color: #002e5a;
         color: white;
@@ -975,7 +1030,6 @@ function rotateCamera(hor, vert){
       }
       #crosshair{
         z-index: 500;
-        
       }
       .center{
         margin: auto;
@@ -1007,7 +1061,7 @@ function rotateCamera(hor, vert){
   padding: 10vh 10vh;
   top: 0px;
   height: auto;
-  min-height: 90vh;
+  min-height: 70vh;
 }
 .settingSlider{
   width: 100%;
@@ -1032,7 +1086,74 @@ input[type=range] {
   margin: 10px 0;
   width: 100%;
 }
+/* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  
+  cursor: pointer;
+  /* font-size: 22px; */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+}
 
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 4vw;
+  width: 4vw;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #002e5a;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 1.25vw;
+  top: 0.5vw;
+  width: 1vw;
+  height: 2vw;
+  border: solid white;
+  border-width: 0 10px 10px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 input[type=range]:focus {
   outline: none;
 }
@@ -1122,10 +1243,10 @@ input[type=range]:focus::-ms-fill-upper {
   <body>
     <div id="curtain"><p class="center">LOADING</p></div>
       <div id="menu"> 
-        <button class="tablink" onclick="openPage('Inventory', this, '#002e5a')">Inventory</button>
-        <button  class="tablink" onclick="openPage('Quests', this, '#002e5a')">Quests</button>
-        <button class="tablink" onclick="openPage('Help', this, '#002e5a')" id="defaultOpen">Help</button>
-        <button class="tablink" onclick="openPage('Settings', this, 'orange')">Settings</button>
+        <button class="tablink" onclick="openPage('Inventory', this, '#002e5a')" id="Inventory-link">Inventory</button>
+        <button  class="tablink" onclick="openPage('Quests', this, '#002e5a')"id="Quests-link">Quests</button>
+        <button class="tablink" onclick="openPage('Help', this, '#002e5a')" id="Help-link">Help</button>
+        <button class="tablink" onclick="openPage('Settings', this, 'orange')"id="Settings-link">Settings</button>
         <div id="Inventory" class="tabcontent">
           <h3>Ekwipunek</h3>
           <p>Twój ekwipunek jest pusty...</p>
@@ -1157,55 +1278,30 @@ input[type=range]:focus::-ms-fill-upper {
           <h3>Ustawienia</h3>
           <table class="menuTable" >
             <tr>
-            <td class="menuTable">timeSpeed</td>
-            <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-            <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
+            <td class="menuTable">playerSpeed</td>
+            <td class="menuTable"><b id="playerSpeedValue">0</b></td>
+            <td class="menuTable" ><input type="range" class="settingSlider" id="playerSpeed" value="0.2" min="-1" max="1"step="0.01"></input></td>
               
             </tr>
             <tr>
               <td class="menuTable">timeSpeed</td>
               <td class="menuTable"><b id="timeSpeedValue">0</b></td>
               <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                
-              </tr>
-              <tr>
-                <td class="menuTable">timeSpeed</td>
-                <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                  
-                </tr>
+            </tr>
+            <tr>
+              <td class="menuTable" >Debug</td>
+               <td class="menuTable">
+                <b  id="debugValue">false</b>
+              </td>
+              <td class="menuTable">
+                <label class="container" id="debugC">
+                  <input type="checkbox" id="debug" value="debug" >
+                  <span class="checkmark"></span>
+                </label>
 
-                <tr>
-                  <td class="menuTable">timeSpeed</td>
-                  <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                  <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                    
-                  </tr>
-                  <tr>
-                    <td class="menuTable">timeSpeed</td>
-                    <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                    <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                      
-                    </tr>
-                    <tr>
-                      <td class="menuTable">timeSpeed</td>
-                      <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                      <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                        
-                      </tr>
-                      <tr>
-                        <td class="menuTable">timeSpeed</td>
-                        <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                        <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                          
-                        </tr>
-                        <tr>
-                          <td class="menuTable">timeSpeed</td>
-                          <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-                          <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                            
-                          </tr>
+              </td>
 
+            </tr>
           </table>
         </div>
        
@@ -1213,8 +1309,8 @@ input[type=range]:focus::-ms-fill-upper {
         
       </div>
     <canvas></canvas>
-    <img class="center" id="crosshair" src="resources/crosshair.png"></img>
-     <div id="clock">00:00</div>
+    <img class="center" id="crosshair" src="resources/crosshair.png" draggable="false"></img>
+     <div id="clock">12:00</div>
     <div id="console">
         <!-- dayLength<input type="range" id="dayLength" value="2048" min="64" max="4096"step="8"></input><br> -->
        ~
