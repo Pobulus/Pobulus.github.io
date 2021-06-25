@@ -194,6 +194,7 @@ function init() {
   document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
   var canvas = document.querySelector('canvas');
   console.log("INITIALIZED");
+
   canvas.requestPointerLock = canvas.requestPointerLock ||canvas.mozRequestPointerLock;
   document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
 
@@ -202,6 +203,7 @@ function init() {
     canvas.requestPointerLock();
   }
 }
+$("#curtain").hide();
 }
 var elem = document.documentElement;
 let fullscr = false;
@@ -337,24 +339,27 @@ function closeFullscreen(){
 }
 
 var hour = 0;
-var dayLength = 100000;
+var ingameTime = 0;
+var dayLength = 8000;
+var timeSpeed = 1.0;
 function parseHour(x){
   return String(Math.floor(hour/6))+":"+String(hour%6)+"0";
 }
 
 function animation( time ) {
 	renderer.render( scene, camera );
-  sun.position.x = camera.position.x+30*Math.sin(time/dayLength);
-  sun.position.z = camera.position.z+30*Math.sin(time/dayLength);
-  sun.position.y = camera.position.y+50*Math.cos(time/dayLength);
-  amb_light.color.r = Math.max(1*Math.sin(time/dayLength)**6-0.4, 0);
-  scene.background.r = Math.max(0.8*Math.sin(time/dayLength)**6-0.4, 0);
-  sun.material.color = new THREE.Color(((0.4*Math.sin(time/dayLength)**6)+0.6), 0.7, 0.3);
-  scene.background.g = 0.6*Math.cos(time/dayLength);
-  scene.background.b = 0.8*Math.cos(time/dayLength);
+  ingameTime += timeSpeed;
+  sun.position.x = camera.position.x+30*Math.sin(ingameTime/dayLength);
+  sun.position.z = camera.position.z+30*Math.sin(ingameTime/dayLength);
+  sun.position.y = camera.position.y+50*Math.cos(ingameTime/dayLength);
+  amb_light.color.r = Math.max(1*Math.sin(ingameTime/dayLength)**6-0.4, 0);
+  scene.background.r = Math.max(0.8*Math.sin(ingameTime/dayLength)**6-0.4, 0);
+  sun.material.color = new THREE.Color(((0.4*Math.sin(ingameTime/dayLength)**6)+0.6), 0.7, 0.3);
+  scene.background.g = 0.6*Math.cos(ingameTime/dayLength);
+  scene.background.b = 0.8*Math.cos(ingameTime/dayLength);
   scene.fog.color = scene.background;
   general_light.intensity = Math.max(scene.background.b, 0.3);
-  hour = Math.round(71.5+(Math.cos(time/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(time/dayLength/2+Math.PI/2))*71.5);
+  hour = Math.round(71.5+(Math.cos(ingameTime/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(ingameTime/dayLength/2+Math.PI/2))*71.5);
   $("#clock").text(String(parseHour(hour)));
   for (const objId in lookaters){
     var curObj = scene.getObjectById(lookaters[objId]);
@@ -370,41 +375,48 @@ function animation( time ) {
   applyVelocity(camera, camera_velocity, debug);
   playerHitbox.position.copy(camera.position);
   playerHitbox.translateY(-0.4);
-  var originPoint = playerHitbox.position.clone();
-  grounded = 0;
+  
   if(!debug){
-    for (var vertexIndex = 0; vertexIndex < playerHitbox.geometry.attributes.position.count; vertexIndex++)
-    {
-        var localVertex = new THREE.Vector3();
-        var globalVertex = new THREE.Vector3();
-        localVertex.fromBufferAttribute( playerHitbox.geometry.attributes.position, vertexIndex ); 
-        globalVertex = localVertex.applyMatrix4( playerHitbox.matrix );
-        var directionVector = globalVertex.sub( playerHitbox.position );
-        var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
-        var collisionResults = ray.intersectObjects( collidableMeshList );
-        if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
-          if(directionVector.y>0.4&&jumped){
-            camera.position.y -= 0.0005;
-            jumped = true; jump_lim = camera.position.y-2;}
-          if(directionVector.y<-0.35){
-            applyAcceleration(camera_velocity, repulsion_vector); grounded++; jump_lim = camera.position.y+2; }
-          if(directionVector.y>-0.2&&directionVector.y<0.3){
-            var antiCollisionResults = ray.intersectObjects( antiCollidableMeshList );
-            if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
-              }else{
-            camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
-            camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
-            }
-          }
-      }
-    }
-    $("#console").html(String(jump_lim)+"<br>"+String( grounded)+"<br>"+String(jumped));
-    if (grounded>65)jumped = false;else jumped = true;	
+    collisionDetection();
   }
 }
 
+
 const repulsion_vector = new THREE.Vector3(0, 0.01,0);
 const interactRange = 2;
+
+
+function collisionDetection(){
+  var originPoint = playerHitbox.position.clone();
+  grounded = 0;
+  for (var vertexIndex = 0; vertexIndex < playerHitbox.geometry.attributes.position.count; vertexIndex++){
+    var localVertex = new THREE.Vector3();
+    var globalVertex = new THREE.Vector3();
+    localVertex.fromBufferAttribute( playerHitbox.geometry.attributes.position, vertexIndex ); 
+    globalVertex = localVertex.applyMatrix4( playerHitbox.matrix );
+    var directionVector = globalVertex.sub( playerHitbox.position );
+    var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+    var collisionResults = ray.intersectObjects( collidableMeshList );
+    if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) {
+      if(directionVector.y>0.4&&jumped){
+        camera.position.y -= 0.0005;
+        jumped = true; jump_lim = camera.position.y-2;}
+      if(directionVector.y<-0.35){
+        applyAcceleration(camera_velocity, repulsion_vector); grounded++; jump_lim = camera.position.y+2; }
+      if(directionVector.y>-0.2&&directionVector.y<0.3){
+        var antiCollisionResults = ray.intersectObjects( antiCollidableMeshList );
+        if ((antiCollisionResults.length > 0 && antiCollisionResults[0].distance < directionVector.length())){
+      
+          }else{
+          camera.position. x += directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).x;
+          camera.position.z -= directionVector.negate().projectOnPlane(global_axis_y).setLength(acc_val/25).z;
+        }
+      }
+    }
+  }
+    // $("#console").html(String(ingameTime)+"<br>"+String( grounded)+"<br>"+String(jumped));
+    if (grounded>65)jumped = false;else jumped = true;	
+}
 function interact(){
         var rayDirection = new THREE.Vector3();
         camera.getWorldDirection(rayDirection);
@@ -432,7 +444,11 @@ document.getElementById("cameraTouchBox").addEventListener("touchmove", handleMo
 document.getElementById("movementTouchBox").addEventListener("touchstart", handleStartMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchend", handleEndMovement, false);
 document.getElementById("movementTouchBox").addEventListener("touchmove", handleMoveMovement, false);
-document.getElementById("dayLength").addEventListener("change", function(){dayLength = document.getElementById("dayLength").value});
+document.getElementById("timeSpeed").addEventListener("input", function(){timeSpeed = parseFloat(document.getElementById("timeSpeed").value); $("#timeSpeedValue").text(timeSpeed)});
+// document.getElementById("dayLength").addEventListener("change", function(){dayLength = document.getElementById("dayLength").value});
+
+
+
 var keysPressed = {};
 
 var acc_val = 0.2;
@@ -698,14 +714,12 @@ function handleEndMovement(evt) {
     } 
   }
 }
-
 window.onload = init();
 var global_axis_y = new THREE.Vector3(0,1,0);
 var camera_global_direction = new THREE.Vector3();
 var camera_velocity = new THREE.Vector3(0 ,0, 0);
 var camera_acceleration = new THREE.Vector3(0,0,0);
 var gravity = new THREE.Vector3(0,-0.01,0);
-
 function rotateCamera(hor, vert){
   camera.getWorldDirection(camera_global_direction);
   camera.rotateOnWorldAxis(global_axis_y, hor);
@@ -715,10 +729,8 @@ function rotateCamera(hor, vert){
     camera.rotateX(vert);
   }
 }
-
-
-      </script>
-      <style>
+    </script>
+    <style>
         canvas {
         position: absolute;
         width : 100vw;
@@ -745,7 +757,6 @@ function rotateCamera(hor, vert){
         align-items: center;
         justify-content: center;
       }
-
       #movementTouchBox{
         z-index: 100;
         position: absolute;
@@ -756,7 +767,6 @@ function rotateCamera(hor, vert){
         opacity: 33%;
         background-color: black;
         border-radius: 100vw;
-
         font-size: 10vw;
         display: flex;
         align-items: center;
@@ -830,8 +840,6 @@ function rotateCamera(hor, vert){
         border-radius: 2vw;
         z-index: 200;
         bottom: 2vw;
-        
-        
       }
       #portrait-box{
         height: 29vh;
@@ -846,7 +854,6 @@ function rotateCamera(hor, vert){
         object-fit: cover;
         object-position: 50% 0%; 
         border-radius: 2vw;
-        
       }
       #speaker-name{
         position: relative;
@@ -862,17 +869,37 @@ function rotateCamera(hor, vert){
         font-family: monospace;
         vertical-align: top;
       }
-      
-      </style>
+      #curtain{
+        z-index: 10000;
+        background-color: black;
+        color: white;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        vertical-align: middle;
+        font-size: 20vw;
+      }
+      .center{
+        margin: auto;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
   </head>
   <body>
+    <div id="curtain"><p class="center">LOADING</div>
     <canvas></canvas>
+
     <div id="clock">00:00</div>
     <div id="console">
-        dayLength<input type="range" id="dayLength" value="100000" min="1000" max="100000"step="100"></input><br>
-
-
-
+        <!-- dayLength<input type="range" id="dayLength" value="2048" min="64" max="4096"step="8"></input><br> -->
+        timeSpeed<input type="range" id="timeSpeed" value="1" min="-50" max="50"step="1"></input><b id="timeSpeedValue"></b>
     </div>
     <div id="cameraTouchBox"> 👁️ </div>
     <div id="movementTouchBox"> 🕹️ </div>
@@ -881,12 +908,12 @@ function rotateCamera(hor, vert){
     <div id="textbox">
       <table>
         <tr>
-         <td rowspan="2" style="border:4px solid white;background:#aaa;opacity: 100%; border-radius: 2vw;"><div id="portrait-box"><img id="portrait"src="resources/npc_2_front.png"></img></div></td>
-          <td><div id="speaker-name">Studenci UŚ</div></td>
+         <td rowspan="2" style="border:4px solid white;background:#aaa;opacity: 100%; border-radius: 2vw;"><div id="portrait-box"><img id="portrait"src=""></img></div></td>
+          <td><div id="speaker-name">speaker-name</div></td>
         </tr>
         <tr>
           <td>
-            <div id="text-area">Hej! Daj paluszka...
+            <div id="text-area">text-area
             </div>
           </td>
         </tr>
