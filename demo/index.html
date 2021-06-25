@@ -241,7 +241,21 @@ var elem = document.documentElement;
 let fullscr = false;
 
 
-
+document.addEventListener("fullscreenchange", function (){console.log("zmiana ekrana");document.removeEventListener("touchstart", openFullscreen);
+      document.removeEventListener("dblclick", openFullscreen);
+      
+      console.log("Resizing...");
+      // console.log(document.fullscreenElement);
+      init();
+      document.querySelector('canvas').requestPointerLock();
+    });
+      document.addEventListener("webkitfullscreenchange", function (){console.log("zmiana ekrana");document.removeEventListener("touchstart", openFullscreen);
+      document.removeEventListener("dblclick", openFullscreen);
+      console.log("Resizing...");
+      // console.log(document.fullscreenElement);
+      init();
+      document.querySelector('canvas').requestPointerLock();
+    });
 function openFullscreen() {
           fullscr = true;
         if (elem.requestFullscreen) {
@@ -251,18 +265,9 @@ function openFullscreen() {
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
-        sleep(500);//give it time to resize
-        if (
-  document.fullscreenElement || /* Standard syntax */
-  document.webkitFullscreenElement || /* Safari and Opera syntax */
-  document.msFullscreenElement /* IE11 syntax */
-) {
-      document.removeEventListener("touchstart", openFullscreen);
-      document.removeEventListener("dblclick", openFullscreen);
-      console.log("Resizing...")
-      init();
-  }
+
 }
+
 var boxes = [];
 var light;
 function addLight(x, y, z) {
@@ -464,7 +469,7 @@ function interact(){
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.getElementById("welcome").addEventListener("click", function(e){openFullscreen(); $("#welcome").hide(); paused = false;document.querySelector('canvas').requestPointerLock();}, false);
+document.getElementById("welcome").addEventListener("click", function(e){openFullscreen(); document.querySelector('canvas').requestPointerLock(); $("#welcome").hide(); paused = false;}, false);
 document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", touchControlsInit, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
@@ -531,6 +536,9 @@ function handleKeydown(event){
    }
    if (keysPressed['z']) {
       toggleDebug();
+      init();
+      // camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
+      
    }
 }
 
