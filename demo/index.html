@@ -30,7 +30,14 @@
       <script type="module">
       
 import * as THREE from 'https://cdn.skypack.dev/pin/three@v0.128.0-SK0zhlI7UZNd0gIQdpJa/mode=imports/optimized/three.js';
-
+let quests = {
+  "Otwórz listę zadań": true,
+  "Znajdź paluszki dla studentów": false,
+  
+};
+let inventory = {
+  "paluszki": 0,
+};
 let camera, scene, renderer;
 let step;
 var grounded = true;
@@ -564,19 +571,30 @@ function handleKeydown(event){
 }
 
 var debug = false;
+
+function updateMenu(){
+  $("#questlog").html("<tbody></tbody>");
+  for (var key in quests){
+    var status = "?";
+    if (quests[key]) status = "✔️"; else status = "❌";
+    $("#questlog > tbody:last-child").append("<tr><td colspan=\"3\" align=\"left\">"+key+"</td><td>"+status+"</td></tr>")
+  }
+}
+
+
 function togglePause(){
   paused = !paused;
-     if (paused){
-      $("#menu").show();
-      if(!touchscreen){
+  if (paused){
+    updateMenu();
+    $("#menu").show();
+    if(!touchscreen){
       document.exitPointerLock();}
-     }else {$("#menu").hide()
-      if(!touchscreen){
+  }else {$("#menu").hide()
+    if(!touchscreen){
       var canvas = document.querySelector('canvas');
       canvas.requestPointerLock();
+    }
   }
-  
-   }
 }
 function toggleDebug(){
   debug = !debug;
@@ -1382,10 +1400,8 @@ input[type=range]:focus::-ms-fill-upper {
         
         <div id="Quests" class="tabcontent">
           <h3>Zadania</h3>
-          <table class="menuTable" >
-              <tr>
-              <td colspan="3" align="left"><p>Otwórz spis zadań</p></td><td>✔️</td>
-              </tr>
+          <table class="menuTable" id="questlog">
+              <tr><td colspan="3" align="left"><p>Otwórz spis zadań</p></td><td>✔️</td></tr>
               <tr>
               <td colspan="3"  align="left"><p>Znajdź paluszki dla studentów.</p></td><td>❌</td>
               </tr>
