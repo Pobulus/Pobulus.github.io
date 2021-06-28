@@ -486,7 +486,7 @@ function interact(){
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.getElementById("welcome").addEventListener("click", function(e){ $("#welcome").hide(); openFullscreen(); document.querySelector('canvas').requestPointerLock();paused = false;console.log(playerSpeed)}, false);
+document.getElementById("welcome").addEventListener("click", function(e){ $("#welcome").hide(); openFullscreen(); if(!touchscreen)document.querySelector('canvas').requestPointerLock();paused = false;}, false);
 // document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", touchControlsInit, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
@@ -512,7 +512,7 @@ document.getElementById("fullscrC").addEventListener("click", function(){fullscr
 function touchControlsInit(){
   touchscreen=true;
   $("#touch-control-box").show();
-  document.getElementById("textbox").addEventListener("touchstart", function(){console.log("twoja stara");$("#textbox").hide()}, false);
+  document.getElementById("textbox").addEventListener("touchstart", function(){$("#textbox").hide()}, false);
 }
 
 
@@ -1108,7 +1108,7 @@ function rotateCamera(hor, vert){
       }
       #welcome{
         z-index: 1100;
-        display: none;
+        /* display: none; */
         background-color: #002e5a;
         color: white;
         position: absolute;
@@ -1119,7 +1119,7 @@ function rotateCamera(hor, vert){
         height: 100vh;
         text-align: center;
         vertical-align: middle;
-        font-size: 7vw;
+        font-size: 5vw;
       }
       #menu{
         overflow-y: auto;
@@ -1350,10 +1350,10 @@ input[type=range]:focus::-ms-fill-upper {
     <div id="curtain"><h0 class="center">ŁADOWANIE<br/></h0>
       <p style="font-size: 20px;text-align: center"> Jezeli ten napis nie znika to twoja przegladarka moze byc przestarzala </p>
     </div>
-    <div id="welcome">Witamy!<br>
+    <div id="welcome"><div class="center">Witamy!<br>
     Kliknij lub dotknij w dowolnym miejscu aby rozpocząć.<br>
     Sugerujemy poziomą orientację ekranu.
-    </div>
+    </div></div>
       <div id="menu"> 
         <button class="tablink" onclick="openPage('Inventory', this, '#002e5a')" id="Inventory-link">Inventory</button>
         <button  class="tablink" onclick="openPage('Quests', this, '#002e5a')"id="Quests-link">Quests</button>
