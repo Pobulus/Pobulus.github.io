@@ -247,7 +247,7 @@ let fullscr = false;
 
 
 function initRenderer(width, height){
-  if(width/height < 1) height = height/2;
+  if(!(width/height > 1)) height = height/2;
   renderer.setSize( width, height, true );
   document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
   camera.aspect = width/height;
@@ -769,7 +769,7 @@ function handleStartInteract(evt) {
 function handleStartMenu(evt) {
   evt.preventDefault();
   togglePause();
-  if (paused) $("#menuTouchBox").html("<b>❌</b>");
+  if (paused) $("#menuTouchBox").html("❌");
   else $("#menuTouchBox").html("<b>︙</b>")
   
 }
@@ -1031,68 +1031,7 @@ function rotateCamera(hor, vert){
         font-family: monospace;
         vertical-align: top;
       }
-      @media (orientation: portrait){
-        #crosshair {
-          top: 25vh;
-        }
-        body{
-          background-image: linear-gradient(to bottom , rgb(48, 0, 158), rgb(0, 153, 255));
-        }
-          #text-area{
-            font-size: 3.5vw;
-            height: 10vh;
-        }
-        #speaker-name{
-          font-size: 4.5vw;
-        }
-        #textbox{
-          bottom: 35vh;
-        }
-        #portrait-box{
-          height: 12vh;
-          width: 12vh;
-        }
-        #portrait{
-          height: 12.75vh;
-          width: 100%;
-        }
-        #movementTouchBox{
-          height: 43vw;
-          width: 43vw;
-          bottom: 0px;
-          font-size: 12vw;
-        }
-        #cameraTouchBox{
-          height: 43vw;
-          width: 43vw;
-          bottom: 0px;
-          font-size: 12vw;
-        }
-        #interactTouchBox {
-          bottom: 43vw;
-          font-size: 10vw;
-          height: 12vw;
 
-        }
-        #jumpTouchBox {
-          bottom: 43vw;
-          font-size: 10vw;
-          height: 12vw;
-
-        }
-        #Inventory-link{
-          font-size: 3.5vw;
-        }
-        #Quests-link{
-          font-size: 3.5vw;
-        }
-        #Help-link{
-          font-size: 3.5vw;
-        }
-        #Settings-link{
-          font-size: 3.5vw;
-        }
-    }
       #curtain{
         z-index: 10000;
         background-color: black;
@@ -1343,7 +1282,72 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: #002E5A;
 }
+@media (orientation: portrait){
+        #crosshair {
+          top: 25vh;
+        }
+        body{
+          background-image: linear-gradient(to bottom , rgb(48, 0, 158), rgb(0, 153, 255));
+        }
+          #text-area{
+            font-size: 3.5vw;
+            height: 10vh;
+        }
+        #speaker-name{
+          font-size: 4.5vw;
+        }
+        #textbox{
+          bottom: 35vh;
+        }
+        #portrait-box{
+          height: 12vh;
+          width: 12vh;
+        }
+        #portrait{
+          height: 12.75vh;
+          width: 100%;
+        }
+        #movementTouchBox{
+          height: 43vw;
+          width: 43vw;
+          bottom: 0px;
+          font-size: 12vw;
+        }
+        #cameraTouchBox{
+          height: 43vw;
+          width: 43vw;
+          bottom: 0px;
+          font-size: 12vw;
+        }
+        #interactTouchBox {
+          bottom: 43vw;
+          font-size: 10vw;
+          height: 12vw;
 
+        }
+        #jumpTouchBox {
+          bottom: 43vw;
+          font-size: 10vw;
+          height: 12vw;
+
+        }
+        .tablink{
+          font-size: 3.5vw;
+        }
+        #clock{
+          font-size: 4vw;
+        }
+        #menu{
+          width: 100vw;
+          left: 0px;
+          height: 96vh;
+          top: 10vw;
+        }
+        .tabcontent{
+          min-height:86vh;
+          padding: 5vh 2vw;
+        }
+    }
     </style>
   </head>
   <body>
@@ -1380,7 +1384,10 @@ input[type=range]:focus::-ms-fill-upper {
           <h3>Zadania</h3>
           <table class="menuTable" >
               <tr>
-              <td><p>Znajdź paluszki dla studentów.</p></td><td>NIEUKOŃCZONE</td>
+              <td colspan="3" align="left"><p>Otwórz spis zadań</p></td><td>✔️</td>
+              </tr>
+              <tr>
+              <td colspan="3"  align="left"><p>Znajdź paluszki dla studentów.</p></td><td>❌</td>
               </tr>
 
           </table>
@@ -1391,14 +1398,14 @@ input[type=range]:focus::-ms-fill-upper {
           <table class="menuTable" >
             <tr>
             <td class="menuTable">playerSpeed</td>
-            <td class="menuTable"><b id="playerSpeedValue">0</b></td>
-            <td class="menuTable" ><input type="range" class="settingSlider" id="playerSpeed" value="0.2" min="-1" max="1"step="0.01"></input></td>
+            <td class="menuTable"><b id="playerSpeedValue">0</b></td> </tr><tr>
+            <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="playerSpeed" value="0.2" min="-1" max="1"step="0.01"></input></td>
               
             </tr>
             <tr>
               <td class="menuTable">timeSpeed</td>
-              <td class="menuTable"><b id="timeSpeedValue">0</b></td>
-              <td class="menuTable" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
+              <td class="menuTable"><b id="timeSpeedValue">0</b></td></tr><tr></tr>
+              <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
             </tr>
             <tr>
               <td class="menuTable" >Debug</td>
