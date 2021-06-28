@@ -518,7 +518,7 @@ function touchControlsInit(){
 
 var keysPressed = {};
 
-var playerSpeed = 0.1;
+var playerSpeed = 0.15;
 var jump_lim = 2.5;
 
 
@@ -752,7 +752,7 @@ function handleStartCamera(evt) {
 }
 function handleStartJump(evt) {
   evt.preventDefault();
-  if(jumped == false||debug){ camera_acceleration.y = 7*playerSpeed; jumped = true;}
+  if(jumped == false||debug){ camera_acceleration.y = 1.4; jumped = true;}
   if(debug)camera_acceleration.y = playerSpeed;
   
 }
@@ -1344,7 +1344,7 @@ input[type=range]:focus::-ms-fill-upper {
           top: 10vw;
         }
         .tabcontent{
-          min-height:86vh;
+          min-height:80vh;
           padding: 5vh 2vw;
         }
     }
@@ -1398,38 +1398,35 @@ input[type=range]:focus::-ms-fill-upper {
           <table class="menuTable" >
             <tr>
             <td class="menuTable">playerSpeed</td>
-            <td class="menuTable"><b id="playerSpeedValue">0</b></td> </tr><tr>
-            <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="playerSpeed" value="0.2" min="-1" max="1"step="0.01"></input></td>
+            <td class="menuTable"><b id="playerSpeedValue">0.15</b></td> </tr><tr>
+            <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="playerSpeed" value="0.15" min="-1" max="1"step="0.01"></input></td>
               
             </tr>
             <tr>
               <td class="menuTable">timeSpeed</td>
-              <td class="menuTable"><b id="timeSpeedValue">0</b></td></tr><tr></tr>
+              <td class="menuTable"><b id="timeSpeedValue">1</b></td></tr><tr></tr>
               <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
             </tr>
             <tr>
-              <td class="menuTable" >Debug</td>
+              <td style="text-align: left" >
+                <label class="container" id="debugC">Debug
+                <input type="checkbox" id="debug" value="debug" >
+                <span class="checkmark"></span>
+              </label></td>
                <td class="menuTable">
                 <b  id="debugValue">false</b>
               </td>
-              <td class="menuTable">
-                <label class="container" id="debugC">
-                  <input type="checkbox" id="debug" value="debug" >
-                  <span class="checkmark"></span>
-                </label>
-              </td>
+
             </tr>
             <tr>
-              <td class="menuTable" >Fullscreen</td>
+              <td  style="text-align: left"> <label class="container" id="fullscrC">Fullscreen
+                <input type="checkbox" id="fullscr" value="fullscr" checked >
+                <span class="checkmark"></span>
+              </label></td>
                <td class="menuTable">
                 <b  id="fullscrValue">true</b>
               </td>
-              <td class="menuTable">
-                <label class="container" id="fullscrC">
-                  <input type="checkbox" id="fullscr" value="fullscr" checked >
-                  <span class="checkmark"></span>
-                </label>
-              </td>
+
             </tr>
           </table>
         </div>
