@@ -151,8 +151,12 @@ function init( width, height) {
      return false;
 });
   $("#Settings-link").click();
-  $("#cameraTouchBox").hide();$("#movementTouchBox").hide();$("#jumpTouchBox").hide();$("#console").hide();
-  $("#textbox").hide();$("#interactTouchBox").hide();$("#menu").hide();$("#menuTouchBox").hide();
+  $("#touch-control-box").hide()
+  $("#console").hide();
+  $("#textbox").hide();
+  
+  $("#menu").hide();
+  
   camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 100 );
   camera.position.y = 0.7;
   camera.rotation.x = 0;
@@ -222,9 +226,9 @@ function init( width, height) {
   makeNPC(Math.round(Math.random()), (9.8*Math.random()-4.9), (9.8*Math.random()-4.9));
   }
   renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setSize( width, height );
+ 
   renderer.setAnimationLoop( animation );
-  document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
+  initRenderer(width, height);
   var canvas = document.querySelector('canvas');
   console.log("INITIALIZED");
 
@@ -242,6 +246,14 @@ var elem = document.documentElement;
 let fullscr = false;
 
 
+function initRenderer(width, height){
+  if(width/height < 1) height = height/2;
+  renderer.setSize( width, height, true );
+  document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
+  camera.aspect = width/height;
+  camera.updateProjectionMatrix();
+}
+
 // document.addEventListener("fullscreenchange", function (){console.log("zmiana ekrana");document.removeEventListener("touchstart", openFullscreen);
 //       document.removeEventListener("dblclick", openFullscreen);
       
@@ -258,7 +270,7 @@ let fullscr = false;
 //       document.querySelector('canvas').requestPointerLock();
 //     });
 function openFullscreen() {
-          fullscr = true;
+         
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -266,7 +278,8 @@ function openFullscreen() {
         } else if (elem.msRequestFullscreen) { /* IE11 */
             elem.msRequestFullscreen();
         }
-
+        fullscr = true;
+        initRenderer(screen.width, screen.height);
 
 }
 
@@ -367,7 +380,7 @@ function sleep(milliseconds) {
 }
 
 function closeFullscreen(){
-        fullscr = false;
+        
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.webkitExitFullscreen) { /* Safari */
@@ -375,6 +388,8 @@ function closeFullscreen(){
         } else if (document.msExitFullscreen) { /* IE11 */
             document.msExitFullscreen();
         }
+        fullscr = false;
+        initRenderer(window.innerWidth, window.innerHeight);
 }
 
 var hour = 0;
@@ -471,8 +486,8 @@ function interact(){
 }
 let touchscreen = false;
 document.addEventListener("mousemove", updateDisplay, false);
-document.getElementById("welcome").addEventListener("click", function(e){ $("#welcome").hide(); openFullscreen(); init(screen.width, screen.height);  document.querySelector('canvas').requestPointerLock();paused = false;console.log(playerSpeed)}, false);
-document.addEventListener("touchstart", openFullscreen, false);
+document.getElementById("welcome").addEventListener("click", function(e){ $("#welcome").hide(); openFullscreen(); document.querySelector('canvas').requestPointerLock();paused = false;console.log(playerSpeed)}, false);
+// document.addEventListener("touchstart", openFullscreen, false);
 document.addEventListener("touchstart", touchControlsInit, false);
 document.getElementById("cameraTouchBox").addEventListener("touchstart", handleStartCamera, false);
 document.getElementById("jumpTouchBox").addEventListener("touchstart", handleStartJump, false);
@@ -490,13 +505,13 @@ document.getElementById("movementTouchBox").addEventListener("touchmove", handle
 document.getElementById("timeSpeed").addEventListener("input", function(){timeSpeed = parseFloat(document.getElementById("timeSpeed").value); $("#timeSpeedValue").text(timeSpeed)});
 document.getElementById("playerSpeed").addEventListener("input", function(){playerSpeed = parseFloat(document.getElementById("playerSpeed").value); $("#playerSpeedValue").text(playerSpeed)});
 document.getElementById("debugC").addEventListener("click", function(){debug = document.getElementById("debug").checked; $("#debugValue").text(debug)});
+document.getElementById("fullscrC").addEventListener("click", function(){fullscr = document.getElementById("fullscr").checked; console.log(fullscr);if(fullscr)closeFullscreen();else openFullscreen(); $("#fulscrValue").text(fullscr)});
+
+
+
 function touchControlsInit(){
   touchscreen=true;
-  $("#menuTouchBox").show();
-  $("#interactTouchBox").show();
-  $("#cameraTouchBox").show();
-  $("#movementTouchBox").show();
-  $("#jumpTouchBox").show(); 
+  $("#touch-control-box").show();
   document.getElementById("textbox").addEventListener("touchstart", function(){console.log("twoja stara");$("#textbox").hide()}, false);
 }
 
@@ -525,7 +540,7 @@ function handleKeydown(event){
    }if (keysPressed['`']) {
     $("#console").show();
    }if (keysPressed[' ']) {
-    if(jumped == false||debug){ camera_acceleration.y = 1.4; jumped = true;}
+    if(jumped == false||debug){ camera_acceleration.y = 1; jumped = true;}
     if(debug)camera_acceleration.y = playerSpeed;
    }if (keysPressed['shift']&&debug) {
     camera_acceleration.y = -playerSpeed;
@@ -538,7 +553,11 @@ function handleKeydown(event){
    }
    if (keysPressed['z']) {
       toggleDebug();
-      init();
+      // camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
+      
+   }
+   if (keysPressed['g']) {
+      openFullscreen();
       // camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 100 );
       
    }
@@ -750,6 +769,8 @@ function handleStartInteract(evt) {
 function handleStartMenu(evt) {
   evt.preventDefault();
   togglePause();
+  if (paused) $("#menuTouchBox").html("<b>❌</b>");
+  else $("#menuTouchBox").html("<b>︙</b>")
   
 }
 function handleEndInteract(evt) {
@@ -957,11 +978,12 @@ function rotateCamera(hor, vert){
         justify-content: center;
       }
       #menuTouchBox{
-        z-index: 600;
+        z-index: 1100;
         position: absolute;
         left:5px;
         top: 0px;
         height: 10vw;
+        width: 10vw;
         opacity: 33%;
         background-color: black;
         font-size: 8vw;
@@ -1009,6 +1031,68 @@ function rotateCamera(hor, vert){
         font-family: monospace;
         vertical-align: top;
       }
+      @media (orientation: portrait){
+        #crosshair {
+          top: 25vh;
+        }
+        body{
+          background-image: linear-gradient(to bottom , rgb(48, 0, 158), rgb(0, 153, 255));
+        }
+          #text-area{
+            font-size: 3.5vw;
+            height: 10vh;
+        }
+        #speaker-name{
+          font-size: 4.5vw;
+        }
+        #textbox{
+          bottom: 35vh;
+        }
+        #portrait-box{
+          height: 12vh;
+          width: 12vh;
+        }
+        #portrait{
+          height: 12.75vh;
+          width: 100%;
+        }
+        #movementTouchBox{
+          height: 43vw;
+          width: 43vw;
+          bottom: 0px;
+          font-size: 12vw;
+        }
+        #cameraTouchBox{
+          height: 43vw;
+          width: 43vw;
+          bottom: 0px;
+          font-size: 12vw;
+        }
+        #interactTouchBox {
+          bottom: 43vw;
+          font-size: 10vw;
+          height: 12vw;
+
+        }
+        #jumpTouchBox {
+          bottom: 43vw;
+          font-size: 10vw;
+          height: 12vw;
+
+        }
+        #Inventory-link{
+          font-size: 3.5vw;
+        }
+        #Quests-link{
+          font-size: 3.5vw;
+        }
+        #Help-link{
+          font-size: 3.5vw;
+        }
+        #Settings-link{
+          font-size: 3.5vw;
+        }
+    }
       #curtain{
         z-index: 10000;
         background-color: black;
@@ -1024,6 +1108,7 @@ function rotateCamera(hor, vert){
       }
       #welcome{
         z-index: 1100;
+        display: none;
         background-color: #002e5a;
         color: white;
         position: absolute;
@@ -1325,9 +1410,19 @@ input[type=range]:focus::-ms-fill-upper {
                   <input type="checkbox" id="debug" value="debug" >
                   <span class="checkmark"></span>
                 </label>
-
               </td>
-
+            </tr>
+            <tr>
+              <td class="menuTable" >Fullscreen</td>
+               <td class="menuTable">
+                <b  id="fullscrValue">true</b>
+              </td>
+              <td class="menuTable">
+                <label class="container" id="fullscrC">
+                  <input type="checkbox" id="fullscr" value="fullscr" checked >
+                  <span class="checkmark"></span>
+                </label>
+              </td>
             </tr>
           </table>
         </div>
@@ -1342,15 +1437,17 @@ input[type=range]:focus::-ms-fill-upper {
         <!-- dayLength<input type="range" id="dayLength" value="2048" min="64" max="4096"step="8"></input><br> -->
        ~
     </div>
+    <div id="touch-control-box">
     <div id="cameraTouchBox">👁️</div>
     <div id="movementTouchBox">🕹️</div>
     <div id="jumpTouchBox">🆙</div>
     <div id="interactTouchBox">👆</div>
-    <div id="menuTouchBox">︙</div>
+    <div id="menuTouchBox"><b>︙</b></div>
+    </div>
     <div id="textbox">
       <table >
         <tr>
-         <td rowspan="2" style="border:4px solid white;background:#aaa;opacity: 100%; border-radius: 2vw;"><div id="portrait-box"><img id="portrait"src=""></img></div></td>
+         <td rowspan="2" style="border:4px solid white;background:#aaa;opacity: 100%; border-radius: 2vw;"><div id="portrait-box"><img id="portrait"src="https://pobulus.github.io/demo/resources/npc_1_front.png"></img></div></td>
           <td><div id="speaker-name">speaker-name</div></td>
         </tr>
         <tr>
