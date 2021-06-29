@@ -219,9 +219,11 @@ gyroscope.start();
 
   building = new THREE.Mesh(building_geometry, texture_classroom_1);
   scene.add(building);
-
+  
   building.scale.x = -1;
   building.translateY(1.45);
+  scene2.add(building.clone());
+  console.log(scene2);
   building_outside = new THREE.Mesh(building_geometry, texture_classroom_1_out);
   building_outside.scale.x = 1.001;
   building_outside.scale.z = 1.001;
