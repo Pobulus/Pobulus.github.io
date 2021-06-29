@@ -103,10 +103,12 @@ const texture_npc_1_front = loader.load("https://pobulus.github.io/demo/resource
 const texture_npc_2_front = loader.load("https://pobulus.github.io/demo/resources/npc_2_front.png");
 const texture_npc_3_front = loader.load("https://pobulus.github.io/demo/resources/npc_3_front.png");
 const texture_npc_4_front = loader.load("https://pobulus.github.io/demo/resources/npc_4_front.png");
+const texture_npc_5_front = loader.load("https://pobulus.github.io/demo/resources/npc_5_front.png");
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   texture_npc_2_front.magFilter = THREE.NearestFilter;
   texture_npc_3_front.magFilter = THREE.NearestFilter;
   texture_npc_4_front.magFilter = THREE.NearestFilter;
+  texture_npc_5_front.magFilter = THREE.NearestFilter;
 const texture_door = loader.load("https://pobulus.github.io/demo/resources/door.png")
 const texture_door_double = loader.load("https://pobulus.github.io/demo/resources/door_double.png")
   texture_door.magFilter = THREE.NearestFilter;
@@ -127,6 +129,9 @@ const material_tiles = new THREE.MeshToonMaterial({map: texture_tiles, side: THR
 const material_empty = new THREE.MeshToonMaterial({map: texture_empty, transparent: true, alphaTest: 0.5, side: THREE.BackSide});
 const material_npc_1_front = new THREE.MeshToonMaterial({map: texture_npc_1_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_npc_2_front = new THREE.MeshToonMaterial({map: texture_npc_2_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_npc_3_front = new THREE.MeshToonMaterial({map: texture_npc_3_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_npc_4_front = new THREE.MeshToonMaterial({map: texture_npc_4_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
+const material_npc_5_front = new THREE.MeshToonMaterial({map: texture_npc_5_front, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide});
 const material_door = new THREE.MeshToonMaterial({map: texture_door, side: THREE.DoubleSide});
 const material_door_double = new THREE.MeshToonMaterial({map: texture_door_double, side: THREE.DoubleSide});
  
@@ -255,7 +260,7 @@ function init( width, height) {
   makeATable(0.7);
   lookaters = [];
   for (var cnt = 0; cnt<5; cnt++){
-  makeNPC(Math.round(Math.random()*3), (cnt/2-1), 4.8);
+  makeNPC(cnt, (cnt/2-1), 4.8);
   }
   renderer = new THREE.WebGLRenderer( { antialias: true } );
  
