@@ -1,6 +1,6 @@
 <html>
     <head>
-      <title>DEMO v0.1</title>
+      <title>DEMONS-EYE v0.1</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script>
         function openPage(pageName, elmnt, color) {
@@ -45,7 +45,7 @@ let flags = {
   student:{counter:0,},
   table:{counter:0}
 }
-let camera, scene, renderer;
+let camera, camera2, scene, scene2, renderer, renderer2;
 let step;
 var grounded = true;
 let jumped = false;
@@ -171,19 +171,27 @@ const texture_vending_machine = [
 
   
 ];
-
-
+let gyroscope = new Gyroscope({frequency: 60});
+gyroscope.addEventListener('reading', e => {
+  $("#console").html("Angular velocity along the X-axis " + gyroscope.x);
+  $("#console").append("Angular velocity along the Y-axis " + gyroscope.y);
+  $("#console").append("Angular velocity along the Z-axis " + gyroscope.z);
+});
 
 let building_outside;
 
 function init( width, height) {
+
+
+
+gyroscope.start();
   //Hide touch controls
   $("body").on("contextmenu",function(e){
      return false;
 });
   $("#Settings-link").click();
   $("#touch-control-box").hide()
-  $("#console").hide();
+  // $("#console").hide();
   $("#textbox").hide();
   
   $("#menu").hide();
@@ -197,6 +205,7 @@ function init( width, height) {
   flags = JSON.parse(window.localStorage.getItem("flags"));
   }
   camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 100 );
+  camera2 = new THREE.PerspectiveCamera( 70, width / height, 0.01, 100 );
   camera.position.y = 0.7;
   camera.rotation.x = 0;
   camera.rotation.y = 0;
@@ -204,10 +213,12 @@ function init( width, height) {
   actions = {};
  interactive = [];
   scene = new THREE.Scene();
+  scene2 = new THREE.Scene();
   building_geometry = new THREE.BoxGeometry(10, 3, 10,);
 
   building = new THREE.Mesh(building_geometry, texture_classroom_1);
   scene.add(building);
+
   building.scale.x = -1;
   building.translateY(1.45);
   building_outside = new THREE.Mesh(building_geometry, texture_classroom_1_out);
@@ -265,7 +276,8 @@ function init( width, height) {
   makeNPC(cnt, (cnt/2-1), 4.8);
   }
   renderer = new THREE.WebGLRenderer( { antialias: true } );
- 
+  renderer2 = new THREE.WebGLRenderer( { antialias: true } );
+  renderer2.setAnimationLoop( animation);
   renderer.setAnimationLoop( animation );
   initRenderer(width, height);
   var canvas = document.querySelector('canvas');
@@ -287,9 +299,18 @@ let fullscr = false;
 
 function initRenderer(width, height){
   if(!(width/height > 1)) height = height/2;
-  renderer.setSize( width, height, true );
-  document.body.replaceChild( renderer.domElement, document.getElementsByTagName("canvas")[0])
-  camera.aspect = width/height;
+  renderer.setSize( width/2, height, true );
+  renderer2.setSize( width/2, height, true );
+  console.log(document.getElementsByTagName("canvas"));
+  $("#rightC").append( renderer2.domElement)
+  $("#rightC canvas").css("left", "50vw");
+  $("#leftC canvas").css("left", "0vw");
+  $("canvas").css("position", "absolute");
+  $("#leftC").append( renderer.domElement);
+  console.log(document.getElementsByTagName("canvas"));
+  
+  console.log(document.getElementsByTagName("canvas"));
+  camera.aspect = width/2/height;
   camera.updateProjectionMatrix();
 }
 
@@ -489,6 +510,7 @@ function parseHour(x){
 
 function animation( time ) {
 	renderer.render( scene, camera );
+  renderer2.render( scene, camera );
   if(!paused){
     ingameTime += timeSpeed;
     sun.position.x = camera.position.x+30*Math.sin(ingameTime/dayLength);
@@ -989,13 +1011,20 @@ function rotateCamera(hor, vert){
       }
         canvas {
         position: absolute;
-        width : 100vw;
+        width : 50vw;
         height : 100vh;
         top: 0px;
-        left: 0px;
+        
         padding : 0;
         border : none;
         background-color : black;
+      }
+      #leftC{
+        left: 0px;
+      }
+      #rightC{
+        width: 50vh;
+        left: 50vw;
       }
       #cameraTouchBox{
         z-index: 100;
@@ -1560,7 +1589,8 @@ input[type=range]:focus::-ms-fill-upper {
           
         
       </div>
-    <canvas></canvas>
+      <div id="leftC"><canvas></canvas></div>
+    <div id="rightC"><canvas></canvas></div>
     <img class="center" id="crosshair" src="resources/crosshair.png" draggable="false"></img>
      <div id="clock">12:00</div>
     <div id="console">
