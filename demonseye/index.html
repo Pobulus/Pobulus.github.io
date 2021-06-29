@@ -194,7 +194,7 @@ gyroscope.start();
   $("#touch-control-box").hide()
   $("#console").hide();
   $("#textbox").hide();
-  
+  $("#clock").hide()
   $("#menu").hide();
   if (window.localStorage.getItem("inventory")){
   inventory = JSON.parse(window.localStorage.getItem("inventory"));
@@ -239,6 +239,11 @@ gyroscope.start();
   ground.receiveShadow = true;
   ground.castShadow = true;
   scene.add( ground );
+  ground = new THREE.Mesh(groundgeometry, ground_material);
+  ground.position.y=-0.1;
+  ground.rotation.x=-Math.PI/2;
+  scene2.add(ground);
+
   collidableMeshList.push(ground);
   playerHitbox = new THREE.Mesh(hitboxGeometry, material_player);
   scene.add(playerHitbox);
@@ -269,7 +274,9 @@ gyroscope.start();
   scene.add( amb_light ); 
   scene.add(general_light);
   scene.add(sun);
-
+  scene2.add( amb_light.clone() ); 
+  scene2.add(general_light.clone());
+  scene2.add(sun.clone());
   makeRandomBoxes(1,1);
   makeATable(0.7);
   lookaters = [];
@@ -511,7 +518,7 @@ function parseHour(x){
 
 function animation( time ) {
 	renderer.render( scene, camera );
-  renderer2.render( scene, camera );
+  renderer2.render( scene2, camera );
   if(!paused){
     ingameTime += timeSpeed;
     sun.position.x = camera.position.x+30*Math.sin(ingameTime/dayLength);
@@ -523,6 +530,7 @@ function animation( time ) {
     scene.background.g = 0.6*Math.cos(ingameTime/dayLength);
     scene.background.b = 0.8*Math.cos(ingameTime/dayLength);
     scene.fog.color = scene.background;
+    scene2.background = scene.background;
     general_light.intensity = Math.max(scene.background.b, 0.3);
     hour = Math.round(71.5+(Math.cos(ingameTime/dayLength/2+Math.PI/2))*-Math.sign(Math.sin(ingameTime/dayLength/2+Math.PI/2))*71.5);
     $("#clock").text(String(parseHour(hour)));
