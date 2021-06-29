@@ -173,6 +173,9 @@ const texture_vending_machine = [
 ];
 let gyroscope = new Gyroscope({frequency: 60});
 gyroscope.addEventListener('reading', e => {
+  camera.rotateX(gyroscope.x);
+  camera.rotateY(gyroscope.y);
+  camera.rotateZ(gyroscope.z);
   $("#console").html("Angular velocity along the X-axis " + gyroscope.x);
   $("#console").append("Angular velocity along the Y-axis " + gyroscope.y);
   $("#console").append("Angular velocity along the Z-axis " + gyroscope.z);
@@ -1216,9 +1219,9 @@ function rotateCamera(hor, vert){
         z-index: 500;
       }
       .center{
-        margin: auto;
-        text-align: center;
-        position: absolute;
+        
+        
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -1589,9 +1592,9 @@ input[type=range]:focus::-ms-fill-upper {
           
         
       </div>
-      <div id="leftC"><canvas></canvas></div>
-    <div id="rightC"><canvas></canvas></div>
-    <img class="center" id="crosshair" src="resources/crosshair.png" draggable="false"></img>
+      <div id="leftC"><img class="" id="crosshair" src="resources/crosshair.png" draggable="false"></img><canvas></canvas></div>
+    <div id="rightC"><img class="" id="crosshair" src="resources/crosshair.png" draggable="false"></img><canvas></canvas></div>
+    
      <div id="clock">12:00</div>
     <div id="console">
         <!-- dayLength<input type="range" id="dayLength" value="2048" min="64" max="4096"step="8"></input><br> -->
