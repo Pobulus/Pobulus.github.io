@@ -101,8 +101,12 @@ const texture_classroom_1_out_front = loader.load("https://pobulus.github.io/dem
   texture_classroom_1_out_front.magFilter = THREE.NearestFilter;
 const texture_npc_1_front = loader.load("https://pobulus.github.io/demo/resources/npc_1_front.png");
 const texture_npc_2_front = loader.load("https://pobulus.github.io/demo/resources/npc_2_front.png");
+const texture_npc_3_front = loader.load("https://pobulus.github.io/demo/resources/npc_3_front.png");
+const texture_npc_4_front = loader.load("https://pobulus.github.io/demo/resources/npc_4_front.png");
   texture_npc_1_front.magFilter = THREE.NearestFilter;
   texture_npc_2_front.magFilter = THREE.NearestFilter;
+  texture_npc_3_front.magFilter = THREE.NearestFilter;
+  texture_npc_4_front.magFilter = THREE.NearestFilter;
 const texture_door = loader.load("https://pobulus.github.io/demo/resources/door.png")
 const texture_door_double = loader.load("https://pobulus.github.io/demo/resources/door_double.png")
   texture_door.magFilter = THREE.NearestFilter;
@@ -128,7 +132,9 @@ const material_door_double = new THREE.MeshToonMaterial({map: texture_door_doubl
  
 const npc_materials = [
   material_npc_1_front,
-  material_npc_2_front
+  material_npc_2_front,
+  material_npc_3_front,
+  material_npc_4_front
 ];
 //Box Textures
 const texture_classroom_1 = [
@@ -176,6 +182,12 @@ function init( width, height) {
   $("#menu").hide();
   if (window.localStorage.getItem("inventory")){
   inventory = JSON.parse(window.localStorage.getItem("inventory"));
+  }
+  if (window.localStorage.getItem("quests")){
+  quests = JSON.parse(window.localStorage.getItem("quests"));
+  }
+  if (window.localStorage.getItem("flags")){
+  flags = JSON.parse(window.localStorage.getItem("flags"));
   }
   camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 100 );
   camera.position.y = 0.7;
@@ -243,7 +255,7 @@ function init( width, height) {
   makeATable(0.7);
   lookaters = [];
   for (var cnt = 0; cnt<5; cnt++){
-  makeNPC(Math.round(Math.random()), (cnt/2-1), 4.8);
+  makeNPC(Math.round(Math.random()*3), (cnt/2-1), 4.8);
   }
   renderer = new THREE.WebGLRenderer( { antialias: true } );
  
@@ -325,7 +337,7 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
   npc.position.x = x;
   npc.position.z = z;
   lookaters.push(npc.id);
-  collidableMeshList.push(npc);
+  // collidableMeshList.push(npc);
   npc.name = n;
   interactive.push(npc);
       actions[npc.id] = function(x) {
@@ -636,7 +648,8 @@ function updateMenu(){
   }
   if(empty)$("#inventory").html("twój ekwipunek jest pusty...")
   window.localStorage.setItem("inventory", JSON.stringify(inventory));
-
+  window.localStorage.setItem("quests", JSON.stringify(quests));
+  window.localStorage.setItem("flags", JSON.stringify(flags));
 }
 
 function togglePause(){
@@ -1182,7 +1195,7 @@ function rotateCamera(hor, vert){
 .item:hover .description{
   visibility: visible;
   /* position: absolute; */
-  top: 7vh;
+  top: 10vh;
   left: 0px;
    /* Use half of the width (120/2 = 60), to center the tooltip */
 }
@@ -1487,7 +1500,7 @@ input[type=range]:focus::-ms-fill-upper {
           <h3>Ustawienia</h3>
           <table class="menuTable" >
             <tr>
-              <td style="text-align: center" colspan="2" onclick="window.localStorage.clear(); window.location.reload();">WYKASUJ ZAPISANY POSTĘP</td></tr>
+              <td style="text-align: center;background-color: #002e5a;" colspan="2" onclick="window.localStorage.clear(); window.location.reload();">WYKASUJ ZAPISANY POSTĘP</td></tr>
             <tr>
               <td style="text-align: left" >
                 <label class="container" id="debugC">Debug
