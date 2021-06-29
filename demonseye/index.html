@@ -173,12 +173,10 @@ const texture_vending_machine = [
 ];
 let gyroscope = new Gyroscope({frequency: 60});
 gyroscope.addEventListener('reading', e => {
-  camera.rotateX(gyroscope.y/10);
+  camera.rotateX(-gyroscope.y/10);
   camera.rotateY(gyroscope.x/10);
   camera.rotateZ(gyroscope.z/10);
-  $("#console").html("Angular velocity along the X-axis " + gyroscope.x);
-  $("#console").append("Angular velocity along the Y-axis " + gyroscope.y);
-  $("#console").append("Angular velocity along the Z-axis " + gyroscope.z);
+
 });
 
 let building_outside;
@@ -194,7 +192,7 @@ gyroscope.start();
 });
   $("#Settings-link").click();
   $("#touch-control-box").hide()
-  // $("#console").hide();
+  $("#console").hide();
   $("#textbox").hide();
   
   $("#menu").hide();
