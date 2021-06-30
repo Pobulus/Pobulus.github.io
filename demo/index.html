@@ -175,7 +175,8 @@ const texture_vending_machine = [
 
 
 let building_outside;
-
+let listener, bgm;
+const audioLoader = new THREE.AudioLoader();
 function init( width, height) {
   //Hide touch controls
   $("body").on("contextmenu",function(e){
@@ -197,6 +198,15 @@ function init( width, height) {
   flags = JSON.parse(window.localStorage.getItem("flags"));
   }
   camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 100 );
+  listener = new THREE.AudioListener();
+  camera.add(listener);
+  bgm = new THRE.Audio( listener );
+  audioLoader.load( 'https://pobulus.github.io/demo/resources/earhurtsonata.ogg', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play();
+});
   camera.position.y = 0.7;
   camera.rotation.x = 0;
   camera.rotation.y = 0;
@@ -335,7 +345,7 @@ light.shadow.mapSize.height = 512; // default
 light.shadow.camera.near = 0.5; // default
 light.shadow.camera.far = 500; // default
   }
-
+// let clip;
 function makeNPC(version, x=0, z=0, y=0.4, n="default"){
 
   let npc_geometry = new THREE.PlaneGeometry(0.5, 0.9);
@@ -362,6 +372,17 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
             if(inventory["paluszki"].n){
               $("#text-area").html("O dziękuję!");
               inventory["paluszki"].n--;
+              // var animation = new THREE.VectorKeyframeTrack('.position', [0, 2],  [self.position.x, self.position.y, self.position.z, self.position.x+2, self.position.y, self.position.z]);
+              // console.log(animation);
+              // var studentLeave = new THREE.AnimationClip('studentLeave', -1, [animation]);
+              // console.log(studentLeave);
+              // var mixer = new THREE.AnimationMixer(self);
+              // clip = mixer.clipAction(studentLeave);
+              // console.log(clip);
+              // clip.play();
+              // for (var i; i<10000; i++){
+              //   mixer.update(1);
+              // }
               quests["Znajdź paluszki dla studentów"].done = true;
               antiCollidableMeshList.push(door);
               flags.student.counter++;
