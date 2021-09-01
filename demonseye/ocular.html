@@ -1,19 +1,60 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <script src="ocular.js"></script>
-    </head>
-    <body>
-        <label>Select Video Source (Camera)</label>
+<head>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
+ <script>
+     var video = document.querySelector("#videoElement");
 
-<select id="video-source"></select>
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
 
-<label>Select Audio Source (Microphone)</label>
+ </script>
+<style>
+#container {
+	/* margin: 0px auto; */
+    position: absolute;
+    left: 0px;
+	width: 50vw;
+	height: 100vh;
+	border: 2px #333 solid;
+}
+#container2 {
+	/* margin: 0px auto; */
+    position: absolute;
+	width: 50vw;
+	height: 100vh;
+	border: 2px #333 solid;
+    left: 50vw;
+}
+#videoElement {
+	width: 50vw;
+	height: 100vh;
+	background-color: #666;
+}
+</style>
+</head>
+ 
+<body>
+<div id="container">
+	<video autoplay="true" id="videoElement">
+	
+	</video>
+</div>
+<div id="container2">
+	<video autoplay="true" id="videoElement">
+	
+	</video>
+</div>
+<script>
 
-<select id="audio-source"></select>
-
-<label>Live Preview:</label>
-<!-- Important to set autoplay to true, otherwise the video won't play anything at the beginning -->
-<br/>
-<video autoplay="true" id="player" controls></video>
-    </body>
+</script>
+</body>
 </html>
