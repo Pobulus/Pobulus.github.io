@@ -9,7 +9,24 @@ function stopMediaTracks(stream) {
     track.stop();
   });
 }
+var elem = document.documentElement;
+let fullscr = false;
 
+
+function openFullscreen() {
+         
+  if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+  }
+  $(".controls").hide();
+  fullscr = true;
+
+
+}
 function gotDevices(mediaDevices) {
   select.innerHTML = '';
   select.appendChild(document.createElement('option'));

@@ -27,8 +27,10 @@ main {
 }
 
 .controls {
+  position: absolute;
   text-align: center;
   z-index: 1000;
+  font-size: 1vw;
   padding: 0.5em 0;
   background: #333e5a;
 }
@@ -45,13 +47,20 @@ main {
 .controls > div:last-child {
   margin-bottom: 0;
 }
-
+#c1{
+  object-fit: cover;
+  width: 50vw;
+}
+#c2{
+  object-fit: cover;
+  width: 50vw;
+}
 #video {
   z-index: 1;
   position: absolute;
   left: 50vw;
-  width: 50vw;
-  top: 25px;
+
+  /* top: 25px; */
   height: 100vh;
   display: block;
   /* margin: 0 auto; */
@@ -59,9 +68,9 @@ main {
 #video2 {
   position: absolute;
   left: 0px;
-  width: 50vw;
+
   height: 100vh;
-  top: 25px;
+  /* top: 25px; */
   display: block;
   /* margin: 0 auto; */
 }

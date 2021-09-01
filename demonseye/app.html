@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,10 +17,14 @@
 
   <main>
     <div id="containers">
-    <video id="video2" autoplay playsinline></video>
+      <div id="c1">
+    <video id="video2" autoplay playsinline></video></div>
+    <div id="c2">
     <video id="video" autoplay playsinline></video>
+  </div>
     <div class="controls">
       <button id="button">Get camera</button>
+      <button id="fs" onclick="openFullscreen()">Fullscreen</button>
       <select id="select">
         <option></option>
       </select>
