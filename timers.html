@@ -54,7 +54,6 @@ function convertHMS(value) {
                 var upload = document.getElementById('fileInput');
                 if (upload) 
                 {
-                    console.log("got here!");
                     upload.addEventListener('change', function() {
                     
                     if (upload.files.length > 0) 
@@ -82,17 +81,18 @@ function convertHMS(value) {
             $(".timer").remove();
             for(const key of Object.keys(timers)){
                     if(timers[key].days.includes(today.getDay())){
-                        
-                        $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
-                        $(".timer#"+key).css("background", timers[key].color);
-                        active.push(key);
-                        if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
-                            $(".timer#"+key).detach().appendTo("#pending");
-                            $(".pb#"+key).css("margin-right", "0px");
-                            $(".pb#"+key).css("margin-left", "auto");
+                        elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
+                        if(elapsedLen>0){
+                            $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
+                            $(".timer#"+key).css("background", timers[key].color);
                             active.push(key);
-                            pending.push(key);
-                            console.log(key+" is pending")
+                            if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
+                                $(".timer#"+key).detach().appendTo("#pending");
+                                $(".pb#"+key).css("margin-right", "0px");
+                                $(".pb#"+key).css("margin-left", "auto");
+                                active.push(key);
+                                pending.push(key);
+                            }
                         }
                     }
                 }
@@ -143,14 +143,11 @@ function convertHMS(value) {
                     if(30000>elapsedLen){ //30 seconds
                         $(".pb#"+key).css("background", "red");
                     }
-                    console.log(elapsedLen);
-                    console.log(totalLen-300000);
                     }else{
                         $(".timer#"+key).detach().appendTo("#finished");
                         $(".timer#"+key).on("click", function(){$(".timer#"+key).remove();});
                         $(".pb#"+key).css("background", "white");
                         active.splice(active.indexOf(key), 1);
-                        console.log(active);
                         $(".clock#"+key).html("DONE");
                         $(".name#"+key).html(timers[key].name);
                         $(".pb#"+key).css("width","100%");
