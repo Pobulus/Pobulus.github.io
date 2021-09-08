@@ -1,0 +1,110 @@
+body{
+    
+    background: black;
+    color: white;
+    display: flex;
+    flex-direction: row;
+}
+#current{
+    margin: 0.5%;
+    width: 48%;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    overflow: auto;
+}
+#finished{
+
+    margin: 0.5%;
+    width: 48%;
+    overflow: auto;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    
+}
+#pending{
+
+    margin: 0.5%;
+    width: 48%;
+    overflow: auto;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    
+}
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+@media only screen and (max-aspect-ratio: 1/1){
+    body{
+        flex-direction: column;
+    }
+    #current{
+        margin: 1%;
+        width: 98%;
+    }
+    #finished{
+        margin: 1%;
+        width: 98%;
+        
+    }
+    #pending{
+        margin: 1%;
+        width: 98%;
+        
+    }
+}
+
+.name{
+    margin: 1%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 3em;
+    position: relative;
+    left: 0px;
+    width: 48%;
+    display: inline-block;
+}
+.clock{
+    margin:1%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 3em;
+    text-align: right;
+    align-self: right;
+    display: inline-block;
+    width: 48%;
+}
+.pb-background{
+    display: block;
+    background: slategray;
+    margin: 2%;
+
+    height: 20px;
+    border-radius: 10px;
+}
+#fileInput{
+    position: absolute;
+    top: 0px;
+    z-index: 100;
+    opacity: 0;
+}
+#fileInput:hover{
+    opacity: 1;
+}
+.timer{
+    border-radius: 10px;
+    margin: 5px;
+    padding-bottom: 5px;
+}
+.pb{
+    display: block;
+    z-index: 5;
+    background: rgb(31, 197, 16);
+    
+    height: 20px;
+    border-radius: 10px;
+    width: 0%;
+}
+#pb1{
+    width: 75%;
+}
+#pb2 {
+    width: 0%;
+}

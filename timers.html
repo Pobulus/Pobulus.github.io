@@ -1,0 +1,180 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="timer.css">
+        <script>
+function convertHMS(value) {
+    if(value<0) return false;
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours   = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
+}
+
+
+  
+
+
+
+            let timers = {
+                timer1:{
+                    name: "Lesson",
+                    startTime: "21:00:00",
+                    endTime: "21:10:00",
+                    days: [0,1,2,3,4,5,6],
+                    color: "#0055AA"
+                },
+                timer2:{
+                    name: "Grupa",
+                    startTime: "16:30:00",
+                    endTime: "19:00:00",
+                    color: "#AA00AA",
+                    days: [5],
+                },
+                timer3:{
+                    name: "Papieska",
+                    startTime: "21:36:30",
+                    endTime: "21:37:59",
+                    color: "#B0AB0A",
+                    days: [5],
+                }
+            }
+            
+                let today = new Date();
+                let todayS = today.getFullYear()+"."+(today.getMonth()+1)+"."+today.getDate()+ " ";
+                let active = [];
+                let pending = [];
+            window.onload = function(){
+
+                var upload = document.getElementById('fileInput');
+                if (upload) 
+                {
+                    console.log("got here!");
+                    upload.addEventListener('change', function() {
+                    
+                    if (upload.files.length > 0) 
+                    {
+                        var reader = new FileReader(); 
+                        reader.addEventListener('load', function() {
+                        timers = JSON.parse(reader.result); 
+                        window.localStorage.setItem("timers", JSON.stringify(timers));
+                        loadTimers();
+                        });
+                        reader.readAsText(upload.files[0]); 
+
+                    }
+                    });
+                }
+                if (window.localStorage.getItem("timers")){
+                    timers = JSON.parse(window.localStorage.getItem("timers"));
+                }
+                loadTimers();
+                console.log(JSON.stringify(timers));
+                
+
+            }
+        function loadTimers(){
+            $(".timer").remove();
+            for(const key of Object.keys(timers)){
+                    if(timers[key].days.includes(today.getDay())){
+                        
+                        $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
+                        $(".timer#"+key).css("background", timers[key].color);
+                        active.push(key);
+                        if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
+                            $(".timer#"+key).detach().appendTo("#pending");
+                            $(".pb#"+key).css("margin-right", "0px");
+                            $(".pb#"+key).css("margin-left", "auto");
+                            active.push(key);
+                            pending.push(key);
+                            console.log(key+" is pending")
+                        }
+                    }
+                }
+        }
+        function updateTimers(){
+
+            for(const key of active){
+                totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
+                elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
+                $(".name#"+key).html(timers[key].name);
+                if(totalLen<0){
+                    totalLen = totalLen+ 86400000;
+                    console.log("ext1")
+                    elapsedLen = elapsedLen+86400000
+                }
+                if(pending.includes(key)){
+
+                    if(new Date(todayS+timers[key].startTime).getTime() - Date.now()<0){
+                        $(".timer#"+key).detach().appendTo("#current");
+                        pending.splice(pending.indexOf(key), 1);
+                        $(".clock#"+key).html(convertHMS(elapsedLen/1000));
+                        $(".pb#"+key).css("margin-right", "auto");
+                        $(".pb#"+key).css("margin-left", "0px");
+                    }else{
+                        untilLen = new Date(todayS+timers[key].startTime).getTime() - Date.now();
+                        $(".pb#"+key).css("width", Math.min((untilLen/180000*100), 100)+"%");
+                        $(".pb#"+key).css("background", "#00ffff");
+
+                        $(".clock#"+key).html("-"+convertHMS(untilLen/1000));
+                    }
+                }else{
+                    if(elapsedLen>0){
+
+                    $(".pb#"+key).css("width", Math.round(100-(elapsedLen/totalLen*100))+"%");
+                    
+                    $(".clock#"+key).html(convertHMS(elapsedLen/1000));
+                    $(".pb#"+key).css("background", "#00ffff");
+                    $(".pb#"+key).css("background", "green");
+                    if(600000>elapsedLen){ //10 minutes
+                        $(".pb#"+key).css("background", "greenyellow");
+                    }           
+                    if(300000>elapsedLen){ //5 minutes
+                        $(".pb#"+key).css("background", "yellow");
+                    }
+                    if(60000>elapsedLen){ //1 minute
+                        $(".pb#"+key).css("background", "orange");
+                    }
+                    if(30000>elapsedLen){ //30 seconds
+                        $(".pb#"+key).css("background", "red");
+                    }
+                    console.log(elapsedLen);
+                    console.log(totalLen-300000);
+                    }else{
+                        $(".timer#"+key).detach().appendTo("#finished");
+                        $(".timer#"+key).on("click", function(){$(".timer#"+key).remove();});
+                        $(".pb#"+key).css("background", "white");
+                        active.splice(active.indexOf(key), 1);
+                        console.log(active);
+                        $(".clock#"+key).html("DONE");
+                        $(".name#"+key).html(timers[key].name);
+                        $(".pb#"+key).css("width","100%");
+                    }
+                }
+            }
+        }
+            window.setInterval(function(){
+                updateTimers();
+            },1000); 
+        
+        </script>
+    </head>
+    <body>
+        <input type="file" id="fileInput">
+        <div id="current">
+            
+            <center><h1>CURRENT</h1></center>
+        </div>
+        <div id="pending">
+            <center><h1>UPCOMING</h1></center>
+        </div>
+        <div id="finished">
+            <center><h1>FINISHED</h1></center>
+        </div>
+    </body>
+</html>
