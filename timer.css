@@ -90,6 +90,12 @@ h1{
 #pb2 {
     width: 0%;
 }
+#Warning {
+    font-size: 3em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    width: 100%;
+}
 @media only screen and (max-aspect-ratio: 1/1){
     body{
         flex-direction: column;

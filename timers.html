@@ -83,6 +83,8 @@ function convertHMS(value) {
                     if(timers[key].days.includes(today.getDay())){
                         elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
                         if(elapsedLen>0){
+                            window.clearInterval(mainloop);
+                            mainloop = window.setInterval(updateTimers, 1000); 
                             $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
                             $(".timer#"+key).css("background", timers[key].color);
                             active.push(key);
@@ -96,16 +98,23 @@ function convertHMS(value) {
                         }
                     }
                 }
+           
         }
         function updateTimers(){
-
+            console.log("loop");
+            if(!active.length&&!pending.length){
+                $("#Warning").html("No more tasks today");
+                // The interval is changed to 1 minute to save resources
+                window.clearInterval(mainloop);
+                mainloop = window.setInterval(updateTimers, 60000); 
+                loadTimers();
+            }
             for(const key of active){
                 totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
                 elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
                 $(".name#"+key).html(timers[key].name);
                 if(totalLen<0){
                     totalLen = totalLen+ 86400000;
-                    console.log("ext1")
                     elapsedLen = elapsedLen+86400000
                 }
                 if(pending.includes(key)){
@@ -155,9 +164,7 @@ function convertHMS(value) {
                 }
             }
         }
-            window.setInterval(function(){
-                updateTimers();
-            },1000); 
+        var mainloop = window.setInterval(updateTimers, 1000); 
         
         </script>
     </head>
@@ -166,6 +173,7 @@ function convertHMS(value) {
         <div id="current">
             
             <center><h1>CURRENT</h1></center>
+            <div id="Warning"></div>
         </div>
         <div id="pending">
             <center><h1>UPCOMING</h1></center>
