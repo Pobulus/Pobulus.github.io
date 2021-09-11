@@ -21,16 +21,18 @@ function convertHMS(value) {
 
 
 
-            let timers = {
-
-            }
+            let timers = {}
             
                 let today = new Date();
-                let todayS = today.getFullYear()+"."+(today.getMonth()+1)+"."+today.getDate()+ " ";
+                let todayM = (today.getMonth()+1);
+                let todayS = "";
+
                 let active = [];
                 let pending = [];
             window.onload = function(){
-
+                if(todayM<10) todayM = "0"+todayM;
+                todayS = today.getFullYear()+"-"+todayM+"-"+today.getDate()+ " ";
+                console.log(todayS);
                 var upload = document.getElementById('fileInput');
                 if (upload) 
                 {
@@ -78,6 +80,78 @@ function convertHMS(value) {
                     active.push(key);
                     pending.push(key);
                 }
+            }
+        }
+        function newTimer(){
+            $("#creator").show();
+        }
+        function dropTimer(){
+            $("#creator").hide();
+            $("#c-name").val("");
+            $("#c-startTime").val("");
+            $("#c-endTime").val("");
+            $("#c-color").val("#000000");
+            $("#c-days:checked").click();
+            $("#c-date").val("");
+            $("#c-warning").html(" ");
+            
+        }
+        function verifyTimer(){
+            if($("#c-name").val()){
+                if($("#c-startTime").val()){
+                    if($("#c-endTime").val()){
+                        if($("input[name='type']:checked").val()=="date"&&$("#c-date").val()){
+                            acceptTimer();
+                    }else if($("input[name='type']:checked").val()=="days"&&$('input[type="checkbox"]:checked').length){
+                            acceptTimer();
+                    }else{
+                            $("#c-warning").html("Missing date or no days chosen");
+                        }
+                    }else{
+                        $("#c-warning").html("Missing end Time");
+                    }
+                }else{
+                    $("#c-warning").html("Missing start Time");
+                }
+
+            }else{
+                $("#c-warning").html("Missing name");
+            }
+        }
+        function acceptTimer(){
+            var key = "timer"+Object.keys(timers).length;
+            console.log(key);
+            timers[key]= {};
+            console.log(timers[key]);
+            timers[key].name = $("#c-name").val();
+            timers[key].startTime = $("#c-startTime").val();
+            timers[key].endTime = $("#c-endTime").val();
+            console.log($("#c-color").val());
+            if($("#c-color").val()=="#000000") timers[key].color = "";
+            else timers[key].color = $("#c-color").val();
+            if($("input[name='type']:checked").val()=="date"){
+                timers[key].type = "date";
+                timers[key].date = $("#c-date").val();
+            }else{
+                timers[key].type = "date";
+
+                timers[key].days = [];
+                for(const i of Array(7).keys()){
+                if($("#c-days"+i).val())timers[key].days.push(i);
+                }
+            }
+            dropTimer();
+            window.localStorage.setItem("timers", JSON.stringify(timers));
+            loadTimers();
+            
+        }
+        function updateType(){
+            if($("input[name='type']:checked").val()=="date"){
+                $("#cont-date").show();
+                $("#cont-days").hide();
+            }else{
+                $("#cont-date").hide();
+                $("#cont-days").show();
             }
         }
         function loadTimers(){
@@ -162,6 +236,34 @@ function convertHMS(value) {
     </head>
     <body>
         <input type="file" id="fileInput">
+        <div id="creator">
+            <center>CREATE A NEW TIMER</center>
+            <label>Timer name <input type="text" id="c-name"></label><br>
+            <label>Start Time <input type="time" step="2" id="c-startTime"></label>
+            <label>End Time <input type="time" step="2" id="c-endTime"></label><br>
+            <label>Color <input type="color" id="c-color"></label><br>
+            Type: 
+            <label >Date<input type="radio" id="date"  name="type" value="date"  onchange="updateType()"></label>
+            <label>Days<input type="radio" id="days" name="type" value="days" onchange="updateType()"></label>
+            <br>
+            <div id="cont-date" style="display: none;">
+                <input type="date" id="c-date">
+            </div>
+            <div id="cont-days" style="display: none;">
+                <label>0<input type="checkbox" id="c-days0"></label>
+                <label>1<input type="checkbox" id="c-days1"></label>
+                <label>2<input type="checkbox" id="c-days2"></label>
+                <label>3<input type="checkbox" id="c-days3"></label>
+                <label>4<input type="checkbox" id="c-days4"></label>
+                <label>5<input type="checkbox" id="c-days5"></label>
+                <label>6<input type="checkbox" id="c-days6"></label>
+            </div><br>
+            <div id="c-warning"> </div>
+            <button onclick="dropTimer()">Exit</button>
+            <button onclick="verifyTimer()">Save</button>
+
+        </div>
+        <div id="add" onclick="newTimer()">+</div>
         <div id="current">
             
             <center><h1>CURRENT</h1></center>

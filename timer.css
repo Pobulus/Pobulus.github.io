@@ -38,7 +38,7 @@ h1{
 .name{
     margin: 1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 3em;
+    font-size: 2.5em;
     position: relative;
     left: 0px;
     width: 48%;
@@ -47,7 +47,7 @@ h1{
 .clock{
     margin:1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 3em;
+    font-size: 2.5em;
     text-align: right;
     align-self: right;
     display: inline-block;
@@ -96,6 +96,58 @@ h1{
     text-align: center;
     width: 100%;
 }
+#add{
+    position: fixed;
+    bottom: 1%;
+    right: 1%;
+    border-radius: 100vw;
+    z-index: 100;
+    font-size: 7vw;
+    background:rgb(146, 0, 68);
+    text-align: center;
+
+    width: 8vw;
+    height: 8vw;
+}
+#creator{
+    position: fixed;
+    width: 98%;
+    height: 98%;
+    top: 1%;
+    left: 1%;
+    font-size: 3em;
+    display: none;
+    background: black;
+    color: white;
+    z-index: 1000;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+input{
+    height: 3em;
+}
+button {
+  
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    font-size: 1.5em;
+    border-radius: 5px;
+    transition-duration: 0.4s;
+    color: #ffffff;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    
+    z-index: 1000;
+    opacity: 0.5;
+  }
+  button:hover {
+    background-color: #ffffff;
+    color: #000000;
+    opacity: 1;
+  
+  }
 @media only screen and (max-aspect-ratio: 1/1){
     body{
         flex-direction: column;
@@ -113,6 +165,32 @@ h1{
         margin: 1%;
         width: 98%;
         
+    }
+    button{
+        font-size: 2.5em;
+    }
+    input{
+        
+        font-size: 0.5em;
+    }
+    #creator{
+        font-size: 5em;
+    }
+    #add{
+        width: 8vh;
+        height: 8vh;
+        font-size: 7vh;
+    }
+    input[type='checkbox'] {
+        -webkit-appearance:none;
+        width:30px;
+        height:30px;
+        background:white;
+        border-radius:5px;
+        border:2px solid #555;
+    }
+    input[type='checkbox']:checked {
+        background: rgb(0, 255, 30);
     }
 
 }
