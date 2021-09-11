@@ -57,37 +57,43 @@ function convertHMS(value) {
                 
 
             }
+        function addTimer(key){
+            totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
+            elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
+            $(".name#"+key).html(timers[key].name);
+            if(totalLen<0){
+                totalLen = totalLen+ 86400000;
+                elapsedLen = elapsedLen+86400000
+            }
+            if(elapsedLen>0){
+                window.clearInterval(mainloop);
+                mainloop = window.setInterval(updateTimers, 1000); 
+                $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
+                $(".timer#"+key).css("background", timers[key].color);
+                active.push(key);
+                if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
+                    $(".timer#"+key).detach().appendTo("#pending");
+                    $(".pb#"+key).css("margin-right", "0px");
+                    $(".pb#"+key).css("margin-left", "auto");
+                    active.push(key);
+                    pending.push(key);
+                }
+            }
+        }
         function loadTimers(){
             $(".timer").remove();
             for(const key of Object.keys(timers)){
-                    if(timers[key].days.includes(today.getDay())){
-                        totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
-                        elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
-                        $(".name#"+key).html(timers[key].name);
-                        if(totalLen<0){
-                            totalLen = totalLen+ 86400000;
-                            elapsedLen = elapsedLen+86400000
-                        }
-                        if(elapsedLen>0){
-                            window.clearInterval(mainloop);
-                            mainloop = window.setInterval(updateTimers, 1000); 
-                            $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
-                            $(".timer#"+key).css("background", timers[key].color);
-                            active.push(key);
-                            if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
-                                $(".timer#"+key).detach().appendTo("#pending");
-                                $(".pb#"+key).css("margin-right", "0px");
-                                $(".pb#"+key).css("margin-left", "auto");
-                                active.push(key);
-                                pending.push(key);
-                            }
-                        }
-                    }
+                if(timers[key].type == "weekly"){
+                    if(timers[key].days.includes(today.getDay()))
+                    addTimer(key);
+                }else if(timers[key].type=="date"){
+                    if(timers[key].date+" " == todayS)
+                    addTimer(key);
                 }
+            }
            
         }
         function updateTimers(){
-            console.log("loop");
             if(!active.length&&!pending.length){
                 $("#Warning").html("No more tasks today");
                 // The interval is changed to 1 minute to save resources
@@ -125,7 +131,7 @@ function convertHMS(value) {
                     
                     $(".clock#"+key).html(convertHMS(elapsedLen/1000));
                     $(".pb#"+key).css("background", "#00ffff");
-                    $(".pb#"+key).css("background", "green");
+                    $(".pb#"+key).css("background", "limegreen");
                     if(600000>elapsedLen){ //10 minutes
                         $(".pb#"+key).css("background", "greenyellow");
                     }           
