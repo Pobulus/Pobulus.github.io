@@ -3,24 +3,32 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="timer.css">
         <script>
-function convertHMS(value) {
-    if(value<0) return false;
-    const sec = parseInt(value, 10); // convert value to number if it's string
-    let hours   = Math.floor(sec / 3600); // get hours
-    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
-    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
-    // add 0 if value < 10; Example: 2 => 02
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
-}
+        function convertHMS(value) {
+            if(value<0) return false;
+            const sec = parseInt(value, 10); // convert value to number if it's string
+            let hours   = Math.floor(sec / 3600); // get hours
+            let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+            let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+            // add 0 if value < 10; Example: 2 => 02
+            if (hours   < 10) {hours   = "0"+hours;}
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            return hours+':'+minutes+':'+seconds; // Return is HH : MM : SS
+        }
+        "use strict";
 
+        function exportToJsonFile(jsonData) {
+            console.log(jsonData);
+            let dataStr = JSON.stringify(jsonData);
+            let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-  
+            let exportFileDefaultName = 'data.json';
 
-
-
+            
+            $("#json-dl").attr('href', dataUri);
+            $("#json-dl").attr('download', exportFileDefaultName);
+            $("#json-dl").click();
+        }
             let timers = {}
             
                 let today = new Date();
@@ -122,6 +130,7 @@ function convertHMS(value) {
             $("#c-startTime").val(timers[key].startTime);
             $("#c-endTime").val(timers[key].endTime);
             $("#c-color").val(timers[key].color);
+            console.log(timers[key].color);
             if(timers[key].type=="date"){
                 $("#date").click();
                 $("#c-date").val(timers[key].date);
@@ -138,13 +147,14 @@ function convertHMS(value) {
         function newTimer(key){
             edited = "";
             $("#creator").show();
+            $("#c-color").val("#FFFFFF");
         }
         function dropTimer(){
             $("#creator").hide();
             $("#c-name").val("");
             $("#c-startTime").val("");
             $("#c-endTime").val("");
-            $("#c-color").val("#000000");
+            $("#c-color").val("#FFFFFF");
             $("#c-days:checked").click();
             $("#c-date").val("");
             $("#c-warning").html("&nbsp");
@@ -190,7 +200,7 @@ function convertHMS(value) {
             timers[key].startTime = $("#c-startTime").val();
             timers[key].endTime = $("#c-endTime").val();
             console.log($("#c-color").val());
-            if($("#c-color").val()=="#000000") timers[key].color = "";
+            if($("#c-color").val()=="#FFFFFF") timers[key].color = "";
             else timers[key].color = $("#c-color").val();
             if($("input[name='type']:checked").val()=="date"){
                 timers[key].type = "date";
@@ -300,13 +310,16 @@ function convertHMS(value) {
     <body>
         
         <div id="creator">
-            <label>Upload JSON timers:
-            <input type="file" id="fileInput">
+            <label style="background-color: #1ab2c4;">Upload&nbspJSON
+            <input type="file" style="display:none;" id="fileInput">
             </label>
+            <a id="json-dl">
+                <label style="background-color: #4c2ba1;" onclick="exportToJsonFile(timers)">Download&nbspJSON</label>
+            </a><hr>
             <center>CREATE A NEW TIMER</center>
             <label>Timer name <input type="text" id="c-name"></label><br>
-            <label>Start Time <input type="time" step="2" id="c-startTime"></label>
-            <label>End Time <input type="time" step="2" id="c-endTime"></label><br>
+            <label>Start&nbspTime <input type="time" step="2" id="c-startTime"></label>
+            <label>End&nbspTime <input type="time" step="2" id="c-endTime"></label><br>
             <label>Color <input type="color" id="c-color"></label><br>
             Type: 
             <label >Date<input type="radio" id="date"  name="type" value="date"  onchange="updateType()"></label>
@@ -316,13 +329,14 @@ function convertHMS(value) {
                 <input type="date" id="c-date">
             </div>
             <div id="cont-days" style="display: none;">
-                <label>0<input type="checkbox" id="c-days0"></label>
-                <label>1<input type="checkbox" id="c-days1"></label>
-                <label>2<input type="checkbox" id="c-days2"></label>
-                <label>3<input type="checkbox" id="c-days3"></label>
-                <label>4<input type="checkbox" id="c-days4"></label>
-                <label>5<input type="checkbox" id="c-days5"></label>
-                <label>6<input type="checkbox" id="c-days6"></label>
+                
+                <label>Mon<input type="checkbox" id="c-days1"></label>
+                <label>Tue<input type="checkbox" id="c-days2"></label>
+                <label>Wed<input type="checkbox" id="c-days3"></label>
+                <label>Thu<input type="checkbox" id="c-days4"></label>
+                <label>Fri<input type="checkbox" id="c-days5"></label>
+                <label>Sat<input type="checkbox" id="c-days6"></label>
+                <label>Sun<input type="checkbox" id="c-days0"></label>
             </div><br>
             <div id="c-warning">&nbsp </div>
             <button onclick="dropTimer()">Exit</button>

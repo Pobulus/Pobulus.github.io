@@ -1,5 +1,36 @@
+/* unvisited link */
+a:link {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* selected link */
+  a:active {
+    color: white;
+    text-decoration: none;
+  }
+
+
 body{
-    
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
     background: black;
     color: white;
     display: flex;
@@ -38,7 +69,7 @@ h1{
 .name{
     margin: 1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2.5em;
+    font-size: 2.2em;
     position: relative;
     left: 0px;
     width: 48%;
@@ -47,7 +78,7 @@ h1{
 .clock{
     margin:1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2.5em;
+    font-size: 2.2em;
     text-align: right;
     align-self: right;
     display: inline-block;
@@ -102,19 +133,22 @@ h1{
     right: 1%;
     border-radius: 100vw;
     z-index: 100;
-    font-size: 7vw;
+    font-size: 3.5vw;
     background:rgb(146, 0, 68);
     text-align: center;
 
-    width: 8vw;
-    height: 8vw;
+    width: 4vw;
+    height: 4vw;
 }
 #creator{
-    position: fixed;
-    width: 98%;
-    height: 98%;
-    top: 1%;
-    left: 1%;
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
     font-size: 3em;
     display: none;
     background: black;
@@ -149,6 +183,17 @@ button {
     opacity: 1;
   
   }
+  input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: rgb(0, 255, 30);
+}
 @media only screen and (max-aspect-ratio: 1/1){
     body{
         flex-direction: column;
@@ -171,11 +216,17 @@ button {
         font-size: 1.2em;
     }
     input{
-        
+        padding: 0px;
+        height: 1.8em;
         font-size: 0.5em;
+    }
+    input[type='color'] {
+        width: 1.8em;
     }
     #creator{
         font-size: 5em;
+        width: 100%;
+        height: 100%;
     }
     #add{
         width: 8vh;
