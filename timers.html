@@ -59,6 +59,27 @@ function convertHMS(value) {
                 
 
             }
+        function hideControls(){
+            $(".controls").hide();
+
+            
+        }
+        function showControls(key){
+
+            hideControls();
+           
+            $(".controls#"+key).show();
+            window.setTimeout(function(){$(".controls#"+key).hide();}, 10000);
+        }
+        function hideTimer(key){
+            $(".timer#"+key).hide();
+        }
+        function deleteTimer(key){
+            $(".timer#"+key).hide();
+            active.splice(active.indexOf(key), 1);
+            delete timers[key];
+            window.localStorage.setItem("timers", JSON.stringify(timers));
+        }
         function addTimer(key){
             totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
             elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
@@ -70,7 +91,18 @@ function convertHMS(value) {
             if(elapsedLen>0){
                 window.clearInterval(mainloop);
                 mainloop = window.setInterval(updateTimers, 1000); 
-                $("#current").append("<div class=\"timer\" id=\""+ key.toString()+"\"><div class=\"name\" id=\""+ key.toString()+"\">......</div><div class=\"clock\" id=\""+ key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ key.toString()+"\"></div></div></div>");
+                $("#current").append(
+                    "<div class=\"timer\"  onclick=\"showControls('"+key.toString()+"')\" id=\""+ 
+                    key.toString()+"\"><div class=\"name\" id=\"" +
+                    key.toString()+"\">......</div><div class=\"clock\" id=\""+ 
+                    key.toString()+"\">--:--</div><div class=\"pb-background\"><div class=\"pb\" id=\""+ 
+                    key.toString()+"\"></div></div><div style=\"display:none;\"class=\"controls\" id=\""+ 
+                    key.toString()+"\"><button class=\"controlsB\" onclick=\"editTimer('"+
+                    key.toString()+"')\">✏️</button><button class=\"controlsB\" onclick=\"hideTimer('"+
+                    key.toString()+ "')\">🙈</button><button class=\"controlsB\" onclick=\"deleteTimer('"+
+                    key.toString()+ "')\">🗑️</button></div></div>"
+                    );
+                
                 $(".timer#"+key).css("background", timers[key].color);
                 active.push(key);
                 if(new Date(todayS+timers[key].startTime).getTime() - Date.now()>0){
@@ -81,8 +113,30 @@ function convertHMS(value) {
                     pending.push(key);
                 }
             }
+            
         }
-        function newTimer(){
+        function editTimer(key){
+            edited = key;
+            $("#creator").show();
+            $("#c-name").val(timers[key].name);
+            $("#c-startTime").val(timers[key].startTime);
+            $("#c-endTime").val(timers[key].endTime);
+            $("#c-color").val(timers[key].color);
+            if(timers[key].type=="date"){
+                $("#date").click();
+                $("#c-date").val(timers[key].date);
+            }else{
+                $("#days").click();
+                for(const x of timers[key].days){
+                    $("#c-days"+x).click();
+                }
+            }
+             
+            
+            $("#c-warning").html("&nbsp");
+        }
+        function newTimer(key){
+            edited = "";
             $("#creator").show();
         }
         function dropTimer(){
@@ -93,17 +147,18 @@ function convertHMS(value) {
             $("#c-color").val("#000000");
             $("#c-days:checked").click();
             $("#c-date").val("");
-            $("#c-warning").html(" ");
+            $("#c-warning").html("&nbsp");
             
         }
+        let edited = "";
         function verifyTimer(){
             if($("#c-name").val()){
                 if($("#c-startTime").val()){
                     if($("#c-endTime").val()){
                         if($("input[name='type']:checked").val()=="date"&&$("#c-date").val()){
-                            acceptTimer();
+                            acceptTimer(edited);
                     }else if($("input[name='type']:checked").val()=="days"&&$('input[type="checkbox"]:checked').length){
-                            acceptTimer();
+                            acceptTimer(edited);
                     }else{
                             $("#c-warning").html("Missing date or no days chosen");
                         }
@@ -118,8 +173,16 @@ function convertHMS(value) {
                 $("#c-warning").html("Missing name");
             }
         }
-        function acceptTimer(){
-            var key = "timer"+Object.keys(timers).length;
+        function acceptTimer(key){
+            console.log(key);
+            if(!key){
+                var key = "timer"+Object.keys(timers).length;
+                var i = 0;
+                while(Object.keys(timers).includes(key)){
+                    i = i+1;
+                    key = "timer"+(Object.keys(timers).length+i);
+                }
+            }
             console.log(key);
             timers[key]= {};
             console.log(timers[key]);
@@ -261,7 +324,7 @@ function convertHMS(value) {
                 <label>5<input type="checkbox" id="c-days5"></label>
                 <label>6<input type="checkbox" id="c-days6"></label>
             </div><br>
-            <div id="c-warning"> </div>
+            <div id="c-warning">&nbsp </div>
             <button onclick="dropTimer()">Exit</button>
             <button onclick="verifyTimer()">Save</button>
 
