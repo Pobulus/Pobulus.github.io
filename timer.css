@@ -69,7 +69,7 @@ h1{
 .name{
     margin: 1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2.2em;
+    font-size: 3vmax;
     position: relative;
     left: 0px;
     width: 48%;
@@ -78,7 +78,7 @@ h1{
 .clock{
     margin:1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 2.2em;
+    font-size: 3vmax;
     text-align: right;
     align-self: right;
     display: inline-block;
@@ -133,13 +133,16 @@ h1{
     right: 1%;
     border-radius: 100vw;
     z-index: 100;
-    font-size: 3.5vw;
+    font-size: 7em;
+    padding: -3em;
     background:rgb(146, 0, 68);
-    text-align: center;
-
-    width: 4vw;
-    height: 4vw;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+     width: 1em;
+    height: 1em; 
 }
+
 #creator{
     position: absolute;
     width: auto;
@@ -229,9 +232,9 @@ input[type='checkbox']:checked {
         height: 100%;
     }
     #add{
-        width: 8vh;
-        height: 8vh;
-        font-size: 7vh;
+        width: 1em;
+        height: 1em;
+        font-size: 12em;
     }
     input[type='checkbox'] {
         -webkit-appearance:none;

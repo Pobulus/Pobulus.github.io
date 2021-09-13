@@ -29,6 +29,18 @@
             $("#json-dl").attr('download', exportFileDefaultName);
             $("#json-dl").click();
         }
+        function hmsToSecondsOnly(str) {
+            console.log(str);
+            var p = str.split(':'),
+            s = 0, m = 1;
+
+            while (p.length > 0) {
+                s += m * parseInt(p.pop(), 10);
+                m *= 60;
+            }
+
+            return s;
+        }
             let timers = {}
             
                 let today = new Date();
@@ -64,6 +76,7 @@
                 }
                 loadTimers();
                 console.log(JSON.stringify(timers));
+                console.log(Object.entries(timers).sort((a,b)=>hmsToSecondsOnly(a[1].startTime)-hmsToSecondsOnly(b[1].startTime)));
                 
 
             }
@@ -125,6 +138,7 @@
         }
         function editTimer(key){
             edited = key;
+            
             $("#creator").show();
             $("#c-name").val(timers[key].name);
             $("#c-startTime").val(timers[key].startTime);
@@ -155,7 +169,7 @@
             $("#c-startTime").val("");
             $("#c-endTime").val("");
             $("#c-color").val("#FFFFFF");
-            $("#c-days:checked").click();
+            $(".week:checked").click();
             $("#c-date").val("");
             $("#c-warning").html("&nbsp");
             
@@ -206,7 +220,7 @@
                 timers[key].type = "date";
                 timers[key].date = $("#c-date").val();
             }else{
-                timers[key].type = "date";
+                timers[key].type = "weekly";
 
                 timers[key].days = [];
                 for(const i of Array(7).keys()){
@@ -229,7 +243,7 @@
         }
         function loadTimers(){
             $(".timer").remove();
-            for(const key of Object.keys(timers)){
+            for(const key of Object.entries(timers).sort((a,b)=>hmsToSecondsOnly(a[1].startTime)-hmsToSecondsOnly(b[1].startTime)).map(el=>el[0])){
                 if(timers[key].type == "weekly"){
                     if(timers[key].days.includes(today.getDay()))
                     addTimer(key);
@@ -330,20 +344,20 @@
             </div>
             <div id="cont-days" style="display: none;">
                 
-                <label>Mon<input type="checkbox" id="c-days1"></label>
-                <label>Tue<input type="checkbox" id="c-days2"></label>
-                <label>Wed<input type="checkbox" id="c-days3"></label>
-                <label>Thu<input type="checkbox" id="c-days4"></label>
-                <label>Fri<input type="checkbox" id="c-days5"></label>
-                <label>Sat<input type="checkbox" id="c-days6"></label>
-                <label>Sun<input type="checkbox" id="c-days0"></label>
+                <label>Mon<input type="checkbox" class="week" id="c-days1"></label>
+                <label>Tue<input type="checkbox" class="week" id="c-days2"></label>
+                <label>Wed<input type="checkbox" class="week" id="c-days3"></label>
+                <label>Thu<input type="checkbox" class="week" id="c-days4"></label>
+                <label>Fri<input type="checkbox" class="week" id="c-days5"></label>
+                <label>Sat<input type="checkbox" class="week" id="c-days6"></label>
+                <label>Sun<input type="checkbox" class="week" id="c-days0"></label>
             </div><br>
             <div id="c-warning">&nbsp </div>
             <button onclick="dropTimer()">Exit</button>
             <button onclick="verifyTimer()">Save</button>
 
         </div>
-        <div id="add" onclick="newTimer()">+</div>
+        <div id="add" onclick="newTimer()"><p>+</p></div>
         <div id="current">
             
             <center><h1>CURRENT</h1></center>
