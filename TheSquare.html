@@ -5,14 +5,14 @@
                 position: absolute;
                 width: 50vw;
                 height: 100vh;
-                z-index: 2000;
+                z-index: 500;
                 left: 0px;
             }
             #RT{
                 position: absolute;
                 width: 50vw;
                 height: 100vh;
-                z-index: 2000;
+                z-index: 500;
                 right: 0px;
             }
             body{
@@ -43,7 +43,7 @@
             }
             .arrow {
                 position: absolute;
-
+                overflow: hidden;
                 width: 0; 
                 height: 0;
 
@@ -69,7 +69,7 @@
                 position: absolute;
                 top: calc(50vh - 7vw);
                 left: calc(50vw - 7vw);
-
+                z-index: 1000;
                 background-color: gray;
                 width: 10vw;
                 height: 10vw;
@@ -92,6 +92,13 @@
                 width: 10vw;
                 height: 10vw;
                 opacity: 0;
+                
+            }
+            #play_icon{
+                position: absolute;
+                width: 10vw;
+                height: 10vw;
+                
                 
             }
             @media only screen and (max-aspect-ratio: 1/1){
@@ -125,6 +132,10 @@
                 border-width: 2vh;
                 }
                 #replay{
+                width: 10vh;
+                height: 10vh;
+                }
+                #play_icon{
                 width: 10vh;
                 height: 10vh;
                 }
@@ -319,6 +330,8 @@
         $("#replay").animate({opacity: "1"}, 500);
     }
     function startGame(){
+        $(".arrow").remove();
+        $("#play_icon").remove();
         $("#square").animate({"border-radius": 0+"px"}, 200);
         $("#replay").animate({opacity: "0"}, 500);
         $("#title").animate({height: "0px"}, 500);
@@ -337,7 +350,8 @@
     elL = document.getElementById("LT");
     elR = document.getElementById("RT");
 
-    elL.addEventListener("touchstart", function(){
+    elL.addEventListener("touchstart", function(evt){
+        evt.preventDefault();
         Ltouch = true;
         if(Rtouch){
             rotated = true;
@@ -357,7 +371,8 @@
         }
     });
     
-    elR.addEventListener("touchstart", function(){
+    elR.addEventListener("touchstart", function(evt){
+        evt.preventDefault();
         Rtouch = true;
         if(Ltouch){
             rotated = true;
@@ -432,12 +447,14 @@ document.addEventListener('keyup', (event) => {
         <div id="LT"></div>
         <div id="RT"></div>
         <div id="scale"></div>
-        <div class="arrow down pink"></div>
+        <!-- <div class="arrow down pink"></div>
         <div class="arrow left orange" ></div>
-        <div class="arrow right cyan" ></div>
+        <div class="arrow right cyan" ></div> -->
         <img src="thesquare.svg" id="title">
-        <div id="square" onclick="startGame()" oncontextmenu="rotateCW()">
+        <div id="square" onclick="startGame()">
+        <img src="play.svg" id="play_icon">
         <img src="replay.svg" id="replay">
+        
         </div>
     </body>
 
