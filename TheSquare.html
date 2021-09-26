@@ -1,6 +1,16 @@
 <html>
     <head>
         <style>
+            #score{
+                color: white;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-size: max(10vw, 10vh);
+                position: absolute;
+                bottom: 0px;
+                z-index: 100;
+                width: 100%;
+                text-align: center;
+            }
             #LT{
                 position: absolute;
                 width: 50vw;
@@ -22,8 +32,8 @@
             #wrapper{
                 overflow: hidden;
                 position: fixed;
-                width: 100vw;
-                height: 100vh;
+                width: 100%;
+                height: 100%;
 
             }
             .down {
@@ -41,7 +51,7 @@
             .right {
                 
                 position: absolute;
-                right: calc(50vw - 31vw);
+                left: calc(50vw + 31vw);
                 top: 50vh;
                 transform: translate(0, -50%) rotate(90deg);
             }
@@ -123,7 +133,7 @@
                 left: calc(50vw - 31vh);
                 }
                 .right {
-                right: calc(50vw - 31vh);
+                left: calc(50vw + 23vh);
                 }
                 #scale {
                     width: 2vh;
@@ -151,7 +161,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
-        
+            var score = 0;
             var sqrot = 0;
             var flip = 1;
             function getRotationDegrees(obj) {
@@ -236,10 +246,28 @@
     }
 
     function moveArrows(){
-        if(getRandomInt(1, 2)== 1){
-            makeArrow(dirs[getRandomInt(0,2)], colors[getRandomInt(0,3)]);
+        if(getRandomInt(0,5)> 2){
+            // dirs[getRandomInt(0,2)]
+            clr = getRandomInt(0,3);
+            makeArrow("down", colors[clr]);
+            if(getRandomInt(0,5)==0){
+                if(clr==3){makeArrow("left", colors[0]);}
+                else {makeArrow("left", colors[clr+1]);}
+                if(getRandomInt(0,3)==0){
+                    if(clr==0)clr=4;
+                    makeArrow("right", colors[clr-1]);
+                }
+            }else if(getRandomInt(0,5)==0){
+                if(clr==3){makeArrow("right", colors[0]);}
+                else {makeArrow("right", colors[clr+1]);}
+                if(getRandomInt(0,3)==0){
+                    if(clr==0)clr=4;
+                    makeArrow("left", colors[clr-1]);
+                }
+            }
         }
-        var jump =  $("#scale").width();
+        var jump =  Math.ceil($("#scale").width());
+        console.log(jump);
         // jump = parseInt(jump.substring(0, jump.length - 2))
         $(".down").each(function(){
             var t = $( this ).offset().top+jump;
@@ -269,15 +297,17 @@
         });
 
         $(".right").each(function(){
-            var t = $(window).width() - $( this ).offset().left-jump;
+            var t = $( this ).offset().left;
             // t = parseInt(t.substring(0, t.length - 2))
-            $(this).animate({right: t+"px"}, 100);
-            if(t>$(window).width()-$("#square").offset().left-9*jump){
+            console.log(t-jump);
+            $(this).animate({left: t-2.5*jump+"px"}, 10);
+            if(t<$("#square").offset().left+7.5*jump){
                 console.log("hit right");
                 verifyHit(this);
                 $(this).remove();
             }
         });
+
     }
     function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -303,6 +333,7 @@
             if($(obj).hasClass(getColor("top"))){
                 edges(-1);
                 console.log("good color");
+                score = score +1;
             }else{
                 edges(1);
                 console.log("bad color");
@@ -335,17 +366,22 @@
         $("#title").animate({height: "20vh"}, 500);
         if (flip==-1){AnimateFlip(-flip);}
         AnimateRotate(-1*flip*getRotationDegrees($("#square")));
-        
+        $("#score").html(score);
         $("#replay").animate({opacity: "1"}, 500);
     }
     function startGame(){
+        score = 0;
+        $("#score").html("");
         $(".arrow").remove();
         $("#play_icon").remove();
         $("#square").animate({"border-radius": 0+"px"}, 200);
         $("#replay").animate({opacity: "0"}, 500);
         $("#title").animate({height: "0px"}, 500);
-        gameloop = setInterval(moveArrows, 500);
+        clearInterval(gameloop);
+        gameloop = setInterval(moveArrows, 750);
+
         game = true;
+        
     }
     var keysPressed = {};
     rotated = false;
@@ -466,6 +502,7 @@ document.addEventListener('keyup', (event) => {
                 <img src="replay.svg" id="replay">
             
             </div>
+            <p id="score"></p>
         </div>
     </body>
 
