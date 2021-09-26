@@ -49,6 +49,7 @@ function notifyMe() {
         console.log('Permssion already granted');
             var notify = new Notification('Wyraziłeś już zgodę na powiadomienia');
         } else {
+            console.log(Notification.permission);
             // request permission from user
             Notification.requestPermission().then(function (p) {
                 if (p === 'granted') {
