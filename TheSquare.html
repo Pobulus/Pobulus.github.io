@@ -15,9 +15,16 @@
                 z-index: 500;
                 right: 0px;
             }
-            body{
+            html, body{
                 background-color: black;
+                
+            }
+            #wrapper{
                 overflow: hidden;
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+
             }
             .down {
                 left: 50%;
@@ -49,7 +56,7 @@
 
                 border-left: 3vw solid transparent;
                 border-right: 3vw solid transparent;
-                z-index: 100;
+                z-index: 10;
                 border-top: 2vw solid white;
                 
                 }
@@ -107,7 +114,7 @@
                 border-left: 3vh solid transparent;
                 border-right: 3vh solid transparent;
                 z-index: 100;
-
+                border-top-width: 2vh;
                 }
                 .down{
                     top: calc(50vh - 29vh);
@@ -225,7 +232,7 @@
     var gameloop;
     var ticks = 0;
     function makeArrow(dir, color){
-        $("body").append("<div class=\"arrow "+dir+" "+color+ "\"></div>");
+        $("#wrapper").append("<div class=\"arrow "+dir+" "+color+ "\"></div>");
     }
 
     function moveArrows(){
@@ -239,7 +246,7 @@
             
             // t = parseInt(t.substring(0, t.length - 2))
             $(this).animate({top: t+"px"}, 100);
-            if(t>=$("#square").offset().top){
+            if(t>=$("#square").offset().top-jump){
                 console.log("hit top");
                 verifyHit(this);
                 $(this).remove();
@@ -250,8 +257,10 @@
         $(".left").each(function(){
             var t = $( this ).offset().left;
             // t = parseInt(t.substring(0, t.length - 2))
+
             $(this).animate({left: t+"px"}, 100);
-            if(t>=$("#square").offset().left-jump){
+            if(t>=$("#square").offset().left-2*jump){
+                // $(this).animate({left: $("#LT").width()+"px"}, 100);
                 console.log("hit left");
                 verifyHit(this);
                 $(this).remove();
@@ -263,7 +272,7 @@
             var t = $(window).width() - $( this ).offset().left-jump;
             // t = parseInt(t.substring(0, t.length - 2))
             $(this).animate({right: t+"px"}, 100);
-            if(t>$(window).width()-$("#square").offset().left-8*jump){
+            if(t>$(window).width()-$("#square").offset().left-9*jump){
                 console.log("hit right");
                 verifyHit(this);
                 $(this).remove();
@@ -444,17 +453,19 @@ document.addEventListener('keyup', (event) => {
         </script>
     </head>
     <body>
-        <div id="LT"></div>
-        <div id="RT"></div>
-        <div id="scale"></div>
-        <!-- <div class="arrow down pink"></div>
-        <div class="arrow left orange" ></div>
-        <div class="arrow right cyan" ></div> -->
-        <img src="thesquare.svg" id="title">
-        <div id="square" onclick="startGame()">
-        <img src="play.svg" id="play_icon">
-        <img src="replay.svg" id="replay">
-        
+        <div id="wrapper">
+            <div id="LT"></div>
+            <div id="RT"></div>
+            <div id="scale"></div>
+            <!-- <div class="arrow down pink"></div>
+            <div class="arrow left orange" ></div>
+            <div class="arrow right cyan" ></div> -->
+            <img src="thesquare.svg" id="title">
+            <div id="square" onclick="startGame()">
+                <img src="play.svg" id="play_icon">
+                <img src="replay.svg" id="replay">
+            
+            </div>
         </div>
     </body>
 
