@@ -244,11 +244,15 @@
     function makeArrow(dir, color){
         $("#wrapper").append("<div class=\"arrow "+dir+" "+color+ "\"></div>");
     }
-
+    var clr = 0;
+    var odd = [1, 3];
+    var even = [0, 2];
     function moveArrows(){
         if(getRandomInt(0,5)> 2){
             // dirs[getRandomInt(0,2)]
-            clr = getRandomInt(0,3);
+            if(clr%2==0)clr = odd[getRandomInt(0,1)];
+            else clr = even[getRandomInt(0,1)];
+
             makeArrow("down", colors[clr]);
             if(getRandomInt(0,5)<2){
                 if(clr==3){makeArrow("left", colors[0]);}
@@ -287,7 +291,7 @@
             // t = parseInt(t.substring(0, t.length - 2))
 
             $(this).animate({left: t+"px"}, 100);
-            if(t>=$("#square").offset().left-2*jump){
+            if(t>$("#square").offset().left-2*jump){
                 // $(this).animate({left: $("#LT").width()+"px"}, 100);
                 console.log("hit left");
                 verifyHit(this);
