@@ -51,7 +51,7 @@
             .right {
                 
                 position: absolute;
-                left: calc(50vw + 27vw);
+                left: calc(50vw + 21vw);
                 top: 50vh;
                 transform: translate(0, -50%) rotate(90deg);
             }
@@ -66,7 +66,7 @@
 
                 border-left: 3vw solid transparent;
                 border-right: 3vw solid transparent;
-                z-index: 10;
+                z-index: 10000;
                 border-top: 2vw solid white;
                 
                 }
@@ -133,7 +133,7 @@
                 left: calc(50vw - 31vh);
                 }
                 .right {
-                left: calc(50vw + 23vh);
+                left: calc(50vw + 19vh);
                 }
                 #scale {
                     width: 2vh;
@@ -250,14 +250,14 @@
             // dirs[getRandomInt(0,2)]
             clr = getRandomInt(0,3);
             makeArrow("down", colors[clr]);
-            if(getRandomInt(0,5)==0){
+            if(getRandomInt(0,5)<2){
                 if(clr==3){makeArrow("left", colors[0]);}
                 else {makeArrow("left", colors[clr+1]);}
                 if(getRandomInt(0,3)==0){
                     if(clr==0)clr=4;
                     makeArrow("right", colors[clr-1]);
                 }
-            }else if(getRandomInt(0,5)==0){
+            }else if(getRandomInt(0,5)<2){
                 if(clr==3){makeArrow("right", colors[0]);}
                 else {makeArrow("right", colors[clr+1]);}
                 if(getRandomInt(0,3)==0){
@@ -266,7 +266,7 @@
                 }
             }
         }
-        var jump =  Math.ceil($("#scale").width());
+        var jump =  $("#scale").width();
         console.log(jump);
         // jump = parseInt(jump.substring(0, jump.length - 2))
         $(".down").each(function(){
@@ -297,11 +297,11 @@
         });
 
         $(".right").each(function(){
-            var t = $( this ).offset().left;
-            // t = parseInt(t.substring(0, t.length - 2))
-            console.log(t-jump);
-            $(this).animate({left: t-2.5*jump+"px"}, 10);
-            if(t<$("#square").offset().left+7.5*jump){
+            var t = $( this ).css("left");
+            t = parseFloat(t.substring(0, t.length - 2))-jump
+            
+            $(this).animate({left: t+"px"}, 100);
+            if(t<$("#square").offset().left+5*jump){
                 console.log("hit right");
                 verifyHit(this);
                 $(this).remove();
@@ -489,10 +489,11 @@ document.addEventListener('keyup', (event) => {
         </script>
     </head>
     <body>
+        <div id="scale"></div>
         <div id="wrapper">
             <div id="LT"></div>
             <div id="RT"></div>
-            <div id="scale"></div>
+            
             <!-- <div class="arrow down pink"></div>
             <div class="arrow left orange" ></div>
             <div class="arrow right cyan" ></div> -->
