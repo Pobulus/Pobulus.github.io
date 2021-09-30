@@ -1,0 +1,156 @@
+#score{
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: max(10vw, 10vh);
+    position: absolute;
+    bottom: 0px;
+    z-index: 100;
+    width: 100%;
+    text-align: center;
+}
+#LT{
+    position: absolute;
+    width: 50vw;
+    height: 100vh;
+    z-index: 500;
+    left: 0px;
+}
+#RT{
+    position: absolute;
+    width: 50vw;
+    height: 100vh;
+    z-index: 500;
+    right: 0px;
+}
+html, body{
+    background-color: black;
+    
+}
+#wrapper{
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+}
+.down {
+    left: 50%;
+    top: calc(50vh - 29vw);
+
+    transform: translate(-50%, 0);
+}
+.left {
+    position: absolute;
+    left: calc(50vw - 31vw);
+    top: 50vh;
+    transform: translate(0, -50%) rotate(-90deg);
+}
+.right {
+    
+    position: absolute;
+    left: calc(50vw + 25vw);
+    top: 50vh;
+    transform: translate(0, -50%) rotate(90deg);
+}
+#scale {
+    width: 2vw;
+}
+.arrow {
+    position: absolute;
+    overflow: hidden;
+    width: 0; 
+    height: 0;
+
+    border-left: 3vw solid transparent;
+    border-right: 3vw solid transparent;
+    z-index: 10000;
+    border-top: 2vw solid white;
+    
+    }
+.green{
+    border-top-color: limegreen;
+}
+.orange{
+    border-top-color: orange;
+}
+.pink{
+    border-top-color: fuchsia;
+}
+.cyan{
+    border-top-color: cyan;
+}
+#square{
+    position: absolute;
+    top: calc(50vh - 7vw);
+    left: calc(50vw - 7vw);
+    z-index: 1000;
+    background-color: gray;
+    width: 10vw;
+    height: 10vw;
+
+    border-width: 2vw;
+    border-style: solid;
+    border-top-color: orange;
+    border-left-color: fuchsia;
+    border-right-color: limegreen;
+    border-bottom-color: cyan;
+    
+}
+#title{
+    width: 40vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#replay{
+    width: 10vw;
+    height: 10vw;
+    opacity: 0;
+    
+}
+#play_icon{
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    
+    
+}
+@media only screen and (max-aspect-ratio: 1/1){
+    .arrow {
+
+    border-left: 3vh solid transparent;
+    border-right: 3vh solid transparent;
+    z-index: 100;
+    border-top-width: 2vh;
+    }
+    .down{
+        top: calc(50vh - 29vh);
+    }
+    .left {
+    left: calc(50vw - 31vh);
+    }
+    .right {
+    left: calc(50vw + 25vh);
+    }
+    #scale {
+        width: 2vh;
+    }
+    #title{
+    width: min(100%, 100vw);
+    }
+    #square{
+    top: calc(50vh - 7vh);
+    left: calc(50vw - 7vh);
+    width: 10vh;
+    height: 10vh;
+    border-width: 2vh;
+    }
+    #replay{
+    width: 10vh;
+    height: 10vh;
+    }
+    #play_icon{
+    width: 10vh;
+    height: 10vh;
+    }
+}
