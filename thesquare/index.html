@@ -7,26 +7,36 @@
     <body>
         <div id="scale"></div>
         <div id="wrapper">
-            <div class="prompt" id="keyboard">
+            <div class="prompt shy" id="keyboard">
+
                 Press Enter to start<br>
                 L/R arrows to rotate<br>
                 Both to flip
             </div>
-            <div class="prompt" id="touch">
+            <div class="prompt shy" id="touch">
+
                 Tap the square to start the game<br>
                 tap L/R sides of the screen to rotate<br>
                 Tap both simulatenously to flip
             </div>
-            <img src="theme.svg" id="switch" onclick="toggleTheme()">
+            <img src="theme.svg" class="shy" id="switch" onclick="toggleTheme()">
+            <img src="fullscreen.svg" class="shy" id="fullscr" onclick="openFullscreen()">
             <div id="LT"></div>
             <div id="RT"></div>
             <img src="thesquare.svg" id="title">
-            <div id="box"></div>
-            <div id="square" onclick="startGame()">
-                <img src="play.svg" id="play_icon">
-                <img src="replay.svg" id="replay">
+            <div id="box" onclick="startGame()"></div>
+            <div id="square" class="rotating">
+                <img src="play.svg"  id="play_icon" >
+                <img src="replay.svg" id="replay" >
             </div>
             <div id="score"></div>
+            <div id="settings" class="shy rotating">
+                <input type="color" id="input-orange" oninput="changeColor('orange', this.value)">
+                <input type="color" id="input-pink" oninput="changeColor('pink', this.value)">
+                <input type="color" id="input-green" oninput="changeColor('green', this.value)">
+                <input type="color" id="input-cyan" oninput="changeColor('cyan', this.value)">
+
+            </div>
         </div>
     </body>
 

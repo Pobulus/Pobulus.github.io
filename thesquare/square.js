@@ -1,4 +1,4 @@
-var darkmode = true;
+var darkmode = false;
 var score = 0;
 var sqrot = 0;
 var flip = 1;
@@ -41,11 +41,29 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min+1)) + min;
 }
+var fullscr = false;
+var elem = document.documentElement;
+function openFullscreen() {
+         
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+    }
+    fullscr = true;
 
+
+}
+
+function changeColor(c, v){
+    $("body").get(0).style.setProperty("--"+c, v);
+}
 
 function AnimateRotate(angle) {
     // caching the object for performance reasons
-    var $elem = $('#square');
+    var $elem = $('.rotating');
     var curRot = getRotationDegrees($elem);
 
     // we use a pseudo object for the animation
@@ -65,7 +83,7 @@ function AnimateRotate(angle) {
 }
 function ResetRotate() {
     // caching the object for performance reasons
-    var $elem = $('#square');
+    var $elem = $('.rotating');
     var curRot = getRotationDegrees($elem);
     flip = 1
     sqrot = 0;
@@ -173,7 +191,7 @@ function moveArrows(){
     $(".down").each(function(){
         var t = $( this ).position().top+jump;
         $(this).animate({top: t+"px"}, 100);
-        if(t>=$("#box").offset().top-jump){
+        if(t>=$("#box").offset().top-2*jump){
             console.log("hit top");
             verifyHit(this);
             $(this).remove();
@@ -182,7 +200,7 @@ function moveArrows(){
     $(".left").each(function(){
         var t = $( this ).position().left;
         $(this).animate({left: t+"px"}, 100);
-        if(t>$("#box").offset().left-2*jump){
+        if(t>$("#box").offset().left-3*jump){
             console.log("hit left");
             verifyHit(this);
             $(this).remove();
@@ -191,7 +209,7 @@ function moveArrows(){
     $(".right").each(function(){
         var t = $( this ).position().left;
         $(this).animate({left: t-2*jump+"px"}, 100);
-        if(t<$("#box").offset().left+7*jump){
+        if(t<$("#box").offset().left+6*jump){
             console.log("hit right");
             verifyHit(this);
             $(this).remove();
@@ -252,6 +270,9 @@ function stopGame(){
     clearInterval(gameloop);
     $("#title").animate({height: "20vh"}, 500);
     $("#switch").show();
+    $("#fullscr").show();
+    $("#settings").show();
+
     ResetRotate();
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
@@ -261,8 +282,7 @@ function startGame(){
     score = 0;
     ResetRotate();
     $("#score").html("");
-    $(".prompt").hide();
-    $("#switch").hide();
+    $(".shy").hide();
     $("#play_icon").remove();
     $("#square").animate({"border-radius": 0+"px"}, 200);
     $("#replay").animate({opacity: "0"}, 500);
@@ -274,6 +294,13 @@ function startGame(){
 
 
 window.onload = function(){
+    var bodyStyles = window.getComputedStyle(document.body);
+    $("input").each(function(){
+        console.log($(this).attr('id').substring(6, $(this).attr('id').length));
+        $(this).val(bodyStyles.getPropertyValue('--'+$(this).attr('id').substring(6, $(this).attr('id').length))); 
+
+    });
+
     elL = document.getElementById("LT");
     elR = document.getElementById("RT");
     elL.addEventListener("touchstart", function(evt){
@@ -334,8 +361,8 @@ if (keysPressed['Enter']&&!game) {
     ResetRotate();
     startGame();
 }
-if (keysPressed['ArrowUp']) {
-
+if (keysPressed['f']) {
+    openFullscreen();
 
 } if (keysPressed['ArrowRight'] &&keysPressed['ArrowLeft']&&!rotated){
 

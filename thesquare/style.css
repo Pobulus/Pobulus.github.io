@@ -1,16 +1,53 @@
 :root{
     /* COLOR THEME */
-    --orange: rgb(201, 46, 46);
-    --pink: rgb(175, 83, 175);
-    --green: rgb(98, 179, 98);
-    --cyan: rgb(119, 201, 201);
+    --orange:#c92e2e;
+    --pink:#af53af;
+    --green:#62b362;
+    --cyan:#77c9c9;
 
     /* --background: #121212; */
-    --background: #e6e6e6;
-    --text: #121212;
+    --background:#121212;
+    --text:#e6e6e6;
 }
 
+#settings{
+    position: absolute;
+    z-index: 1000;
+    top: calc(50vh - 7vw);
+    left: calc(50vw - 7vw);
+    width: 14vw;
+    height: 14vw;
+}
+#input-orange{
+    position: absolute;
+    top: 0px;
+    left: 7vw;
+    transform: translate(-50%, 0);
+}
+#input-pink{
+    position: absolute;
+    top: 7vw;
+    transform: translate(0, -50%) rotate(-90deg);
+    right: 6.5vw;
+}
+#input-green{
+    position: absolute;
+    top: 7vw;
+    transform: translate(0, -50%) rotate(-90deg);
+    left:6.5vw;
+}
+#input-cyan{
+    position: absolute;
 
+    bottom: 0px;
+    left: 7vw;
+    transform: translate(-50%, 0);
+}
+input {
+    opacity: 0;
+    width: 13vw;
+    height: 2vw;
+}
 #score{
 
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -37,15 +74,20 @@
 }
 body{
     background-color: var(--background);
-
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .prompt{
     display: none;
     position: absolute;
+    top: 0vh;
+    padding: 0.7vw;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 2vw;
     z-index: 10000;
     background: var(--background);
+    
+
+   
 }
 #wrapper{
     overflow: hidden;
@@ -119,12 +161,13 @@ body{
 }
 #box {
     position: absolute;
-    top: calc(50vh - 7vw);
-    left: calc(50vw - 7vw);
+    top: calc(50vh - 5vw);
+    left: calc(50vw - 5vw);
     width: 10vw;
     height: 10vw;
+    z-index: 1200;
 
-    border-width: 2vw;
+    /* border-width: 2vw; */
 }
 #title{
     width: 40vw;
@@ -147,20 +190,39 @@ body{
 }
 #switch{
     position: absolute;
-    right: 1vw;
-    top: 1vh;
+    left: 2vw;
+    bottom: 2vh;
+    width: 7vw;
+    height: 7vw;
+    z-index: 1000;
+}
+#fullscr{
+    position: absolute;
+    right: 2vw;
+    bottom: 2vh;
     width: 7vw;
     height: 7vw;
     z-index: 1000;
 }
 img {
-    filter: invert(1);
+    filter: invert(0);
 }
 @media only screen and (max-aspect-ratio: 1/1){
     .prompt{
         font-size: 2vh;
         width: 100%;
         text-align: center;
+        top: 0px;
+        height: auto;
+        transform: translate(0, 0);
+    }
+    #switch{
+        width: 7vh;
+        height: 7vh;
+    }
+    #fullscr{
+        width: 7vh;
+        height: 7vh;
     }
     .arrow {
         border-left: 3vh solid transparent;
@@ -191,11 +253,12 @@ img {
         border-width: 2vh;
     }
     #box{
-        top: calc(50vh - 7vh);
-        left: calc(50vw - 7vh);
+        top: calc(50vh - 5vh);
+        left: calc(50vw - 5vh);
         width: 10vh;
         height: 10vh;
         border-width: 2vh;
+
     }
     #replay{
         width: 10vh;
@@ -204,5 +267,43 @@ img {
     #play_icon{
         width: 10vh;
         height: 10vh;
+    }
+    #settings{
+        position: absolute;
+        z-index: 1000;
+        top: calc(50vh - 7vh);
+        left: calc(50vw - 7vh);
+        width: 14vh;
+        height: 14vh;
+    }
+    #input-orange{
+        position: absolute;
+        top: 0px;
+        left: 7vh;
+        transform: translate(-50%, 0);
+    }
+    #input-pink{
+        position: absolute;
+        top: 7vh;
+        transform: translate(0, -50%) rotate(-90deg);
+        right: 6.5vh;
+    }
+    #input-green{
+        position: absolute;
+        top: 7vh;
+        transform: translate(0, -50%) rotate(-90deg);
+        left:6.5vh;
+    }
+    #input-cyan{
+        position: absolute;
+    
+        bottom: 0px;
+        left: 7vh;
+        transform: translate(-50%, 0);
+    }
+    input {
+        opacity: 0;
+        width: 13vh;
+        height: 2vh;
     }
 }
