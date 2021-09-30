@@ -51,7 +51,7 @@
             .right {
                 
                 position: absolute;
-                left: calc(50vw + 21vw);
+                left: calc(50vw + 25vw);
                 top: 50vh;
                 transform: translate(0, -50%) rotate(90deg);
             }
@@ -133,7 +133,7 @@
                 left: calc(50vw - 31vh);
                 }
                 .right {
-                left: calc(50vw + 19vh);
+                left: calc(50vw + 25vh);
                 }
                 #scale {
                     width: 2vh;
@@ -254,14 +254,16 @@
             else clr = even[getRandomInt(0,1)];
 
             makeArrow("down", colors[clr]);
-            if(getRandomInt(0,5)<2){
+            // if(getRandomInt(0,5)<2){
+            if(0){
                 if(clr==3){makeArrow("left", colors[0]);}
                 else {makeArrow("left", colors[clr+1]);}
                 if(getRandomInt(0,3)==0){
                     if(clr==0)clr=4;
                     makeArrow("right", colors[clr-1]);
                 }
-            }else if(getRandomInt(0,5)<2){
+            // }else if(getRandomInt(0,5)<2){
+            }else if(1){
                 if(clr==3){makeArrow("right", colors[0]);}
                 else {makeArrow("right", colors[clr+1]);}
                 if(getRandomInt(0,3)==0){
@@ -274,7 +276,7 @@
         console.log(jump);
         // jump = parseInt(jump.substring(0, jump.length - 2))
         $(".down").each(function(){
-            var t = $( this ).offset().top+jump;
+            var t = $( this ).position().top+jump;
             
             // t = parseInt(t.substring(0, t.length - 2))
             $(this).animate({top: t+"px"}, 100);
@@ -287,10 +289,11 @@
         });
 
         $(".left").each(function(){
-            var t = $( this ).offset().left;
+            var t = $( this ).position().left;
             // t = parseInt(t.substring(0, t.length - 2))
 
             $(this).animate({left: t+"px"}, 100);
+            // $(this).style({left: t+"px"});
             if(t>$("#square").offset().left-2*jump){
                 // $(this).animate({left: $("#LT").width()+"px"}, 100);
                 console.log("hit left");
@@ -301,11 +304,11 @@
         });
 
         $(".right").each(function(){
-            var t = $( this ).css("left");
-            t = parseFloat(t.substring(0, t.length - 2))-jump
+            var t = $( this ).position().left;
+            // t = parseFloat(t.substring(0, t.length - 2))-jump
             
-            $(this).animate({left: t+"px"}, 100);
-            if(t<$("#square").offset().left+5*jump){
+            $(this).animate({left: t-2*jump+"px"}, 100);
+            if(t<$("#square").offset().left+7*jump){
                 console.log("hit right");
                 verifyHit(this);
                 $(this).remove();
