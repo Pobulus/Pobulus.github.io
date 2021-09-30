@@ -1,6 +1,6 @@
 :root{
     /* COLOR THEME */
-    --orange:#c92e2e;
+    --orange:#ca8832;
     --pink:#af53af;
     --green:#62b362;
     --cyan:#77c9c9;
@@ -170,6 +170,7 @@ body{
     /* border-width: 2vw; */
 }
 #title{
+    padding: 1%;
     width: 40vw;
     display: block;
     margin-left: auto;
@@ -247,7 +248,8 @@ img {
         width: 2vh;
     }
     #title{
-        width: min(100%, 100vw);
+        width: min(92%, 100vw);
+        padding: 4%;
     }
     #square{
         top: calc(50vh - 7vh);
