@@ -1,4 +1,7 @@
 var darkmode = false;
+const a = 1.059463094359;
+var pitch = 14;
+var hits = 0;
 var score = 0;
 var sqrot = 0;
 var flip = 1;
@@ -17,8 +20,11 @@ var clr = 0;
 var odd = [1, 3];
 var even = [0, 2];
 var sqrWave = new Audio("square.ogg");
+sqrWave.preservesPitch = false;
 var sinWave = new Audio("sine.ogg");
+sinWave.preservesPitch = false;
 var noise = new Audio("ksh.ogg");
+var noiseMiss = new Audio("kshuh.ogg");
 function getRotationDegrees(obj) {
     var matrix = obj.css("-webkit-transform") ||
     obj.css("-moz-transform")    ||
@@ -109,7 +115,7 @@ function AnimateFlip(side) {
     // we use a pseudo object for the animation
     // (starts from `0` to `angle`), you can name it as you want
     $({deg: flip}).animate({deg: side}, {
-        duration: 100,
+        duration: 150,
         step: function(now) {
             // in the step-callback (that is fired each step of the animation),
             // you can use the `now` paramter which contains the current
@@ -158,27 +164,31 @@ function toggleTheme(){
 }
 
 function spawnArrows(){
-    if(getRandomInt(0,5)> 2){
+    if(getRandomInt(0,5)> 1){
         // dirs[getRandomInt(0,2)]
-        var nc = getRandomInt(0,2);
+        var nc = getRandomInt(0,3);
         if(nc<2){
-        if(clr%2==0)clr = odd[nc];
-        else clr = even[nc];
-        }else if (clr == 4) clr = 0;
-        makeArrow("down", colors[clr]);
-        if(getRandomInt(0,5)<2){
-            if(clr==3){makeArrow("left", colors[0]);}
-            else {makeArrow("left", colors[clr+1]);}
-            if(getRandomInt(0,3)==0){
-                if(clr==0)clr=4;
-                makeArrow("right", colors[clr-1]);
-            }
-        }else if(getRandomInt(0,5)<2){
-            if(clr==3){makeArrow("right", colors[0]);}
-            else {makeArrow("right", colors[clr+1]);}
-            if(getRandomInt(0,3)==0){
-                if(clr==0)clr=4;
-                makeArrow("left", colors[clr-1]);
+            if(clr%2==0)clr = odd[nc];
+            else clr = even[nc];
+            makeArrow("down", colors[clr]);
+        }else {
+            if (clr == 4) clr = 0;
+            makeArrow("down", colors[clr]);
+            var rn = getRandomInt(0,2);
+            if(rn==0){
+                if(clr==3){makeArrow("left", colors[0]);}
+                else {makeArrow("left", colors[clr+1]);}
+                if(getRandomInt(0,2)==0){
+                    if(clr==0)clr=4;
+                    makeArrow("right", colors[clr-1]);
+                }
+            }else if(rn==1){
+                if(clr==3){makeArrow("right", colors[0]);}
+                else {makeArrow("right", colors[clr+1]);}
+                if(getRandomInt(0,4)==0){
+                    if(clr==0)clr=4;
+                    makeArrow("left", colors[clr-1]);
+                }
             }
         }
     }
@@ -186,7 +196,10 @@ function spawnArrows(){
 
 function moveArrows(){
     spawnArrows()
+    
     noise.play();
+    hits = 0;
+    pitch = 0;
     var jump =  $("#scale").width();
     $(".down").each(function(){
         var t = $( this ).position().top+jump;
@@ -215,15 +228,36 @@ function moveArrows(){
             $(this).remove();
         }
     });
-}
 
+    if(hits>0){
+        
+        shiftedSound(sqrWave, pitch-16);
+        edges(-1);
+        score = score + hits;
+    } else if (hits<0){
+        shiftedSound(sinWave, pitch-16);
+        edges(1);
+    }
+}
+function shiftedSound(sound, tones){
+    sound.playbackRate = Math.pow(a, tones);
+    sound.play();
+}
 function getColor(direction){
     
     var mod = 0;
-    if (direction == "right") mod = -1*flip;
-    if (direction == "left") mod = 1*flip;
+    if (direction == "right") {
+        mod = -1*flip;
+    }
+    if (direction == "left") {
+        mod = 1*flip;
+    }
     out = ((sqrot/90)+mod)%4;
     if(out<0)out = 4+out
+    if(direction=="top")pitch = pitch + out*9;
+    if(direction=="left")pitch = pitch + out*3;
+    if(direction=="right")pitch = pitch + out;
+    
     return colors[out];
 }
 
@@ -231,34 +265,39 @@ function verifyHit(obj){
     if($(obj).hasClass("down")){
         console.log("got here");
         if($(obj).hasClass(getColor("top"))){
-            edges(-1);
+            // edges(-1);
             console.log("good color");
-            sqrWave.play();
-            score = score +1;
+            hits = hits+1;
+
         }else{
-            edges(1);
+            // edges(1);
             console.log("bad color");
-            sinWave.play();
+            hits = hits-1;
+            // sinWave.play();
         }
     }
     if($(obj).hasClass("left")){
         console.log("got here");
         if($(obj).hasClass(getColor("left"))){
-            edges(-1);
+            // edges(-1);
             console.log("good color");
+            hits = hits+1;
         }else{
-            edges(1);
+            // edges(1);
             console.log("bad color");
+            hits = hits-1;
         }
     }
     if($(obj).hasClass("right")){
         console.log("got here");
         if($(obj).hasClass(getColor("right"))){
-            edges(-1);
+            // edges(-1);
             console.log("good color");
+            hits = hits+1;
         }else{
-            edges(1);
+            // edges(1);
             console.log("bad color");
+            hits = hits-1;
         }
     }
 }
@@ -277,7 +316,7 @@ function stopGame(){
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
 }
-
+var x = 14;
 function startGame(){
     score = 0;
     ResetRotate();
@@ -363,6 +402,19 @@ if (keysPressed['Enter']&&!game) {
 }
 if (keysPressed['f']) {
     openFullscreen();
+}if (keysPressed["ArrowUp"]){
+
+        console.log(x);
+        shiftedSound(sinWave, x-14);
+        x = x+1;
+
+    
+}if (keysPressed["ArrowDown"]){
+
+    console.log(x);
+    shiftedSound(sqrWave, x-14);
+    x = x-1;
+
 
 } if (keysPressed['ArrowRight'] &&keysPressed['ArrowLeft']&&!rotated){
 
