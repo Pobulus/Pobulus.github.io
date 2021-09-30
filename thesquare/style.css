@@ -9,7 +9,19 @@
     --background:#121212;
     --text:#e6e6e6;
 }
+#sc-widget {
+    position:absolute;
+    z-index: 2000;
+    opacity: 60%;
+    right: 0px;
 
+}
+#sc-widget:hover {
+    opacity: 100%;
+    width: 30%;
+    height: 20%;
+    
+}
 #settings{
     position: absolute;
     z-index: 1000;

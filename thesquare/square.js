@@ -1,4 +1,7 @@
 var darkmode = false;
+var delay = 600; 
+var bpm = 105;
+endless = true;
 const a = 1.059463094359;
 var pitch = 14;
 var hits = 0;
@@ -234,10 +237,14 @@ function moveArrows(){
         shiftedSound(sqrWave, pitch-16);
         edges(-1);
         score = score + hits;
+        if(delay>151&&endless)delay = 600-(50*parseInt(score/50));
+        
+        console.log(delay);
     } else if (hits<0){
         shiftedSound(sinWave, pitch-16);
-        edges(1);
+       edges(1);
     }
+    if(game)gameloop = setTimeout(moveArrows, delay);
 }
 function shiftedSound(sound, tones){
     sound.pause();
@@ -302,20 +309,23 @@ function verifyHit(obj){
         }
     }
 }
-
+function convertBPM(x){
+    return parseInt(1000/(x/60));
+}
 function stopGame(){
     game = false;
 
     $(".arrow").remove();
-    clearInterval(gameloop);
+    (gameloop);
     $("#title").animate({height: "20vh"}, 500);
     $("#switch").show();
     $("#fullscr").show();
     $("#settings").show();
-
+    
     ResetRotate();
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
+    // SC.Widget($("#sc-widget").get(0)).pause();
 }
 var x = 14;
 function startGame(){
@@ -328,7 +338,12 @@ function startGame(){
     $("#replay").animate({opacity: "0"}, 500);
     $("#title").animate({height: "0px"}, 500);
     clearInterval(gameloop);
-    gameloop = setInterval(moveArrows, 500);
+    
+    if(endless)delay = 600;
+    else delay = convertBPM(bpm*2);
+    gameloop = setTimeout(moveArrows, delay)
+    // SC.Widget($("#sc-widget").get(0)).seekTo(0);
+    // SC.Widget($("#sc-widget").get(0)).play();
     game = true;
 }
 
@@ -412,10 +427,8 @@ if (keysPressed['f']) {
     
 }if (keysPressed["ArrowDown"]){
 
-    console.log(x);
-    shiftedSound(sqrWave, x-14);
-    x = x-1;
 
+    
 
 } if (keysPressed['ArrowRight'] &&keysPressed['ArrowLeft']&&!rotated){
 
