@@ -7,9 +7,21 @@
     <body>
         <div id="scale"></div>
         <div id="wrapper">
+            <div class="prompt" id="keyboard">
+                Press Enter to start<br>
+                L/R arrows to rotate<br>
+                Both to flip
+            </div>
+            <div class="prompt" id="touch">
+                Tap the square to start the game<br>
+                tap L/R sides of the screen to rotate<br>
+                Tap both simulatenously to flip
+            </div>
+            <img src="theme.svg" id="switch" onclick="toggleTheme()">
             <div id="LT"></div>
             <div id="RT"></div>
             <img src="thesquare.svg" id="title">
+            <div id="box"></div>
             <div id="square" onclick="startGame()">
                 <img src="play.svg" id="play_icon">
                 <img src="replay.svg" id="replay">

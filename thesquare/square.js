@@ -1,3 +1,4 @@
+var darkmode = true;
 var score = 0;
 var sqrot = 0;
 var flip = 1;
@@ -15,7 +16,9 @@ var elR;
 var clr = 0;
 var odd = [1, 3];
 var even = [0, 2];
-
+var sqrWave = new Audio("square.ogg");
+var sinWave = new Audio("sine.ogg");
+var noise = new Audio("ksh.ogg");
 function getRotationDegrees(obj) {
     var matrix = obj.css("-webkit-transform") ||
     obj.css("-moz-transform")    ||
@@ -60,6 +63,27 @@ function AnimateRotate(angle) {
     });
     sqrot = sqrot+angle;
 }
+function ResetRotate() {
+    // caching the object for performance reasons
+    var $elem = $('#square');
+    var curRot = getRotationDegrees($elem);
+    flip = 1
+    sqrot = 0;
+    // we use a pseudo object for the animation
+    // (starts from `0` to `angle`), you can name it as you want
+    $({deg: curRot}).animate({deg: 0}, {
+        duration: 100,
+        step: function(now) {
+            // in the step-callback (that is fired each step of the animation),
+            // you can use the `now` paramter which contains the current
+            // animation-position (`0` up to `angle`)
+            $elem.css({
+                transform: 'scaleX(' + flip + ') rotate(' + now + 'deg)'
+            });
+        }
+    });
+
+}
 
 function AnimateFlip(side) {
     // caching the object for performance reasons
@@ -92,7 +116,7 @@ function edges(direction){
     curBR = parseInt(curBR.substring(0, curBR.length - 2));
     var sqw = $("#square").width();
     $("#square").animate({"border-radius": curBR+direction*(sqw/5)+"px"}, 200);
-    if(curBR>(sqw-30)){
+    if(curBR>(sqw-30)&&direction == 1){
         stopGame();
     }
 }
@@ -102,13 +126,27 @@ function makeArrow(dir, color){
     $("#wrapper").append("<div class=\"arrow "+dir+" "+color+ "\"></div>");
 }
 
-
+function toggleTheme(){
+    darkmode = !darkmode;
+    if(!darkmode){
+        $("body").get(0).style.setProperty("--background", "#121212");
+        $("body").get(0).style.setProperty("--text", "#e6e6e6");
+        $("img").css({"filter":"invert(0)"});
+    }else{
+        $("body").get(0).style.setProperty("--background", "#e6e6e6");
+        $("body").get(0).style.setProperty("--text", "#121212");
+        $("img").css({"filter":"invert(1)"});
+    }
+}
 
 function spawnArrows(){
     if(getRandomInt(0,5)> 2){
         // dirs[getRandomInt(0,2)]
-        if(clr%2==0)clr = odd[getRandomInt(0,1)];
-        else clr = even[getRandomInt(0,1)];
+        var nc = getRandomInt(0,2);
+        if(nc<2){
+        if(clr%2==0)clr = odd[nc];
+        else clr = even[nc];
+        }else if (clr == 4) clr = 0;
         makeArrow("down", colors[clr]);
         if(getRandomInt(0,5)<2){
             if(clr==3){makeArrow("left", colors[0]);}
@@ -130,11 +168,12 @@ function spawnArrows(){
 
 function moveArrows(){
     spawnArrows()
+    noise.play();
     var jump =  $("#scale").width();
     $(".down").each(function(){
         var t = $( this ).position().top+jump;
         $(this).animate({top: t+"px"}, 100);
-        if(t>=$("#square").offset().top-jump){
+        if(t>=$("#box").offset().top-jump){
             console.log("hit top");
             verifyHit(this);
             $(this).remove();
@@ -143,7 +182,7 @@ function moveArrows(){
     $(".left").each(function(){
         var t = $( this ).position().left;
         $(this).animate({left: t+"px"}, 100);
-        if(t>$("#square").offset().left-2*jump){
+        if(t>$("#box").offset().left-2*jump){
             console.log("hit left");
             verifyHit(this);
             $(this).remove();
@@ -152,7 +191,7 @@ function moveArrows(){
     $(".right").each(function(){
         var t = $( this ).position().left;
         $(this).animate({left: t-2*jump+"px"}, 100);
-        if(t<$("#square").offset().left+7*jump){
+        if(t<$("#box").offset().left+7*jump){
             console.log("hit right");
             verifyHit(this);
             $(this).remove();
@@ -176,10 +215,12 @@ function verifyHit(obj){
         if($(obj).hasClass(getColor("top"))){
             edges(-1);
             console.log("good color");
+            sqrWave.play();
             score = score +1;
         }else{
             edges(1);
             console.log("bad color");
+            sinWave.play();
         }
     }
     if($(obj).hasClass("left")){
@@ -206,24 +247,28 @@ function verifyHit(obj){
 
 function stopGame(){
     game = false;
+
+    $(".arrow").remove();
     clearInterval(gameloop);
     $("#title").animate({height: "20vh"}, 500);
-    if (flip==-1){AnimateFlip(-flip);}
-    AnimateRotate(-1*flip*getRotationDegrees($("#square")));
+    $("#switch").show();
+    ResetRotate();
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
 }
 
 function startGame(){
     score = 0;
+    ResetRotate();
     $("#score").html("");
-    $(".arrow").remove();
+    $(".prompt").hide();
+    $("#switch").hide();
     $("#play_icon").remove();
     $("#square").animate({"border-radius": 0+"px"}, 200);
     $("#replay").animate({opacity: "0"}, 500);
     $("#title").animate({height: "0px"}, 500);
     clearInterval(gameloop);
-    gameloop = setInterval(moveArrows, 750);
+    gameloop = setInterval(moveArrows, 500);
     game = true;
 }
 
@@ -232,63 +277,62 @@ window.onload = function(){
     elL = document.getElementById("LT");
     elR = document.getElementById("RT");
     elL.addEventListener("touchstart", function(evt){
-    evt.preventDefault();
-    Ltouch = true;
-    if(Rtouch){
-        rotated = true;
-        AnimateFlip(-flip);
-        clearTimeout(keyTO);
-    }else {     
+        evt.preventDefault();
+        if(!game) $("#touch").show();
+        if(!game) $("#prompt").show();
+        Ltouch = true;
+        if(Rtouch){
+            rotated = true;
+            AnimateFlip(-flip);
+            clearTimeout(keyTO);
+        }else {     
+            keyTO = setTimeout(function(){
+                if (Rtouch&&!rotated) {
+                    rotateCW();
+                    rotated = true;
+                }if (Ltouch&&!rotated) {
+                    rotateCCW();
+                    rotated = true;
+                }
+            }, 50);
+        }
+    });
+    elR.addEventListener("touchstart", function(evt){
+        evt.preventDefault();
+        if(!game) $("#touch").show();
+        Rtouch = true;
+        if(Ltouch){
+            rotated = true;
+            AnimateFlip(-flip);
+            Rtouch = false;
+            Ltouch = false;
+            clearTimeout(keyTO);
+        }else {     
         keyTO = setTimeout(function(){
-            if (Rtouch&&!rotated) {
-                rotateCW();
-                rotated = true;
-            }if (Ltouch&&!rotated) {
-                rotateCCW();
-                rotated = true;
-            }
-        }, 50);
-    }
-});
+        if (Rtouch&&!rotated) {
+            rotateCW();
+            rotated = true;
+            Rtouch = false;
 
-elR.addEventListener("touchstart", function(evt){
-    evt.preventDefault();
-    Rtouch = true;
-    if(Ltouch){
-        rotated = true;
-        AnimateFlip(-flip);
-        Rtouch = false;
-        Ltouch = false;
-        clearTimeout(keyTO);
-    }else {     
-    keyTO = setTimeout(function(){
-    if (Rtouch&&!rotated) {
-        rotateCW();
-        rotated = true;
-        Rtouch = false;
-
-    }if (Ltouch&&!rotated) {
-        rotateCCW();
-        rotated = true;
-        Ltouch = false;
-    }
-}, 50);
-    }
-});
+        }if (Ltouch&&!rotated) {
+            rotateCCW();
+            rotated = true;
+            Ltouch = false;
+        }
+    }, 50);
+        }
+    });
 
 elL.addEventListener("touchend", function(){Ltouch = false;rotated = false; });
 elR.addEventListener("touchend", function(){Rtouch = false;rotated = false;});
 }
 document.addEventListener('keydown', (event) => {
 keysPressed[event.key] = true;
-if(!game){
-    startGame();
-}
-if (keysPressed['Enter']&&game) {
-getColor("top");
-getColor("left");
-getColor("right");
+if(!game) $("#keyboard").show();
+if (keysPressed['Enter']&&!game) {
 
+    ResetRotate();
+    startGame();
 }
 if (keysPressed['ArrowUp']) {
 

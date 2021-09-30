@@ -1,9 +1,22 @@
+:root{
+    /* COLOR THEME */
+    --orange: rgb(201, 46, 46);
+    --pink: rgb(175, 83, 175);
+    --green: rgb(98, 179, 98);
+    --cyan: rgb(119, 201, 201);
+
+    /* --background: #121212; */
+    --background: #e6e6e6;
+    --text: #121212;
+}
+
+
 #score{
-    color: white;
+
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: max(10vw, 10vh);
     position: absolute;
-    bottom: 0px;
+    bottom: 1vh;
     z-index: 100;
     width: 100%;
     text-align: center;
@@ -22,16 +35,24 @@
     z-index: 500;
     right: 0px;
 }
-html, body{
-    background-color: black;
-    
+body{
+    background-color: var(--background);
+
+}
+.prompt{
+    display: none;
+    position: absolute;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 2vw;
+    z-index: 10000;
+    background: var(--background);
 }
 #wrapper{
     overflow: hidden;
     position: fixed;
     width: 100%;
     height: 100%;
-
+    color: var(--text);
 }
 .down {
     left: 50%;
@@ -64,93 +85,124 @@ html, body{
     border-left: 3vw solid transparent;
     border-right: 3vw solid transparent;
     z-index: 10000;
-    border-top: 2vw solid white;
+    border-top: 2vw solid var(--text);
     
     }
 .green{
-    border-top-color: limegreen;
+    border-top-color: var(--green);
 }
 .orange{
-    border-top-color: orange;
+    border-top-color: var(--orange);
 }
 .pink{
-    border-top-color: fuchsia;
+    border-top-color: var(--pink);
 }
 .cyan{
-    border-top-color: cyan;
+    border-top-color: var(--cyan);
 }
 #square{
     position: absolute;
     top: calc(50vh - 7vw);
     left: calc(50vw - 7vw);
     z-index: 1000;
-    background-color: gray;
+    background-color: var(--background);
     width: 10vw;
     height: 10vw;
 
     border-width: 2vw;
     border-style: solid;
-    border-top-color: orange;
-    border-left-color: fuchsia;
-    border-right-color: limegreen;
-    border-bottom-color: cyan;
+    border-top-color: var(--orange);;
+    border-left-color: var(--pink);
+    border-right-color: var(--green);
+    border-bottom-color: var(--cyan);
     
+}
+#box {
+    position: absolute;
+    top: calc(50vh - 7vw);
+    left: calc(50vw - 7vw);
+    width: 10vw;
+    height: 10vw;
+
+    border-width: 2vw;
 }
 #title{
     width: 40vw;
     display: block;
     margin-left: auto;
     margin-right: auto;
+
 }
 #replay{
     width: 10vw;
     height: 10vw;
     opacity: 0;
+
     
 }
 #play_icon{
     position: absolute;
     width: 10vw;
     height: 10vw;
-    
-    
+}
+#switch{
+    position: absolute;
+    right: 1vw;
+    top: 1vh;
+    width: 7vw;
+    height: 7vw;
+    z-index: 1000;
+}
+img {
+    filter: invert(1);
 }
 @media only screen and (max-aspect-ratio: 1/1){
+    .prompt{
+        font-size: 2vh;
+        width: 100%;
+        text-align: center;
+    }
     .arrow {
-
-    border-left: 3vh solid transparent;
-    border-right: 3vh solid transparent;
-    z-index: 100;
-    border-top-width: 2vh;
+        border-left: 3vh solid transparent;
+        border-right: 3vh solid transparent;
+        z-index: 100;
+        border-top-width: 2vh;
     }
     .down{
         top: calc(50vh - 29vh);
     }
     .left {
-    left: calc(50vw - 31vh);
+        left: calc(50vw - 31vh);
     }
     .right {
-    left: calc(50vw + 25vh);
+        left: calc(50vw + 25vh);
     }
     #scale {
         width: 2vh;
     }
     #title{
-    width: min(100%, 100vw);
+        width: min(100%, 100vw);
     }
     #square{
-    top: calc(50vh - 7vh);
-    left: calc(50vw - 7vh);
-    width: 10vh;
-    height: 10vh;
-    border-width: 2vh;
+        top: calc(50vh - 7vh);
+        left: calc(50vw - 7vh);
+        width: 10vh;
+        height: 10vh;
+        border-width: 2vh;
+    }
+    #box{
+        top: calc(50vh - 7vh);
+        left: calc(50vw - 7vh);
+        width: 10vh;
+        height: 10vh;
+        border-width: 2vh;
     }
     #replay{
-    width: 10vh;
-    height: 10vh;
+        width: 10vh;
+        height: 10vh;
     }
     #play_icon{
-    width: 10vh;
-    height: 10vh;
+        width: 10vh;
+        height: 10vh;
     }
 }
