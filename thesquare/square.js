@@ -139,8 +139,8 @@ function edges(direction){
     var curBR = $("#square").css("border-radius");
     curBR = parseInt(curBR.substring(0, curBR.length - 2));
     var sqw = $("#square").width();
-    $("#square").animate({"border-radius": curBR+direction*(sqw/5)+"px"}, 200);
-    if(curBR>(sqw-30)&&direction == 1){
+    $("#square").animate({"border-radius": curBR+direction*(sqw/7)+"px"}, 200);
+    if(curBR>(sqw*0.6)&&direction == 1){
         stopGame();
     }
 }
@@ -240,6 +240,7 @@ function moveArrows(){
     }
 }
 function shiftedSound(sound, tones){
+    sound.pause();
     sound.playbackRate = Math.pow(a, tones);
     sound.play();
 }
