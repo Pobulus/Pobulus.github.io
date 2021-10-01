@@ -9,6 +9,44 @@
     --background:#121212;
     --text:#e6e6e6;
 }
+.clr {
+    display: inline;
+}
+table {
+				width: min(100%, 1000px);
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 2vw;
+}
+td {
+				margin: auto;
+				text-align: center;
+				border: 0.2vh solid var(--text);
+				height: 5vh;
+}
+.beat{
+				width:10vw;
+}
+.beatD{
+				width:10vw;
+}
+.delay{
+    width:10vw;
+}
+#controls {
+				width: 100vw;
+				font-size: 5vh;
+				text-align: center;
+}
+#add{
+				
+				  display: inline;
+				
+				background: rgb(55, 55, 55);
+}
+.rm{
+				width:10vw;
+}
 #sc-widget {
     position:absolute;
     z-index: 2000;
@@ -55,9 +93,15 @@
     left: 7vw;
     transform: translate(-50%, 0);
 }
-input {
+input[type=color] {
     opacity: 0;
     width: 13vw;
+    height: 2vw;
+}
+input[type=number] {
+    position: relative;
+    width: 50%;
+    font-size: 2vw;
     height: 2vw;
 }
 #score{
@@ -87,6 +131,7 @@ input {
 body{
     background-color: var(--background);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: var(--text);
 }
 .prompt{
     display: none;
@@ -319,9 +364,19 @@ img {
         left: 7vh;
         transform: translate(-50%, 0);
     }
-    input {
+    input[type=color] {
         opacity: 0;
         width: 13vh;
+        height: 2vh;
+    }
+    table{
+        font-size: 2vh;
+    }
+    .delay{
+        width:10vh;
+    }
+    input[type=number] {
+        font-size: 2vh;
         height: 2vh;
     }
 }

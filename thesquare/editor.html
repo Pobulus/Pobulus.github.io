@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+				<title>The Square-Editor</title>
+				<meta charset="UTF-8">
+				<link rel="stylesheet" href="style.css">
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+				<title>Page title</title>
+				<script>
+					beats = 0;
+					var map = {
+						"left": [],
+						"right": [],
+						"top": [],
+						"beats": []  
+					}
+					var colors = ["O", "P", "C", "G"];
+					var colorsNeg = ["orange", "green", "cyan", "pink"];
+					function addRow(num){
+						for (var i = 0; i < num; i++) {
+							$("table").append("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>")
+							beats = beats+1;
+						}
+					}
+					function remove(obj){
+						$(obj).parent().remove();
+						beats = 0;
+						$(".beat").each(function(){
+							$(this).html(beats);
+							beats=beats+1;
+						});
+					}
+					function insert(obj){
+						$(obj).parent().before("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>");
+						beats = 0;
+						$(".beat").each(function(){
+							$(this).html(beats);
+							beats=beats+1;
+						});
+					}
+					function insertAfter(obj){
+						$(obj).parent().after("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>");
+						beats = 0;
+						$(".beat").each(function(){
+							$(this).html(beats);
+							beats=beats+1;
+						});
+					}
+					function xport(){
+						$('#palette').remove()
+						$("tr").each(function(){
+							
+							var cells = $(this).children();
+							if(cells.length>6){
+								
+								map["beats"][cells[0].outerText] = cells[1].firstChild.value;
+								// map["left"][cells[0].outerText] = cells[2].outerText;
+								// map["top"][cells[0].outerText] = cells[3].outerText;
+								// map["right"][cells[0].outerText] = cells[4].outerText;
+							}
+						})
+						
+						console.log(map);
+					}
+					function setColor(obj){
+						$(obj).parent().parent().css("background", $(obj).css("color"));
+						var beat = $(obj).parent().parent().parent().children()[0].outerText;
+						if($(obj).parent().parent().hasClass("l"))map.left[beat]=$(obj).text();
+						if($(obj).parent().parent().hasClass("t"))map.top[beat]=$(obj).text();
+						if($(obj).parent().parent().hasClass("r"))map.right[beat]=$(obj).text();
+						$("#palette").remove();
+						
+					}
+					const header = "<div id=\"palette\">"
+					var colorButtons = {
+					"O": "<div class=\"clr\" style=\"color:var(--orange)\" onclick=\"setColor(this)\">O</div>",
+					"P": "<div class=\"clr\" style=\"color:var(--pink)\" onclick=\"setColor(this)\">P</div>",
+					"G":"<div class=\"clr\" style=\"color:var(--green)\" onclick=\"setColor(this)\">G</div>",
+					"C":"<div class=\"clr\"  style=\"color:var(--cyan)\" onclick=\"setColor(this)\">C</div>"
+					}
+					function removeItemOnce(arr, value) {
+						var index = arr.indexOf(value);
+						if (index > -1) {
+							arr.splice(index, 1);
+						}
+						return arr;
+						}
+					function addPalette(obj){
+						$("#palette").remove();
+						$(obj).text("");
+						var cells = $(obj).parent().parent().children();
+						var toappend = header;
+						// cells[2].outerText
+						var colorsPossible = ["O", "P", "C", "G"];
+						console.log(obj.className);
+						var beat = $(obj).parent().children()[0].outerText;
+						console.log(beat)
+						if(obj.className=="t"){
+							if(Object.keys(colorButtons).includes(map.top[beat])){
+							colorsPossible = removeItemOnce(colorsPossible, map.top[beat])
+							
+						 }
+						}
+						
+						for(var i=0; i<colorsPossible.length;i++){
+							toappend = toappend+colorButtons[colorsPossible[i]];
+						}
+						toappend = toappend+"</div";
+						$(obj).append(toappend);
+
+					}
+				</script>
+
+	
+	
+	
+	
+	
+
+</head>
+<body >
+	<table>
+		<tr class="names">
+			<td class="beatD">beat</td>
+			<td>delay</td>
+			<td>left</td>
+			<td>top</td>
+			<td>right			
+			</td>
+
+			<td colspan="3">Options</td>
+		</tr>
+	</table>
+
+	<div id="controls" onclick="$('#palette').remove()">
+		<div id="add" onclick="addRow(1)">+</div>
+		<div id="add" onclick="addRow(10)">+10</div>
+		<div id="add" onclick="xport()">✓</div>
+	</div>
+</body>
+</html>
