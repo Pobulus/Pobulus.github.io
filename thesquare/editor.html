@@ -14,6 +14,7 @@
 						"top": [],
 						"beats": []  
 					}
+					var noise = new Audio("ksh.ogg");
 					var colors = ["O", "P", "C", "G"];
 					var colorsNeg = ["orange", "green", "cyan", "pink"];
 					function addRow(num){
@@ -71,12 +72,23 @@
 						$("#palette").remove();
 						
 					}
+					function removeColor(obj){
+						$(obj).parent().parent().css("background", "");
+						var beat = $(obj).parent().parent().parent().children()[0].outerText;
+						if($(obj).parent().parent().hasClass("l"))map.left[beat]="";
+						if($(obj).parent().parent().hasClass("t"))map.top[beat]="";
+						if($(obj).parent().parent().hasClass("r"))map.right[beat]="";
+						$("#palette").remove();
+						
+					}
 					const header = "<div id=\"palette\">"
 					var colorButtons = {
 					"O": "<div class=\"clr\" style=\"color:var(--orange)\" onclick=\"setColor(this)\">O</div>",
 					"P": "<div class=\"clr\" style=\"color:var(--pink)\" onclick=\"setColor(this)\">P</div>",
 					"G":"<div class=\"clr\" style=\"color:var(--green)\" onclick=\"setColor(this)\">G</div>",
-					"C":"<div class=\"clr\"  style=\"color:var(--cyan)\" onclick=\"setColor(this)\">C</div>"
+					"C":"<div class=\"clr\"  style=\"color:var(--cyan)\" onclick=\"setColor(this)\">C</div>",
+					"N":"<div class=\"clr\"  style=\"color:var(--background)\" onclick=\"removeColor(this)\">N</div>"
+
 					}
 					function removeItemOnce(arr, value) {
 						var index = arr.indexOf(value);
@@ -85,6 +97,41 @@
 						}
 						return arr;
 						}
+					var counter = 0;
+					var prevdelay = 0
+					var dict;
+					var TO;
+					function play(){
+						dict = map;
+						clearBeat();
+						counter = 0;
+						clearTimeout(TO);
+						if(dict.beats[counter]){
+							
+							prevdelay = parseInt(dict.beats[counter]);
+							TO = setTimeout(moveBeat, prevdelay)
+						}else console.log("No delay specified");
+					}
+					function moveBeat(){
+						
+						noise.play();
+						$("tr").eq(counter+1).css("background", "red");
+						window.scrollTo(0, $("tr").eq(counter+1).position().top);
+						$("tr").eq(counter).css("background", "");
+						counter = counter+1;
+						console.log(counter);
+						if(dict.beats[counter]){
+							console.log(dict.beats[counter])
+							prevdelay = parseInt(dict.beats[counter]);
+						}
+						if(counter<dict.beats.length) TO = setTimeout(moveBeat, prevdelay);
+						else setTimeout(clearBeat, prevdelay);
+
+					}
+					function clearBeat(){
+						$("tr").eq(counter).css("background", "");
+
+					}
 					function addPalette(obj){
 						$("#palette").remove();
 						$(obj).text("");
@@ -95,19 +142,70 @@
 						console.log(obj.className);
 						var beat = $(obj).parent().children()[0].outerText;
 						console.log(beat)
-						if(obj.className=="t"){
-							if(Object.keys(colorButtons).includes(map.top[beat])){
-							colorsPossible = removeItemOnce(colorsPossible, map.top[beat])
-							
+						if(Object.keys(colorButtons).includes(map.top[beat])){
+								var v = colorsPossible.indexOf(map.top[beat]);
+								if(v == 0||v==2){
+								colorsPossible = removeItemOnce(colorsPossible, colors[0]);
+								colorsPossible = removeItemOnce(colorsPossible, colors[2]);
+								}else {
+									colorsPossible = removeItemOnce(colorsPossible, colors[1]);
+									colorsPossible = removeItemOnce(colorsPossible, colors[3]);
+								}
 						 }
+						if(obj.className=="l"||obj.className=="r"){
+							if(Object.keys(colorButtons).includes(map.right[beat])){
+								colorsPossible = removeItemOnce(colorsPossible, map.right[beat]);
+								var v = colors.indexOf(map.right[beat]);
+								if(v ==0||v==2){
+								colorsPossible = removeItemOnce(colorsPossible, colors[1]);
+								colorsPossible = removeItemOnce(colorsPossible, colors[3]);
+								}else {
+									colorsPossible = removeItemOnce(colorsPossible, colors[0]);
+									colorsPossible = removeItemOnce(colorsPossible, colors[2]);
+								}
+							}
+							if(Object.keys(colorButtons).includes(map.left[beat])){
+								colorsPossible = removeItemOnce(colorsPossible, map.left[beat]);
+								var v = colors.indexOf(map.left[beat]);
+								if(v == 0||v==2){
+								colorsPossible = removeItemOnce(colorsPossible, colors[1]);
+								colorsPossible = removeItemOnce(colorsPossible, colors[3]);
+								}else {
+									colorsPossible = removeItemOnce(colorsPossible, colors[0]);
+									colorsPossible = removeItemOnce(colorsPossible, colors[2]);
+								}
+							}
 						}
+						if(obj.className=="t"){
+							if(Object.keys(colorButtons).includes(map.right[beat])){
+								var v = colors.indexOf(map.right[beat]);
+								if(v == 0||v==2){
+								colorsPossible = removeItemOnce(colorsPossible, colors[0]);
+								colorsPossible = removeItemOnce(colorsPossible, colors[2]);
+								}else {
+									colorsPossible = removeItemOnce(colorsPossible, colors[1]);
+									colorsPossible = removeItemOnce(colorsPossible, colors[3]);
+								}
+							}
+							if(Object.keys(colorButtons).includes(map.left[beat])){
+								var v = colors.indexOf(map.left[beat]);
+								if(v == 0||v==2){
+								colorsPossible = removeItemOnce(colorsPossible, colors[0]);
+								colorsPossible = removeItemOnce(colorsPossible, colors[2]);
+								}else {
+									colorsPossible = removeItemOnce(colorsPossible, colors[1]);
+									colorsPossible = removeItemOnce(colorsPossible, colors[3]);
+								}
+							}
+						}
+
 						
 						for(var i=0; i<colorsPossible.length;i++){
 							toappend = toappend+colorButtons[colorsPossible[i]];
 						}
-						toappend = toappend+"</div";
+						toappend = toappend+colorButtons.N+"</div";
 						$(obj).append(toappend);
-
+					
 					}
 				</script>
 
@@ -135,7 +233,10 @@
 	<div id="controls" onclick="$('#palette').remove()">
 		<div id="add" onclick="addRow(1)">+</div>
 		<div id="add" onclick="addRow(10)">+10</div>
+		<div id="add" onclick="addRow(100)">+100</div>
 		<div id="add" onclick="xport()">✓</div>
+		<div id="add" onclick="play()">▷</div>
+		<div id="add" onclick="window.scrollTo({top: 0,left: 0,behavior: 'smooth'})">TOP</div>
 	</div>
 </body>
 </html>
