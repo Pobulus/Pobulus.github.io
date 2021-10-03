@@ -50,10 +50,11 @@ td {
 				width:10vw;
 }
 #sc-widget {
-    position:absolute;
+    position:fixed;
     z-index: 2000;
     opacity: 60%;
     right: 0px;
+    
 
 }
 #sc-widget:hover {
@@ -103,6 +104,12 @@ input[type=color] {
 input[type=number] {
     position: relative;
     width: 50%;
+    font-size: 2vw;
+    height: 2vw;
+}
+input[type=text] {
+    position: relative;
+    width: 10%;
     font-size: 2vw;
     height: 2vw;
 }

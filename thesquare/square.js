@@ -1,7 +1,7 @@
 var darkmode = false;
 var delay = 600; 
 var bpm = 105;
-endless = true;
+var endless = false;
 const a = 1.059463094359;
 var pitch = 14;
 var hits = 0;
@@ -22,6 +22,15 @@ var elR;
 var clr = 0;
 var odd = [1, 3];
 var even = [0, 2];
+//json = '{"URL":"https://soundcloud.com/2ghost/we-will-rock-you","left":["P",null,null,null,"C",null,null,"G",null,null,"P"],"right":[null,"P",null,"O",null,"G",null,"P",null,"C"],"top":["O","C","O","P","G","O","C","O","O",null,"C","O"],"beats":["300","1480","","","","","","","","","","","","","","","","","","",""]}'
+// json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,null,null,null,null,null,null,null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,"P","C","G","O",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"O","O","O","O","O","O"],"right":[null,null,null,null,null,null,null,null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,"G","O","P","C",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"P","P","P","P","P","P","P"],"top":["O","P","C","G","O","P","C","G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O",null,null,null,null,"P","P","P","P","P","P","P","C","C","C","C","C","C","O","O","O","O","O","O","G","G","G","G","G","G","G"],"beats":["545","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
+// map = JSON.parse(json);
+const shortColor = {
+    "O": "orange",
+    "P": "pink",
+    "G": "green",
+    "C": "cyan"
+}
 var sqrWave = new Audio("square.ogg");
 sqrWave.preservesPitch = false;
 var sinWave = new Audio("sine.ogg");
@@ -167,39 +176,45 @@ function toggleTheme(){
 }
 
 function spawnArrows(){
-    if(getRandomInt(0,5)> 1){
-        // dirs[getRandomInt(0,2)]
-        var nc = getRandomInt(0,3);
-        if(nc<2){
-            if(clr%2==0)clr = odd[nc];
-            else clr = even[nc];
-            makeArrow("down", colors[clr]);
-        }else {
-            if (clr == 4) clr = 0;
-            makeArrow("down", colors[clr]);
-            var rn = getRandomInt(0,2);
-            if(rn==0){
-                if(clr==3){makeArrow("left", colors[0]);}
-                else {makeArrow("left", colors[clr+1]);}
-                if(getRandomInt(0,2)==0){
-                    if(clr==0)clr=4;
-                    makeArrow("right", colors[clr-1]);
-                }
-            }else if(rn==1){
-                if(clr==3){makeArrow("right", colors[0]);}
-                else {makeArrow("right", colors[clr+1]);}
-                if(getRandomInt(0,4)==0){
-                    if(clr==0)clr=4;
-                    makeArrow("left", colors[clr-1]);
+    if(endless){
+        if(getRandomInt(0,5)> 1){
+            // dirs[getRandomInt(0,2)]
+            var nc = getRandomInt(0,3);
+            if(nc<2){
+                if(clr%2==0)clr = odd[nc];
+                else clr = even[nc];
+                makeArrow("down", colors[clr]);
+            }else {
+                if (clr == 4) clr = 0;
+                makeArrow("down", colors[clr]);
+                var rn = getRandomInt(0,2);
+                if(rn==0){
+                    if(clr==3){makeArrow("left", colors[0]);}
+                    else {makeArrow("left", colors[clr+1]);}
+                    if(getRandomInt(0,2)==0){
+                        if(clr==0)clr=4;
+                        makeArrow("right", colors[clr-1]);
+                    }
+                }else if(rn==1){
+                    if(clr==3){makeArrow("right", colors[0]);}
+                    else {makeArrow("right", colors[clr+1]);}
+                    if(getRandomInt(0,4)==0){
+                        if(clr==0)clr=4;
+                        makeArrow("left", colors[clr-1]);
+                    }
                 }
             }
         }
+    } else {
+        if(map.left[beat+10])makeArrow("left", shortColor[map.left[beat+10]]);
+        if(map.top[beat+10])makeArrow("down", shortColor[map.top[beat+10]]);
+        if(map.right[beat+10])makeArrow("right", shortColor[map.right[beat+10]]);
     }
 }
 
 function moveArrows(){
     spawnArrows()
-    
+    beat = beat+1;
     noise.play();
     hits = 0;
     pitch = 0;
@@ -244,7 +259,18 @@ function moveArrows(){
         shiftedSound(sinWave, pitch-16);
        edges(1);
     }
-    if(game)gameloop = setTimeout(moveArrows, delay);
+    if(game){
+        if(endless)gameloop = setTimeout(moveArrows, delay);
+        else{ 
+            if(map.beats[beat]){
+                console.log(map.beats[beat])
+                prevdelay = parseInt(map.beats[beat]);
+            }
+            if(beat<map.beats.length) gameloop = setTimeout(moveArrows, prevdelay);
+            else setTimeout(stopGame, prevdelay);
+            
+        }
+    }
 }
 function shiftedSound(sound, tones){
     sound.pause();
@@ -325,11 +351,22 @@ function stopGame(){
     ResetRotate();
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
-    // SC.Widget($("#sc-widget").get(0)).pause();
+    SC.Widget($("#sc-widget").get(0)).pause();
+}
+var editor = true;
+function toggleEditor(){
+    editor = !editor;1
+    if(editor) $("#editor").hide();
+    else $("#editor").show();
+
 }
 var x = 14;
+var prevdelay = 0;
+var beat = 0;
 function startGame(){
     score = 0;
+    beat = 0; 
+    prevdelay = 0;
     ResetRotate();
     $("#score").html("");
     $(".shy").hide();
@@ -339,9 +376,22 @@ function startGame(){
     $("#title").animate({height: "0px"}, 500);
     clearInterval(gameloop);
     
-    if(endless)delay = 600;
-    else delay = convertBPM(bpm*2);
-    gameloop = setTimeout(moveArrows, delay)
+    if(endless){delay = 600;
+        gameloop = setTimeout(moveArrows, delay);
+    }
+    else {
+        if(map.beats[beat]){
+            prevdelay = parseInt(map.beats[beat]);
+        } else delay = 600;
+        SC.Widget($("#sc-widget").get(0)).load(map.URL);
+        SC.Widget($("#sc-widget").get(0)).bind(SC.Widget.Events.READY, function(){
+        SC.Widget($("#sc-widget").get(0)).seekTo(0);
+        SC.Widget($("#sc-widget").get(0)).play();
+        gameloop = setTimeout(moveArrows, prevdelay);
+        });
+        
+    }
+    
     // SC.Widget($("#sc-widget").get(0)).seekTo(0);
     // SC.Widget($("#sc-widget").get(0)).play();
     game = true;
@@ -349,7 +399,11 @@ function startGame(){
 
 
 window.onload = function(){
+
     var bodyStyles = window.getComputedStyle(document.body);
+    if (window.localStorage.getItem("map")){
+        map = JSON.parse(window.localStorage.getItem("map"));
+    }
     $("input").each(function(){
         console.log($(this).attr('id').substring(6, $(this).attr('id').length));
         $(this).val(bodyStyles.getPropertyValue('--'+$(this).attr('id').substring(6, $(this).attr('id').length))); 
@@ -418,7 +472,11 @@ if (keysPressed['Enter']&&!game) {
 }
 if (keysPressed['f']) {
     openFullscreen();
-}if (keysPressed["ArrowUp"]){
+}
+if (keysPressed['e']) {
+    toggleEditor();
+}
+if (keysPressed["ArrowUp"]){
 
         console.log(x);
         shiftedSound(sinWave, x-14);

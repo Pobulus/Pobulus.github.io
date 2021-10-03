@@ -5,15 +5,26 @@
 				<meta charset="UTF-8">
 				<link rel="stylesheet" href="style.css">
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+				<script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
 				<title>Page title</title>
 				<script>
 					beats = 0;
 					var map = {
+						"URL": "",
 						"left": [],
 						"right": [],
 						"top": [],
 						"beats": []  
 					}
+					json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,null,null,null,null,null,null,null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,"P","C","G","O",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"O","O","O","O","O","O"],"right":[null,null,null,null,null,null,null,null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,"G","O","P","C",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"P","P","P","P","P","P","P"],"top":["O","P","C","G","O","P","C","G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O",null,null,null,null,"P","P","P","P","P","P","P","C","C","C","C","C","C","O","O","O","O","O","O","G","G","G","G","G","G","G"],"beats":["545","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
+
+					map = JSON.parse(json);
+const shortColor = {
+    "O": "orange",
+    "P": "pink",
+    "G": "green",
+    "C": "cyan"
+}
 					var noise = new Audio("ksh.ogg");
 					var colors = ["O", "P", "C", "G"];
 					var colorsNeg = ["orange", "green", "cyan", "pink"];
@@ -22,6 +33,20 @@
 							$("table").append("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>")
 							beats = beats+1;
 						}
+					}
+					"use strict";
+
+					function exportToJsonFile(jsonData) {
+						console.log(jsonData);
+						let dataStr = JSON.stringify(jsonData);
+						let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+						let exportFileDefaultName = 'data.json';
+
+						
+						$("#json-dl").attr('href', dataUri);
+						$("#json-dl").attr('download', exportFileDefaultName);
+						$("#json-dl").click();
 					}
 					function remove(obj){
 						$(obj).parent().remove();
@@ -48,6 +73,7 @@
 						});
 					}
 					function xport(){
+						map.URL = $("#songurl").val();
 						$('#palette').remove()
 						$("tr").each(function(){
 							
@@ -60,8 +86,28 @@
 								// map["right"][cells[0].outerText] = cells[4].outerText;
 							}
 						})
+						console.log(JSON.stringify(map));
+						window.localStorage.setItem("map", JSON.stringify(map));
+					}
+					function load(){
+						addRow(map.beats.length);
+						$("#songurl").val(map.URL);
+						$("tr").each(function(){
+							
+							var cells = $(this).children();
+							if(cells.length>6){
+								
+								cells[1].firstChild.value = map["beats"][cells[0].outerText];
+								
+								$(cells[2]).css("background", "var(--"+shortColor[map["left"][cells[0].outerText]]+")") ;
+								$(cells[3]).css("background", "var(--"+shortColor[map["top"][cells[0].outerText]]+")") ;
+								$(cells[4]).css("background", "var(--"+shortColor[map["right"][cells[0].outerText]]+")") ;
+
+							}
+						})
 						
-						console.log(map);
+					
+						
 					}
 					function setColor(obj){
 						$(obj).parent().parent().css("background", $(obj).css("color"));
@@ -87,7 +133,7 @@
 					"P": "<div class=\"clr\" style=\"color:var(--pink)\" onclick=\"setColor(this)\">P</div>",
 					"G":"<div class=\"clr\" style=\"color:var(--green)\" onclick=\"setColor(this)\">G</div>",
 					"C":"<div class=\"clr\"  style=\"color:var(--cyan)\" onclick=\"setColor(this)\">C</div>",
-					"N":"<div class=\"clr\"  style=\"color:var(--background)\" onclick=\"removeColor(this)\">N</div>"
+					"N":"<div class=\"clr\"  style=\"color:var(--background)\" onclick=\"removeColor(this)\">X</div>"
 
 					}
 					function removeItemOnce(arr, value) {
@@ -109,9 +155,21 @@
 						if(dict.beats[counter]){
 							
 							prevdelay = parseInt(dict.beats[counter]);
-							TO = setTimeout(moveBeat, prevdelay)
-						}else console.log("No delay specified");
+							
+							SC.Widget($("#sc-widget").get(0)).load(map.URL);
+							SC.Widget($("#sc-widget").get(0)).bind(SC.Widget.Events.READY, function(){
+								SC.Widget($("#sc-widget").get(0)).seekTo(0);
+								SC.Widget($("#sc-widget").get(0)).play();
+								TO = setTimeout(moveBeat, prevdelay);
+							});
+						
+
+							
+
+						} else console.log("No delay specified");
+
 					}
+
 					function moveBeat(){
 						
 						noise.play();
@@ -130,8 +188,34 @@
 					}
 					function clearBeat(){
 						$("tr").eq(counter).css("background", "");
-
+						SC.Widget($("#sc-widget").get(0)).pause();
 					}
+					function endItAll(){
+						$("tr").eq(counter).css("background", "");
+						counter = dict.beats.length;
+						SC.Widget($("#sc-widget").get(0)).pause();
+					}
+					window.onload = function(){
+					var upload = document.getElementById('fileInput');
+                	if (upload) 
+               		 {
+                    	upload.addEventListener('change', function() {
+                    
+                    	if (upload.files.length > 0) 
+                    	{
+                        var reader = new FileReader(); 
+                        reader.addEventListener('load', function() {
+                        map = JSON.parse(reader.result); 
+                        window.localStorage.setItem("map", JSON.stringify(map));
+                        load();
+                        });
+                        reader.readAsText(upload.files[0]); 
+
+                    	}
+                    	});
+                	}
+					load();
+				}
 					function addPalette(obj){
 						$("#palette").remove();
 						$(obj).text("");
@@ -176,6 +260,7 @@
 								}
 							}
 						}
+
 						if(obj.className=="t"){
 							if(Object.keys(colorButtons).includes(map.right[beat])){
 								var v = colors.indexOf(map.right[beat]);
@@ -197,26 +282,45 @@
 									colorsPossible = removeItemOnce(colorsPossible, colors[3]);
 								}
 							}
+							
 						}
 
 						
 						for(var i=0; i<colorsPossible.length;i++){
 							toappend = toappend+colorButtons[colorsPossible[i]];
 						}
-						toappend = toappend+colorButtons.N+"</div";
+						if(obj.className=="t")
+						{
+							if(map.top[beat]){
+								toappend = toappend+colorButtons.N+"</div";
+							}
+						}
+						if(obj.className=="l"){
+							if(map.left[beat]){
+								toappend = toappend+colorButtons.N+"</div";
+							}
+						}
+						if(obj.className=="r"){
+							if(map.right[beat]){
+								toappend = toappend+colorButtons.N+"</div";
+							}
+						}
+						// toappend = toappend+colorButtons.N+"</div";
 						$(obj).append(toappend);
 					
 					}
 				</script>
 
 	
-	
-	
+<!-- https%3A//api.soundcloud.com/tracks/22853604 -->
 	
 	
 
 </head>
 <body >
+
+	<iframe width="15%" id="sc-widget" height="10%" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/169508644&color=%23a300c7&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+	
 	<table>
 		<tr class="names">
 			<td class="beatD">beat</td>
@@ -231,12 +335,23 @@
 	</table>
 
 	<div id="controls" onclick="$('#palette').remove()">
+		<input id="songurl" type="text">
+		<label style="background-color: #1ab2c4;">Upload<input type="file" style="display:none;" id="fileInput">
+			</label>
+			<a id="json-dl">
+				<label style="background-color: #4c2ba1;" onclick="exportToJsonFile(map)">Download</label>
+			</a>
+		<div id="add" onclick="load()">LOAD</div>
+
 		<div id="add" onclick="addRow(1)">+</div>
 		<div id="add" onclick="addRow(10)">+10</div>
 		<div id="add" onclick="addRow(100)">+100</div>
 		<div id="add" onclick="xport()">✓</div>
 		<div id="add" onclick="play()">▷</div>
+		<div id="add" onclick="endItAll()">STOP</div>
+		<div id="add" onclick="parent.toggleeditor()">X</div>
 		<div id="add" onclick="window.scrollTo({top: 0,left: 0,behavior: 'smooth'})">TOP</div>
 	</div>
+	
 </body>
 </html>
