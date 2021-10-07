@@ -76,7 +76,7 @@ const shortColor = {
 					}
 					function insertAfter(obj){
 						var toAppend = parseInt($(obj).parent().children()[0].innerText);
-						console.log(toAppend);
+						
 						map["left"].splice(toAppend+1, 0, null);
 						map["right"].splice(toAppend+1, 0, null);
 						map["top"].splice(toAppend+1, 0, null);
@@ -114,7 +114,7 @@ const shortColor = {
 							
 							var cells = $(this).children();
 							if(cells.length>6){
-								console.log( map["beats"][cells[0].outerText]);
+								
 								cells[1].firstChild.value = map["beats"][cells[0].outerText];
 								
 								$(cells[2]).css("background", "var(--"+shortColor[map["left"][cells[0].outerText]]+")") ;
@@ -195,7 +195,7 @@ const shortColor = {
 						window.scrollTo(0, $("tr").eq(counter+1).position().top);
 						$("tr").eq(counter).css("background", "");
 						counter = counter+1;
-						console.log(counter);
+						
 						if(dict.beats[counter]){
 							console.log(dict.beats[counter])
 							prevdelay = parseInt(dict.beats[counter]);
@@ -241,9 +241,9 @@ const shortColor = {
 						var toappend = header;
 						// cells[2].outerText
 						var colorsPossible = ["O", "P", "C", "G"];
-						console.log(obj.className);
+						
 						var beat = $(obj).parent().children()[0].outerText;
-						console.log(beat)
+						
 						if(Object.keys(colorButtons).includes(map.top[beat])){
 								var v = colorsPossible.indexOf(map.top[beat]);
 								if(v == 0||v==2){
