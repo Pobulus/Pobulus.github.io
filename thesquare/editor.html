@@ -327,6 +327,14 @@ const shortColor = {
 						$(obj).append(toappend);
 					
 					}
+					
+						window.onload = function(){
+
+						if (window.localStorage.getItem("map")){
+							map = JSON.parse(window.localStorage.getItem("map"));
+							}
+						load();
+						}
 				</script>
 
 	
