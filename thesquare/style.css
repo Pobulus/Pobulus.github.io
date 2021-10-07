@@ -469,4 +469,7 @@ img {
     .clr{
         font-size: 5vw;
     }
+    #sc-widget{
+        width: 100%;
+    }
 }
