@@ -81,7 +81,7 @@ function toggleEndless(){
         $("#endless").html("∞");
         $("#sc-widget").hide();
     }else {
-        $("#endless").html("1");
+        $("#endless").html("♫");
         $("#sc-widget").show();
     }
 }
