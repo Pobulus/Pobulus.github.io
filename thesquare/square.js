@@ -79,10 +79,10 @@ function toggleEndless(){
     console.log(endless);
     if(endless){
         $("#endless").html("∞");
-        $("#sc-widget").hide();
+        
     }else {
         $("#endless").html("♫");
-        $("#sc-widget").show();
+       
     }
 }
 function changeColor(c, v){
@@ -357,23 +357,32 @@ function stopGame(){
     $("#switch").show();
     $("#fullscr").show();
     $("#settings").show();
-    
+    $("#opener").show();
+    $("#endless").show();
     ResetRotate();
     $("#score").html(score);
     $("#replay").animate({opacity: "1"}, 500);
     SC.Widget($("#sc-widget").get(0)).pause();
+    $("#sc-widget").hide();
 }
 var editor = true;
 function toggleEditor(){
     editor = !editor;1
-    if(editor) $("#editor").hide();
-    else $("#editor").show();
+    if(editor) {
+        $("#editor").hide();
+        $("#closer").hide();
 
+    }
+    else{
+        $("#closer").show();
+        $("#editor").show();
+    }
 }
 var x = 14;
 var prevdelay = 0;
 var beat = 0;
 function startGame(){
+    if(!endless)$("#sc-widget").show();
     score = 0;
     beat = 0; 
     prevdelay = 0;
@@ -390,10 +399,12 @@ function startGame(){
         gameloop = setTimeout(moveArrows, delay);
     }
     else {
+        
         if(map.beats[beat]){
             prevdelay = parseInt(map.beats[beat]);
         } else delay = 600;
-        SC.Widget($("#sc-widget").get(0)).load(map.URL);
+        
+        SC.Widget($("#sc-widget").get(0)).load(map.URL, {show_artwork: false});
         SC.Widget($("#sc-widget").get(0)).bind(SC.Widget.Events.READY, function(){
         SC.Widget($("#sc-widget").get(0)).seekTo(0);
         SC.Widget($("#sc-widget").get(0)).play();
