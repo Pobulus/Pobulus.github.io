@@ -16,7 +16,7 @@
 						"top": [],
 						"beats": []  
 					}
-					json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,null,null,null,null,null,null,null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,"P","C","G","O",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"O","O","O","O","O","O"],"right":[null,null,null,null,null,null,null,null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,"G","O","P","C",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"P","P","P","P","P","P","P"],"top":["O","P","C","G","O","P","C","G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O",null,null,null,null,"P","P","P","P","P","P","P","C","C","C","C","C","C","O","O","O","O","O","O","G","G","G","G","G","G","G"],"beats":["545","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
+					json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"","","O","O","O","O","O","O","O",null,null,null,null,"","","","C","C","C","C","C","C","C"],"right":[null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"G","G","G","G","G","G","G",null,null,null,null,null,null,null,null,null,null,null,"","","","P","P","P","P","P","P","P"],"top":["G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O","P",null,"P","P","P","P","P","P","P","C","C","C","C","C","C","C","","","","","","","","P","P","P","P","P","P","P",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"G","G","G","G","G","G","G"],"beats":["543","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
 
 					map = JSON.parse(json);
 const shortColor = {
@@ -49,6 +49,11 @@ const shortColor = {
 						$("#json-dl").click();
 					}
 					function remove(obj){
+						var toRemove = parseInt($(obj).parent().children()[0].innerText);
+						map["left"].splice(toRemove, 1);
+						map["right"].splice(toRemove, 1);
+						map["top"].splice(toRemove, 1);
+						map["beats"].splice(toRemove, 1);
 						$(obj).parent().remove();
 						beats = 0;
 						$(".beat").each(function(){
@@ -57,6 +62,11 @@ const shortColor = {
 						});
 					}
 					function insert(obj){
+						var toAppend = parseInt($(obj).parent().children()[0].innerText);
+						map["left"].splice(toAppend, 0, null);
+						map["right"].splice(toAppend, 0, null);
+						map["top"].splice(toAppend, 0, null);
+						map["beats"].splice(toAppend, 0, "");
 						$(obj).parent().before("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>");
 						beats = 0;
 						$(".beat").each(function(){
@@ -65,6 +75,12 @@ const shortColor = {
 						});
 					}
 					function insertAfter(obj){
+						var toAppend = parseInt($(obj).parent().children()[0].innerText);
+						console.log(toAppend);
+						map["left"].splice(toAppend+1, 0, null);
+						map["right"].splice(toAppend+1, 0, null);
+						map["top"].splice(toAppend+1, 0, null);
+						map["beats"].splice(toAppend+1, 0, "");
 						$(obj).parent().after("<tr><td class=\"beat\">"+beats+"</td><td class=\"delay\"><input type=\"number\"></td><td class=\"l\" onclick=\"addPalette(this)\"></td><td class=\"t\" onclick=\"addPalette(this)\"></td><td class=\"r\" onclick=\"addPalette(this)\"></td><td onclick=\"remove(this)\">X</td><td onclick=\"insert(this)\">^</td><td onclick=\"insertAfter(this)\">v</td></tr>");
 						beats = 0;
 						$(".beat").each(function(){
@@ -90,13 +106,15 @@ const shortColor = {
 						window.localStorage.setItem("map", JSON.stringify(map));
 					}
 					function load(){
+						$("tr:not(.names)").remove();
+						beats = 0;
 						addRow(map.beats.length);
 						$("#songurl").val(map.URL);
 						$("tr").each(function(){
 							
 							var cells = $(this).children();
 							if(cells.length>6){
-								
+								console.log( map["beats"][cells[0].outerText]);
 								cells[1].firstChild.value = map["beats"][cells[0].outerText];
 								
 								$(cells[2]).css("background", "var(--"+shortColor[map["left"][cells[0].outerText]]+")") ;

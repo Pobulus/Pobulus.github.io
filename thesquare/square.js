@@ -1,7 +1,7 @@
 var darkmode = false;
 var delay = 600; 
 var bpm = 105;
-var endless = false;
+var endless = true;
 const a = 1.059463094359;
 var pitch = 14;
 var hits = 0;
@@ -23,7 +23,7 @@ var clr = 0;
 var odd = [1, 3];
 var even = [0, 2];
 //json = '{"URL":"https://soundcloud.com/2ghost/we-will-rock-you","left":["P",null,null,null,"C",null,null,"G",null,null,"P"],"right":[null,"P",null,"O",null,"G",null,"P",null,"C"],"top":["O","C","O","P","G","O","C","O","O",null,"C","O"],"beats":["300","1480","","","","","","","","","","","","","","","","","","",""]}'
-json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,null,null,null,null,null,null,null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,"P","C","G","O",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"O","O","O","O","O","O"],"right":[null,null,null,null,null,null,null,null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,"G","O","P","C",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"P","P","P","P","P","P","P"],"top":["O","P","C","G","O","P","C","G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O",null,null,null,null,"P","P","P","P","P","P","P","C","C","C","C","C","C","O","O","O","O","O","O","G","G","G","G","G","G","G"],"beats":["545","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
+json = '{"URL":"https://soundcloud.com/doom-1993/at-dooms-gate","left":[null,"O","C","O","C","G","P","G","P",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"","","O","O","O","O","O","O","O",null,null,null,null,"","","","C","C","C","C","C","C","C"],"right":[null,"C","O","C","O","P","G","P","G",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"G","G","G","G","G","G","G",null,null,null,null,null,null,null,null,null,null,null,"","","","P","P","P","P","P","P","P"],"top":["G","G","G","G","G","C","C","C","C",null,"O","P","C","G","O","G","C","P","O","P",null,"P","P","P","P","P","P","P","C","C","C","C","C","C","C","","","","","","","","P","P","P","P","P","P","P",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"G","G","G","G","G","G","G"],"beats":["543","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","272","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]}'
 map = JSON.parse(json);
 const shortColor = {
     "O": "orange",
@@ -74,7 +74,17 @@ function openFullscreen() {
 
 
 }
-
+function toggleEndless(){
+    endless = !endless;
+    console.log(endless);
+    if(endless){
+        $("#endless").html("∞");
+        $("#sc-widget").hide();
+    }else {
+        $("#endless").html("1");
+        $("#sc-widget").show();
+    }
+}
 function changeColor(c, v){
     $("body").get(0).style.setProperty("--"+c, v);
 }
@@ -206,9 +216,9 @@ function spawnArrows(){
             }
         }
     } else {
-        if(map.left[beat+10])makeArrow("left", shortColor[map.left[beat+10]]);
-        if(map.top[beat+10])makeArrow("down", shortColor[map.top[beat+10]]);
-        if(map.right[beat+10])makeArrow("right", shortColor[map.right[beat+10]]);
+        if(map.left[beat])makeArrow("left", shortColor[map.left[beat]]);
+        if(map.top[beat])makeArrow("down", shortColor[map.top[beat]]);
+        if(map.right[beat])makeArrow("right", shortColor[map.right[beat]]);
     }
 }
 
@@ -474,6 +484,9 @@ if (keysPressed['f']) {
     openFullscreen();
 }
 if (keysPressed['e']) {
+    if (window.localStorage.getItem("map")){
+        map = JSON.parse(window.localStorage.getItem("map"));
+    }
     toggleEditor();
 }
 if (keysPressed["ArrowUp"]){
