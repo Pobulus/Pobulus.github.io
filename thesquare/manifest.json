@@ -1,0 +1,15 @@
+{
+    "background_color": "#121212",
+    "description": "A fun little rhythm game about rotating a square.",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "favicon.png",
+        "sizes": "264x264",
+        "type": "image/png"
+      }
+    ],
+    "name": "The Square",
+    "short_name": "Square",
+    "start_url": "index.html"
+  }
