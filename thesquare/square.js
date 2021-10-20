@@ -158,7 +158,7 @@ function rotateCCW(){
 }
 
 function edges(direction){
-    var curBR = $("#square").css("border-radius");
+    var curBR = $("#square").css("border-top-left-radius");
     curBR = parseInt(curBR.substring(0, curBR.length - 2));
     var sqw = $("#square").width();
     $("#square").animate({"border-radius": curBR+direction*(sqw/7)+"px"}, 200);
