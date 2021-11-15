@@ -1,0 +1,251 @@
+/* unvisited link */
+a:link {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* selected link */
+  a:active {
+    color: white;
+    text-decoration: none;
+  }
+
+
+body{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+    background: black;
+    color: white;
+    display: flex;
+    flex-direction: row;
+}
+#current{
+    margin: 0.5%;
+    width: 48%;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    overflow: auto;
+}
+#finished{
+
+    margin: 0.5%;
+    width: 48%;
+    overflow: auto;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    
+}
+#pending{
+
+    margin: 0.5%;
+    width: 48%;
+    overflow: auto;
+    background: rgb(31, 31, 31);
+    border-radius: 10px;
+    
+}
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.name{
+    margin: 1%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 3vmax;
+    position: relative;
+    left: 0px;
+    width: 48%;
+    display: inline-block;
+}
+.clock{
+    margin:1%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 3vmax;
+    text-align: right;
+    align-self: right;
+    display: inline-block;
+    width: 48%;
+}
+.pb-background{
+    display: block;
+    background: slategray;
+    margin: 2%;
+
+    height: 20px;
+    border-radius: 10px;
+}
+
+.timer{
+    border-radius: 10px;
+    margin: 5px;
+    padding-bottom: 5px;
+}
+.pb{
+    display: block;
+    z-index: 5;
+    background: rgb(31, 197, 16);
+    
+    height: 20px;
+    border-radius: 10px;
+    width: 0%;
+}
+#pb1{
+    width: 75%;
+}
+#pb2 {
+    width: 0%;
+}
+.controlsB{
+    font-size: 2em;
+    opacity: 1;
+}
+.controls{
+    text-align: center;
+
+}
+#Warning {
+    font-size: 3em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    width: 100%;
+}
+#add{
+    position: fixed;
+    bottom: 1%;
+    right: 1%;
+    border-radius: 100vw;
+    z-index: 100;
+    font-size: 7em;
+    padding: -3em;
+    background:rgb(146, 0, 68);
+    display: flex;
+  align-items: center;
+  justify-content: center;
+     width: 1em;
+    height: 1em; 
+}
+
+#creator{
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 3em;
+    display: none;
+    background: black;
+    color: white;
+    z-index: 1000;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+input{
+    height: 3em;
+}
+button {
+    margin-left: 1%;
+    margin-right: 1%;
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    font-size: 1.5em;
+    border-radius: 5px;
+    transition-duration: 0.4s;
+    color: #ffffff;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    
+    z-index: 1000;
+    opacity: 0.5;
+  }
+  button:hover {
+    background-color: #ffffff;
+    color: #000000;
+    opacity: 1;
+  
+  }
+  input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: rgb(0, 255, 30);
+}
+@media only screen and (max-aspect-ratio: 1/1){
+    body{
+        flex-direction: column;
+    }
+    #current{
+        margin: 1%;
+        width: 98%;
+    }
+    #finished{
+        margin: 1%;
+        width: 98%;
+        
+    }
+    #pending{
+        margin: 1%;
+        width: 98%;
+        
+    }
+    button{
+        font-size: 1.2em;
+    }
+    input{
+        padding: 0px;
+        height: 1.8em;
+        font-size: 0.5em;
+    }
+    input[type='color'] {
+        width: 1.8em;
+    }
+    #creator{
+        font-size: 5em;
+        width: 100%;
+        height: 100%;
+    }
+    #add{
+        width: 1em;
+        height: 1em;
+        font-size: 12em;
+    }
+    input[type='checkbox'] {
+        -webkit-appearance:none;
+        width:30px;
+        height:30px;
+        background:white;
+        border-radius:5px;
+        border:2px solid #555;
+    }
+    input[type='checkbox']:checked {
+        background: rgb(0, 255, 30);
+    }
+
+}

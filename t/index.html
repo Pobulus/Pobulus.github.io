@@ -1,7 +1,7 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="timer.css">
+        <link rel="stylesheet" href="../timer.css">
         <script>
         function convertHMS(value) {
             if(value<0) return false;
@@ -50,6 +50,8 @@
                 let active = [];
                 let pending = [];
             window.onload = function(){
+                var passed = window.location.href.split("#")[1];
+                
                 if(todayM<10) todayM = "0"+todayM;
                 todayS = today.getFullYear()+"-"+todayM+"-"+today.getDate()+ " ";
                 console.log(todayS);
@@ -74,12 +76,28 @@
                 if (window.localStorage.getItem("timers")){
                     timers = JSON.parse(window.localStorage.getItem("timers"));
                 }
+                if (passed){
+                    wait_h = passed.slice(0,2);
+                    wait_m = passed.slice(2,4);
+                    wait_s = passed.slice(4,6);
+                    var h = today.getHours();
+                    var m = today.getMinutes();
+                    var s = today.getSeconds();
+                    m = checkTime(m);
+                    s = checkTime(s);
+                    
+                timers["url"] = {"name":"url","startTime":h+":"+m+":"+s,"endTime":wait_h+":"+wait_m+":"+wait_s,"color":"#8080ff","type":"weekly","days":[0,1,2,3,4,5,6]}
+                }
                 loadTimers();
                 console.log(JSON.stringify(timers));
                 console.log(Object.entries(timers).sort((a,b)=>hmsToSecondsOnly(a[1].startTime)-hmsToSecondsOnly(b[1].startTime)));
                 
 
             }
+        function checkTime(i) {
+            if (i < 10) {i = "0" + i};
+            return i;
+        }
         function hideControls(){
             $(".controls").hide();
 
@@ -88,7 +106,8 @@
         function showControls(key){
 
             hideControls();
-           
+            $(".pb#"+key).css("width", toString(Math.round(100-(elapsedLen/totalLen*100)))+"%");
+            console.log(totalLen);
             $(".controls#"+key).show();
             window.setTimeout(function(){$(".controls#"+key).hide();}, 10000);
         }
@@ -254,7 +273,6 @@
             }
            
         }
-
         function updateTimers(){
             if(!active.length&&!pending.length){
                 $("#Warning").html("No more tasks today");
@@ -264,13 +282,15 @@
                 loadTimers();
             }
             for(const key of active){
-                totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+" "+timers[key].startTime).getTime();
+                totalLen = new Date(todayS+timers[key].endTime).getTime() -  new Date(todayS+timers[key].startTime).getTime();
                 elapsedLen =new Date(todayS+timers[key].endTime).getTime() -  Date.now();
                 $(".name#"+key).html(timers[key].name);
                 if(totalLen<0){
                     totalLen = totalLen+ 86400000;
                     elapsedLen = elapsedLen+86400000
                 }
+                console.log(todayS+" "+timers[key].startTime);
+                console.log(todayS+timers[key].endTime);
                 if(pending.includes(key)){
 
                     if(new Date(todayS+timers[key].startTime).getTime() - Date.now()<0){
