@@ -235,10 +235,10 @@ body{
     background-color: var(--background);
     width: 10vw;
     height: 10vw;
-
+    border-radius: 0px;
     border-width: 2vw;
     border-style: solid;
-    border-top-color: var(--orange);;
+    border-top-color: var(--orange);
     border-left-color: var(--pink);
     border-right-color: var(--green);
     border-bottom-color: var(--cyan);
