@@ -1,0 +1,97 @@
+:root {
+    --color-chall: #e57373;
+    --color-chall-dark: #af4448;
+
+    --color-coup: #fff9c4;
+    --color-coup-dark: #cbc693;
+
+    --color-nice: #c5e1a5;
+    --color-nice-dark: #94af76;
+
+
+}
+body {
+    background-color: #dddddd;
+}
+@keyframes flyout {
+    0% {
+        top: calc(50% - 10px);
+        left: calc(50% - 10px);
+        z-index: 100;
+    }
+    15%{
+        top: calc(50% - 10px);
+        left: calc(50% - 10px);
+        z-index: 100;
+    }
+    50% {
+        top: -25%;
+        left: -25%;
+        z-index: 100;
+        
+    }
+    51%{z-index: 1;}
+    100%{
+        
+            top: calc(50% - 10px);
+            left: calc(50% - 10px);
+            z-index: 1;
+        }
+}
+#previous-card{
+    max-width: 1000px;
+    min-width: 70vw;
+    max-width: 500px;
+    height: 70vh;
+    background-color: var(--color-nice);
+    margin: 0;
+    z-index: 1;
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    transform: translate(-50%, -50%);
+    animation-name: flyout;
+    animation-duration: 3s;
+}
+#card{
+    max-width: 1000px;
+    min-width: 70vw;
+    max-width: 500px;
+    height: 70vh;
+    background-color: var(--color-coup);
+    margin: 0;
+    z-index: 50;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#shaddow{
+    max-width: 1000px;
+    min-width: 70vw;
+    max-width: 500px;
+    height: 70vh;
+    z-index: 5;
+    background-color: var(--color-chall-dark);
+    margin: 0;
+    position: absolute;
+    top: calc(50% + 10px);
+    left:  calc(50% + 10px);
+    transform: translate(-50%, -50%);
+}
+.center::-webkit-scrollbar {
+    display: none;
+  }
+.center {
+    font-family: 'Dancing Script', serif;
+    text-align: center;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: min(4vmax, 100px);
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
