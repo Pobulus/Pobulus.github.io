@@ -1,4 +1,4 @@
-$(document).ready(main);
+$(document).ready(preload);
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -11,6 +11,10 @@ function scriptLoad(data){
 }
 var colors = ["chall", "coup", "nice"]
 var cards;
+function preload(){
+    $("#jar").ready(main);
+    $("#jar").attr("src","jar.png");
+}
 function main(){
     
     $.get('https://pobulus.github.io/jar/cards.txt', function(data){
