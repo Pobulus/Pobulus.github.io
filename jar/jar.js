@@ -7,17 +7,19 @@ function getRandomInt(min, max) {
   
 
 function scriptLoad(data){
-    console.log(data);
-    textLines = data.split('\n');
-    return textLines;
+    
 }
 var colors = ["chall", "coup", "nice"]
+var cards;
 function main(){
     
     $.get('https://pobulus.github.io/jar/cards.txt', function(data){
-        var cards = scriptLoad(data);
+        console.log(data);
+        cards = data.split('\n');
+        $("#card").text(cards[getRandomInt(0, cards.length)]);
+       
     });
-    $("#card").text(cards[getRandomInt(0, cards.length)]);
+    
     $("#curtain").remove();
     console.log("started");
     for(i =0; i<100;i++){
