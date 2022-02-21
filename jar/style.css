@@ -89,9 +89,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    height: 70vh;
     font-size: min(4vmax, 100px);
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+  }
+#legenda{
+      position: fixed;
+      right: 2vw;
+      bottom: 2vh;
+      opacity: 10%;
+      padding: 1vmin;
+      background-color: dimgrey;
+
+  }
+  #legenda:hover{
+    opacity: 100%;
   }
