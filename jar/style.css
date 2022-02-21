@@ -41,7 +41,7 @@ body {
 #previous-card{
     max-width: 1000px;
     min-width: 70vw;
-    max-width: 500px;
+    max-height: 700px;
     height: 70vh;
     background-color: var(--color-nice);
     margin: 0;
@@ -56,7 +56,7 @@ body {
 #card{
     max-width: 1000px;
     min-width: 70vw;
-    max-width: 500px;
+    max-height: 700px;
     height: 70vh;
     background-color: var(--color-coup);
     margin: 0;
@@ -69,7 +69,7 @@ body {
 #shaddow{
     max-width: 1000px;
     min-width: 70vw;
-    max-width: 500px;
+    max-height: 700px;
     height: 70vh;
     z-index: 5;
     background-color: var(--color-chall-dark);
@@ -101,9 +101,11 @@ body {
       bottom: 2vh;
       opacity: 10%;
       padding: 1vmin;
+      z-index: 200;
       background-color: dimgrey;
 
   }
   #legenda:hover{
+    
     opacity: 100%;
   }
