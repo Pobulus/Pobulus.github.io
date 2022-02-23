@@ -7,7 +7,9 @@
 
     --color-nice: #c5e1a5;
     --color-nice-dark: #94af76;
-
+    --color-null: #a5d0e1;
+    --card-font-size: min(4vmax, 100px);
+    --legenda-opacity: 10%;
 
 }
 body {
@@ -61,6 +63,9 @@ body {
 .nice{
     background-color: var(--color-nice);
 }
+.null{
+    background-color: var(--color-null);
+}
 .chall{
     background-color: var(--color-chall);
 }
@@ -69,22 +74,21 @@ body {
     min-width: 70vw;
     max-height: 700px;
     height: 70vh;
-    
     margin: 0;
     z-index: 50;
-    font-size: min(4vmax, 100px);
+    font-size: var(--card-font-size);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-width: 3px;
+    border-width: min(0.5vmin, 10px);
     border-style: solid;
 }
-
 
 .center::-webkit-scrollbar {
     display: none;
   }
+
 #curtain{
     position: fixed;
     z-index: 5000;
@@ -125,7 +129,7 @@ body {
       position: fixed;
       right: 2vw;
       bottom: 2vh;
-      opacity: 10%;
+      opacity: var(--legenda-opacity);
       padding: 1vmin;
       z-index: 200;
       background-color: #cccccc;
@@ -171,10 +175,10 @@ body {
         max-height: 700px;
         z-index: 50;
         height: 70vh;
-        font-size: min(4vmax, 100px);
+        font-size: var(--card-font-size);
         transform: rotate(0deg);
         transform: translate(-50%, -50%);
-        border-width: 3px;
+        border-width:  min(0.5vmin, 10px);
     }
 }
 #jar-container{
