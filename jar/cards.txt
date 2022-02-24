@@ -32,10 +32,10 @@ Coupon for pj's party
 <p>Coupon for acting classes with Alexis <br>(how to be a whiny husky)</p>
 <p>Coupon for a pillow fight <br>(you have no chances)</p>
 When life gives you lemons squeeze them in your enemies' eyes <3
-<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">Never gonna give you up, <br>never gonna let you down</a>
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Never gonna give you up, <br>never gonna let you down</a>
 Instead of meat, just eat veggies&pussy
 God save you
-Happy llama sad llama mentally disturbed llama
+<p>Happy llama <br>sad llama <br>mentally disturbed llama</p>
 Alpacalyps
 <p>Mirror, mirror on the wall, who is a 9.5/10? <br>(P.S. it's Magda looser)</p>
 Aren't you a whiny husky
@@ -46,20 +46,20 @@ Don't worry, be happy
 Grzegorz Brzęczyszczykiewicz from Chrząszczyżewoszyce, Łękodoły
 Remember to leave space for Jesus&Sara
 <p>Do you like raisins? <br>No?<br> How about a date?</p>
-<b style=\"font-size: calc(3 * var(--card-font-size))\">Bitch</b>
-Do you like Star Wars? Cause Yoda only one for me!
+<b style="font-size: calc(3 * var(--card-font-size))">Bitch</b>
+<p>Do you like Star Wars? <br>Cause Yoda only one for me!</p>
 Eat your vegetableessss
 Remember it's all part of the process
-You must be exhausted after the marathon you run in my head:)
-Sorry for being cheesy sometimes that's how I show I care
-We should rearrange the alphabet, cause U and I belong together.
+You must be exhausted after the marathon you run in my head :)
+<p>Sorry for being cheesy sometimes <br>that's how I show I care</p>
+<p>We should rearrange the alphabet,<br> cause U and I belong together.</p>
 No grudges boy
-What did a fish say when it swam into a wall? Damn
-What do you call a person without eyes and good taste? Mischa
+<p>What did a fish say when it swam into a wall? <br>Damn</p>
+<p>What do you call a person without eyes and good taste? <br>Mischa</p>
 Go outside get that vitamin d
 No more breakfasts for you
 <p>Go cry about it <br>(you know bout what hihi)</p>
-Damn, are you a wifi? Cause I totally feel a connection
+<p>Damn, are you a wifi? <br>Cause I totally feel a connection</p>
 Remeber the name of your FAVOURITE river in South America?
 Don't do drugs, do Magda, it's nicer :)
 <p>Boys will be boys <br>(especially the dutch ones)</p>
@@ -70,7 +70,7 @@ Only answer "yes" to each question Magda asks
 Find a flower and deliver it to Magda
 Give Magda another T-shirt
 Call your grandma and ask for a cake recipe
-<p>Bike to Rochussenstraat 27 <b>ASAP</b></p>
+<p>Bike to Rochussenstraat 27 <br><b>ASAP</b></p>
 Make tiktoks wiht Magda
 Hold Magda's hand while she's getting her very first piercing
 Get your second nipple pierced
@@ -89,7 +89,7 @@ Test for STDs
 <p>Text your best friend and tell them something nice <br>(be serious&mean it)</p>
 <p>Learn a poem by heart and recite it to Joe <br>(first possible time you guys meet)</p>
 Send your last liked tiktok to flatties
-Give me your jacket? The black one? Please? I'm cold?
+<p>Give me your jacket? <br>The black one? <br>Please? <br>I'm cold?</p>
 Wake up at sunset and take a beautiful picture, post on your story on insta
 Go to sleep early
 Drink 2 liters of water 
