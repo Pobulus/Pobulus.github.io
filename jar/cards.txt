@@ -1,10 +1,100 @@
-To jest losowe hasło nr 1
-To jest losowe hasło nr 2
-To jest losowe hasło nr 3
-To jest losowe hasło nr 4
-To jest losowe hasło nr 5
-To jest losowe hasło nr 6
-To jest losowe hasło nr 7
-To jest losowe hasło nr 8
-To jest losowe hasło nr 9
-To jest losowe hasło nr 10
+To jest kartka numer 0
+To jest kartka numer 1
+To jest kartka numer 2
+To jest kartka numer 3
+To jest kartka numer 4
+To jest kartka numer 5
+To jest kartka numer 6
+To jest kartka numer 7
+To jest kartka numer 8
+To jest kartka numer 9
+To jest kartka numer 10
+To jest kartka numer 11
+To jest kartka numer 12
+To jest kartka numer 13
+To jest kartka numer 14
+To jest kartka numer 15
+To jest kartka numer 16
+To jest kartka numer 17
+To jest kartka numer 18
+To jest kartka numer 19
+To jest kartka numer 20
+To jest kartka numer 21
+To jest kartka numer 22
+To jest kartka numer 23
+To jest kartka numer 24
+To jest kartka numer 25
+To jest kartka numer 26
+To jest kartka numer 27
+To jest kartka numer 28
+To jest kartka numer 29
+To jest kartka numer 30
+To jest kartka numer 31
+To jest kartka numer 32
+To jest kartka numer 33
+To jest kartka numer 34
+To jest kartka numer 35
+To jest kartka numer 36
+To jest kartka numer 37
+To jest kartka numer 38
+To jest kartka numer 39
+To jest kartka numer 40
+To jest kartka numer 41
+To jest kartka numer 42
+To jest kartka numer 43
+To jest kartka numer 44
+To jest kartka numer 45
+To jest kartka numer 46
+To jest kartka numer 47
+To jest kartka numer 48
+To jest kartka numer 49
+To jest kartka numer 50
+To jest kartka numer 51
+To jest kartka numer 52
+To jest kartka numer 53
+To jest kartka numer 54
+To jest kartka numer 55
+To jest kartka numer 56
+To jest kartka numer 57
+To jest kartka numer 58
+To jest kartka numer 59
+To jest kartka numer 60
+To jest kartka numer 61
+To jest kartka numer 62
+To jest kartka numer 63
+To jest kartka numer 64
+To jest kartka numer 65
+To jest kartka numer 66
+To jest kartka numer 67
+To jest kartka numer 68
+To jest kartka numer 69
+To jest kartka numer 70
+To jest kartka numer 71
+To jest kartka numer 72
+To jest kartka numer 73
+To jest kartka numer 74
+To jest kartka numer 75
+To jest kartka numer 76
+To jest kartka numer 77
+To jest kartka numer 78
+To jest kartka numer 79
+To jest kartka numer 80
+To jest kartka numer 81
+To jest kartka numer 82
+To jest kartka numer 83
+To jest kartka numer 84
+To jest kartka numer 85
+To jest kartka numer 86
+To jest kartka numer 87
+To jest kartka numer 88
+To jest kartka numer 89
+To jest kartka numer 90
+To jest kartka numer 91
+To jest kartka numer 92
+To jest kartka numer 93
+To jest kartka numer 94
+To jest kartka numer 95
+To jest kartka numer 96
+To jest kartka numer 97
+To jest kartka numer 98
+To jest kartka numer 99
