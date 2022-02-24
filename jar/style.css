@@ -179,6 +179,7 @@ body {
       right: 2vw;
       bottom: 2vh;
       opacity: var(--legenda-opacity);
+      text-align: center;
       padding: 1vmin;
       z-index: 200;
       background-color: #cccccc;
