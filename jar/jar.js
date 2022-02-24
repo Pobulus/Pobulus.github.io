@@ -72,7 +72,7 @@ function nextCard(){
 }
 
 function prevCard(){
-    index--;
+    if(index>0)index--;
     main();
 }
 
@@ -81,10 +81,9 @@ function preload(){
     index = countDaysFrom(6, 3);
     if(index>=randomOrder.length){
         index = 100;
-        $("#lar").css("display", "inherit");
-        $("#rar").css("display", "inherit");
-        $("#rar").css("animation", "fall-in 1s");
-        $("#lar").css("animation", "fall-in 1s");
+        $(".arrow").css("animation", "fall-in 1s");
+        $(".arrow").show();
+        
 
         document.onkeydown = function (event) {
             if(event.key=="ArrowRight"){

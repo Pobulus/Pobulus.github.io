@@ -156,6 +156,9 @@ body {
     border-style: solid;
     filter: saturate(75%);
 }
+.arrow{
+    display: none;
+}
 .center {
     font-family: 'Dancing Script', serif;
     text-align: center;
