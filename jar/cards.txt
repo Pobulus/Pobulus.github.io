@@ -58,7 +58,7 @@ What did a fish say when it swam into a wall? Damn
 What do you call a person without eyes and good taste? Mischa
 Go outside get that vitamin d
 No more breakfasts for you
-Go cry about it (you know bout what hihi)
+<p>Go cry about it <br>(you know bout what hihi)</p>
 Damn, are you a wifi? Cause I totally feel a connection
 Remeber the name of your FAVOURITE river in South America?
 Don't do drugs, do Magda, it's nicer :)
@@ -70,7 +70,7 @@ Only answer "yes" to each question Magda asks
 Find a flower and deliver it to Magda
 Give Magda another T-shirt
 Call your grandma and ask for a cake recipe
-Bike to Rochussenstraat 27 ASAP
+<p>Bike to Rochussenstraat 27 <b>ASAP</b></p>
 Make tiktoks wiht Magda
 Hold Magda's hand while she's getting her very first piercing
 Get your second nipple pierced

@@ -111,9 +111,9 @@ function preload(){
 function main(){
     if(index<0){
         $("#curtain").show()
-        var odmiana = "dni";
-        if(index == -1)odmiana = "dzień";
-        $("#curtain_message").html("Prezent otworzy się za "+(-index)+" "+odmiana+".<br>🎁");
+        var odmiana = "days";
+        if(index == -1)odmiana = "day";
+        $("#curtain_message").html("The gift opens in "+(-index)+" "+odmiana+".<br>🎁");
     }else{
         if(index>7){
             $("body").get(0).style.setProperty("--legenda-opacity", "0%");
@@ -122,11 +122,11 @@ function main(){
             if(randomOrder[index]<cards.length){
                 card(colors[cardColor(randomOrder[index])], cards[randomOrder[index]]);
             }else{
-                card(colors[cardColor(randomOrder[index])], "[kartka niezdefiniowana]");
+                card(colors[cardColor(randomOrder[index])], "[undefined]");
                 // card("null", "[kartka niezdefiniowana]")
             }
         }else{
-            card("null", "Karteczki się skończyły :(");
+            card("null", "<p>There are no more cards :( <br> (but now you can view them all)</p>");
         }
         $("#curtain").hide();
         $(".others").remove();
