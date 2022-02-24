@@ -79,17 +79,23 @@ body {
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
   }
+  .null{
+    background-color: var(--color-null);
+}
 .coup{
     background-color: var(--color-coup);
 }
 .nice{
     background-color: var(--color-nice);
 }
-.null{
-    background-color: var(--color-null);
-}
+
 .chall{
     background-color: var(--color-chall);
+}
+.gold{
+    background: linear-gradient(0deg, rgba(244,225,7,1) 0%, rgba(238,229,164,1) 52%, rgba(255,218,0,1) 100%);
+
+
 }
 #card{
     max-width: 1000px;
@@ -159,6 +165,7 @@ body {
 .arrow{
     display: none;
 }
+
 .center {
     font-family: 'Dancing Script', serif;
     text-align: center;

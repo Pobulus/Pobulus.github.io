@@ -1,17 +1,19 @@
 $(document).ready(preload);
-var colors = ["chall", "coup", "nice", "null"]
+var colors = ["chall", "coup", "nice", "gold", "null"]
 var cards = [];
 randomOrder = [85, 0, 77, 86, 44, 57, 31, 15, 80, 82, 95, 17, 18, 63, 62, 13, 87, 84, 9, 74, 37, 61, 98, 81, 93, 1, 89, 72, 14, 65, 41, 78, 8, 20, 59, 42, 66, 75, 16, 67, 5, 88, 99, 51, 90, 4, 33, 36, 71, 64, 58, 83, 73, 97, 68, 45, 46, 6, 7, 70, 96, 27, 49, 54, 56, 19, 40, 48, 47, 35, 50, 69, 21, 30, 10, 92, 23, 32, 34, 39, 43, 60, 29, 25, 53, 2, 3, 22, 91, 28, 76, 12, 52, 24, 26, 55, 94, 79, 38, 11]
 var index=-1;
 
 function cardColor(x){
     var nice = 33;
-    var coup = 34;
+    var coup = 33;
     var chall = 33;
     if(x<chall){
         return 0;
     }else if(x <chall+coup){
         return 1;
+    }else if(x==99){
+        return 3;
     }else{
         return 2;
     }
@@ -44,6 +46,21 @@ function generateRandomOrder(){
 
 }
 
+function enableControls(){
+    index = 100;
+    $(".arrow").css("animation", "fall-in 1s");
+    $(".arrow").show();
+    
+
+    document.onkeydown = function (event) {
+        if(event.key=="ArrowRight"){
+            nextCard();
+        }
+        else if(event.key=="ArrowLeft"){
+            prevCard();
+        }
+     };
+}
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -60,7 +77,7 @@ function countDaysFrom(d, m){
     return day;
 }
 function card(color, text){
-    $("#card").removeClass("chall nice coup null");
+    $("#card").removeClass("chall nice coup null gold");
     $("#card").addClass(color);
     $("#card").text(text);
 }
@@ -80,19 +97,7 @@ function preload(){
     // generateRandomOrder();
     index = countDaysFrom(6, 3);
     if(index>=randomOrder.length){
-        index = 100;
-        $(".arrow").css("animation", "fall-in 1s");
-        $(".arrow").show();
-        
-
-        document.onkeydown = function (event) {
-            if(event.key=="ArrowRight"){
-                nextCard();
-            }
-            else if(event.key=="ArrowLeft"){
-                prevCard();
-            }
-         };
+        enableControls();
         }
    $.get('https://pobulus.github.io/jar/cards.txt', function(data){
         cards = data.split('\n');
