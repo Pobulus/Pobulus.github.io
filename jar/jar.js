@@ -1,6 +1,6 @@
 $(document).ready(preload);
 var colors = ["chall", "coup", "nice", "null"]
-var cards;
+var cards = [];
 randomOrder = [85, 0, 77, 86, 44, 57, 31, 15, 80, 82, 95, 17, 18, 63, 62, 13, 87, 84, 9, 74, 37, 61, 98, 81, 93, 1, 89, 72, 14, 65, 41, 78, 8, 20, 59, 42, 66, 75, 16, 67, 5, 88, 99, 51, 90, 4, 33, 36, 71, 64, 58, 83, 73, 97, 68, 45, 46, 6, 7, 70, 96, 27, 49, 54, 56, 19, 40, 48, 47, 35, 50, 69, 21, 30, 10, 92, 23, 32, 34, 39, 43, 60, 29, 25, 53, 2, 3, 22, 91, 28, 76, 12, 52, 24, 26, 55, 94, 79, 38, 11]
 var index=-1;
 
@@ -44,19 +44,7 @@ function generateRandomOrder(){
 
 }
 
-document.onkeydown = function (event) {
-    if(event.key=="ArrowRight"){
-        index++;
-        main();
-    }
-    else if(event.key=="ArrowDown"){
-    
-    }
-    else if(event.key=="ArrowLeft"){
-        index--;
-        main();
-    }
- };
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -72,21 +60,49 @@ function countDaysFrom(d, m){
     return day;
 }
 function card(color, text){
-    $("#card").removeClass("chall nice coup");
+    $("#card").removeClass("chall nice coup null");
     $("#card").addClass(color);
     $("#card").text(text);
+}
+function nextCard(){
+    if(index < randomOrder.length){
+        index++;
+    }
+    main();
+}
+
+function prevCard(){
+    index--;
+    main();
 }
 
 function preload(){
     // generateRandomOrder();
-    index = countDaysFrom(6, 3)
-    $.get('https://pobulus.github.io/jar/cards.txt', function(data){
-        // console.log(data);
+    index = countDaysFrom(6, 3);
+    if(index>=randomOrder.length){
+        index = 100;
+        $("#lar").css("display", "inherit");
+        $("#rar").css("display", "inherit");
+        $("#rar").css("animation", "fall-in 1s");
+        $("#lar").css("animation", "fall-in 1s");
+
+        document.onkeydown = function (event) {
+            if(event.key=="ArrowRight"){
+                nextCard();
+            }
+            else if(event.key=="ArrowLeft"){
+                prevCard();
+            }
+         };
+        }
+   $.get('https://pobulus.github.io/jar/cards.txt', function(data){
         cards = data.split('\n');
-        
+        $("#jar").ready(main);
+        $("#jar").attr("src","jar.png");
     });
-    $("#jar").ready(main);
-    $("#jar").attr("src","jar.png");
+
+    
+
 }
 function main(){
     if(index<0){
@@ -102,15 +118,16 @@ function main(){
             if(randomOrder[index]<cards.length){
                 card(colors[cardColor(randomOrder[index])], cards[randomOrder[index]]);
             }else{
-                card("null", "[kartka niezdefiniowana]");
+                card(colors[cardColor(randomOrder[index])], "[kartka niezdefiniowana]");
+                // card("null", "[kartka niezdefiniowana]")
             }
         }else{
-            card(colors[cardColor(randomOrder[index])], "Karteczki się skończyły :(");
+            card("null", "Karteczki się skończyły :(");
         }
         $("#curtain").hide();
         $(".others").remove();
-        for(i =0; i<(100-index);i++){
-            $("#jar-container").prepend("<div class=\" "+colors[cardColor(randomOrder[100-i])]+ " others\" style=\"transform: rotate("+getRandomInt(-180, 180)+"deg);left: "+getRandomInt(4, 14)+"vmin;\"></div>");
+        for(i =index+1;i<100;i++){
+            $("#jar-container").prepend("<div class=\" "+colors[cardColor(randomOrder[i])]+ " others\" style=\"transform: rotate("+getRandomInt(-180, 180)+"deg);left: "+getRandomInt(4, 14)+"vmin;\"></div>");
         }
         $("#card").css("animation", "pickout 3s");
     }

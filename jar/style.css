@@ -16,7 +16,20 @@ body {
     background-color: #dddddd;
     overflow: hidden;
 }
-
+@keyframes fall-in{
+    0% {
+        top: -200vh;
+    }
+    80% {
+        top: 0vh;
+    }
+    90%{
+        top: -1vh;
+    }
+    100%{
+        top: 0vh
+    }
+}
 @keyframes flyout {
     0% {
         top: calc(50% - 10px);
@@ -57,6 +70,15 @@ body {
     animation-name: flyout;
     animation-duration: 3s;
 }
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
 .coup{
     background-color: var(--color-coup);
 }
@@ -88,7 +110,31 @@ body {
 .center::-webkit-scrollbar {
     display: none;
   }
-
+#rar {
+    position: fixed;
+    text-align: right;
+    right: 1vw;
+    
+    font-family: 'Dancing Script', serif;
+    font-size: calc( 2 * var(--card-font-size));
+    font-weight: normal;
+}
+#lar {
+    position: fixed;
+    left: 1vw;
+    
+    font-family: 'Dancing Script', serif;
+    font-size: calc( 2 * var(--card-font-size));
+    font-weight: normal;
+}
+#lar:hover {
+    font-weight: bold;
+   
+}
+#rar:hover {
+    font-weight: bold;
+    
+}
 #curtain{
     position: fixed;
     z-index: 5000;
