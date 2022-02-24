@@ -12,6 +12,10 @@
     --legenda-opacity: 10%;
 
 }
+a{
+    text-decoration: none;
+    color: #000000;
+}
 body {
     background-color: #dddddd;
     overflow: hidden;

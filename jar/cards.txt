@@ -6,15 +6,15 @@ Coupon for a massage
 Coupon for flowers
 Coupon for a romantic dinner with candles
 Coupon for Magda being nice to you the whooole day
-Coupon for some nooodles:)
+Coupon for some nooodles :)
 Coupon for a new pair of boxer shorts
 Coupon for being fed strawberries in chocolate
 Coupon for a netflix&chill evening
 Coupon for partying together
-Coupon for a weed evening (on me)
+<p>Coupon for a weed evening <br>(on me)</p>
 Coupon for Magda letting you win junglespeed
 Coupon for getting your legs waxed
-Coupon for a day off university (because you're working so hard and deserve it)
+<p>Coupon for a day off university <br>(because you're working so hard and deserve it)</p>
 Coupon for a makeout session 
 Coupon for a pornograph- I mean photography session
 Coupon for a cinema date
@@ -26,27 +26,27 @@ Coupon for disney&smack
 Coupon for taking a nap together
 Coupon for silent treatment
 Coupon for pancakes
-Coupon for your shirt back (for the summer)
+<p>Coupon for your shirt back <br>(for the summer)</p>
 Coupon for pj's party
-Coupon for getting laid (with whom tho!?)
-Coupon for acting classes with Alexis (how to be a whiny husky)
-Coupon for a pillow figth (you have no chances)
+<p>Coupon for getting laid <br>(with whom tho!?)</p>
+<p>Coupon for acting classes with Alexis <br>(how to be a whiny husky)</p>
+<p>Coupon for a pillow fight <br>(you have no chances)</p>
 When life gives you lemons squeeze them in your enemies' eyes <3
-Never gonna give you up, never gonna let you down
+<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">Never gonna give you up, <br>never gonna let you down</a>
 Instead of meat, just eat veggies&pussy
 God save you
 Happy llama sad llama mentally disturbed llama
 Alpacalyps
-Mirror, mirror on the wall, who is a 9.5/10? (P.S. it's Magda looser)
+<p>Mirror, mirror on the wall, who is a 9.5/10? <br>(P.S. it's Magda looser)</p>
 Aren't you a whiny husky
-Are you a Tennesee? Cause you're the only ten I see ;)
+<p>Are you a Tennesee? <br>Cause you're the only ten I see ;)</p>
 Stop acting like a silly little goose
-Remeber to smile a bit today:)
+Remeber to smile a bit today :)
 Don't worry, be happy
 Grzegorz Brzęczyszczykiewicz from Chrząszczyżewoszyce, Łękodoły
 Remember to leave space for Jesus&Sara
-Do you like raisins? No? How about a date?
-Bitch
+<p>Do you like raisins? <br>No?<br> How about a date?</p>
+<b style=\"font-size: calc(3 * var(--card-font-size))\">Bitch</b>
 Do you like Star Wars? Cause Yoda only one for me!
 Eat your vegetableessss
 Remember it's all part of the process
@@ -61,8 +61,8 @@ No more breakfasts for you
 Go cry about it (you know bout what hihi)
 Damn, are you a wifi? Cause I totally feel a connection
 Remeber the name of your FAVOURITE river in South America?
-Don't do drugs, do Magda, it's nicer:)
-Boys will be boys (especially the dutch ones)
+Don't do drugs, do Magda, it's nicer :)
+<p>Boys will be boys <br>(especially the dutch ones)</p>
 Jebać PiS i Konfederacje
 Make Magda breakfast
 Sing a serenade (of your choice) for Flatties
@@ -83,11 +83,11 @@ Buy a prerolled joint I dare you
 Learn how to make circles out of smoke
 Write down 30 words that start with the letter A
 Prank Sara
-Eat vege for the whole day (tofu highly reccomended!)
+<p>Eat vege for the whole day <br>(tofu highly reccomended!)</p>
 Go skinny dipping in the great river Waal
 Test for STDs
-Text your best friend and tell them something nice (be serious&mean it)
-Learn a poem by heart and recite it to Joe (first possible time you guys meet)
+<p>Text your best friend and tell them something nice <br>(be serious&mean it)</p>
+<p>Learn a poem by heart and recite it to Joe <br>(first possible time you guys meet)</p>
 Send your last liked tiktok to flatties
 Give me your jacket? The black one? Please? I'm cold?
 Wake up at sunset and take a beautiful picture, post on your story on insta
@@ -95,6 +95,6 @@ Go to sleep early
 Drink 2 liters of water 
 Eat some vegetables
 Shuffle songs on spotify and learn the one that pops up on guitar
-Learn how to shuffle dance (+proof academia guy)
+<p>Learn how to shuffle dance<br>(+proof academia guy)</p>
 Do a research on NFT's
-LIMITED EDITION EXTRA GOLDEN CARD: <br><i>*you can choose what's written in here :)*</i>
+<p>LIMITED EDITION EXTRA GOLDEN CARD: <br><i>*you can choose what's written in here* :)</i></p>

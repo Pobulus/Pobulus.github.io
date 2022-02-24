@@ -1,5 +1,5 @@
 $(document).ready(preload);
-var colors = ["chall", "coup", "nice", "gold", "null"]
+var colors = ["coup", "nice", "chall", "gold", "null"]
 var cards = [];
 randomOrder = [85, 0, 77, 86, 44, 57, 31, 15, 80, 82, 95, 17, 18, 63, 62, 13, 87, 84, 9, 74, 37, 61, 98, 81, 93, 1, 89, 72, 14, 65, 41, 78, 8, 20, 59, 42, 66, 75, 16, 67, 5, 88, 99, 51, 90, 4, 33, 36, 71, 64, 58, 83, 73, 97, 68, 45, 46, 6, 7, 70, 96, 27, 49, 54, 56, 19, 40, 48, 47, 35, 50, 69, 21, 30, 10, 92, 23, 32, 34, 39, 43, 60, 29, 25, 53, 2, 3, 22, 91, 28, 76, 12, 52, 24, 26, 55, 94, 79, 38, 11]
 var index=-1;
@@ -79,7 +79,7 @@ function countDaysFrom(d, m){
 function card(color, text){
     $("#card").removeClass("chall nice coup null gold");
     $("#card").addClass(color);
-    $("#card").text(text);
+    $("#card").html(text);
 }
 function nextCard(){
     if(index < randomOrder.length){
