@@ -18,6 +18,7 @@ function cardColor(x){
         return 2;
     }
 }
+
 function removeByValues(arr, val){
    
     
@@ -47,7 +48,7 @@ function generateRandomOrder(){
 }
 
 function enableControls(){
-    index = 0;
+    index = 100;
     $(".arrow").css("animation", "fall-in 1s");
     $(".arrow").show();
     
@@ -96,8 +97,8 @@ function prevCard(){
 function preload(){
     // generateRandomOrder();
     index = countDaysFrom(6, 3);
-    // if(index>=randomOrder.length){
-    if(true){
+    if(index>=randomOrder.length){
+    
         enableControls();
         }
    $.get('https://pobulus.github.io/jar/cards.txt', function(data){
