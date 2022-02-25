@@ -47,7 +47,7 @@ function generateRandomOrder(){
 }
 
 function enableControls(){
-    index = 100;
+    index = 0;
     $(".arrow").css("animation", "fall-in 1s");
     $(".arrow").show();
     
