@@ -96,7 +96,8 @@ function prevCard(){
 function preload(){
     // generateRandomOrder();
     index = countDaysFrom(6, 3);
-    if(index>=randomOrder.length){
+    // if(index>=randomOrder.length){
+    if(true){
         enableControls();
         }
    $.get('https://pobulus.github.io/jar/cards.txt', function(data){
