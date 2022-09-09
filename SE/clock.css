@@ -209,7 +209,7 @@ body{
 }
 #base {
     background-color: var(--background);
-
+    opacity: 0%;
     width: 100vmin;
     height: 100vmin;
 }

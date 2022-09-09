@@ -41,6 +41,7 @@ function openAnimation(){
     });
 
     $(".fading").animate({opacity: "100%"}, 15000);
+    $("#base").css("opacity", "100%");
 }
 function toggleMode(){
     if(mode==="clock"){
