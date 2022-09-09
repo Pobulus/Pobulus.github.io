@@ -1,0 +1,215 @@
+:root {
+    --big-ring: red;
+    --small-ring: rgb(255, 62, 62);
+    --middle-bit: rgb(255, 191, 0);
+    --background: #000000;
+    --glyph-hue: 0deg;
+}
+html[data-theme='dark'] {
+    --big-ring: red;
+    --small-ring: rgb(255, 62, 62);
+    --middle-bit: rgb(255, 191, 0);
+    --background: #000000;
+    --glyph-hue: 0deg;
+}
+html[data-theme='light'] {
+    --big-ring: lime;
+    --small-ring: rgb(13, 156, 39);
+    --middle-bit: rgba(150, 145, 130, 0);
+    --background: #312d33;
+    --glyph-hue: 160deg;
+}
+body{
+    background: var(--background);
+    overflow: hidden;
+    
+}
+.toggler{
+
+
+    position: absolute;
+    top: 23vmin;
+    height: 55vmin;
+
+    width: 28vmin;
+}
+
+#mode {
+    left: 50vw;
+}
+#theme{
+    right: 50vw;
+}
+.glyph {
+    position: absolute;
+    width: 6vmin;
+    height: 6vmin;
+    padding: 1.5vmin;
+    filter: hue-rotate(var(--glyph-hue));
+}
+.ring{
+    border-radius: 100%;
+    border-width: 0.7vmin;
+    border-style: solid;
+    border-color: var(--big-ring);
+}
+
+.small-ring{
+    text-align: center;
+    font-size: 6vmin;
+    color: white;
+    position: absolute;
+    border-radius: 100%;
+    width: 7vmin;
+    height: 7vmin;
+    padding: 0.5vmin;
+    border-width: 0.5vmin;
+    border-style: solid;
+    border-color: var(--small-ring);
+    
+}
+/* SMALL HAND */
+
+#small-hand{
+    border-color: var(--small-ring);
+    background-color: var(--small-ring);
+    border-width: 0.7vmin;
+    border-style: solid;
+    position: absolute;
+}
+
+#small-hand.at12{
+    
+    transform-origin: 50% 50%;
+    transform:translate(-50%, -40%) rotate(45deg);
+}
+#small-hand.at9{
+    
+    transform-origin: 50% 50%;
+    transform:translate(-40%, -50%) rotate(45deg);
+}
+
+#small-hand.at6{
+    
+    transform-origin: 50% 50%;
+    transform:translate(-50%,45%) rotate(45deg);
+}
+#small-hand.at3{
+    
+    transform-origin: 50% 50%;
+    transform:translate(40%, -50%) rotate(45deg);
+}
+
+/* BIG HAND */
+#big-hand{
+    border-color: var(--small-ring);
+    background-color: var(--small-ring);
+    border-width: 1.1vmin;
+    border-radius: 30%;
+    border-style: solid;
+    position: absolute;
+}
+
+.at1{
+    top:6.5%;
+    right: 21.5%;
+}
+.at2{
+    
+    top:21.5%;
+    right: 6.5%;
+}
+.at3{
+    right: 1%;
+    /* top: 50%; */
+    top: 50%;
+     transform:translate(0%, -50% ); 
+}
+.at4{
+    bottom:21.5%;
+    right: 6.5%;
+}
+.at5{
+    bottom:6.5%;
+    right: 21.5%;
+}
+
+.at6{
+    left: 50%;
+    bottom: 1%;
+    transform:translate(-50%, 0%);
+}
+.at7{
+    bottom:6.5%;
+    left: 21.5%;
+}
+.at8{
+    bottom:21.5%;
+    left: 6.5%;
+}
+.at9{
+    
+    left: 1%;
+    top: 50%;
+    transform:translate(0%, -50%);
+}
+.at10{
+    top:21.5%;
+    left: 6.5%;
+}
+.at11{
+    top:6.5%;
+    left: 21.5%;
+}
+.at12{
+    top: 0.5%;
+    left: 50%;
+    transform:translate(-50%, 0%);
+}
+#middle-bit{
+    border-color: var(--middle-bit);
+    background-color: var(--middle-bit);
+}
+#fifth{
+    
+    opacity: 10%;
+    width: 133vmin;
+    height: 133vmin;
+}
+#fourth{
+    
+    opacity: 25%;
+    width: 113vmin;
+    height: 113vmin;
+}
+#third{
+    opacity: 50%;
+    width: 93vmin;
+    height: min(93vw, 93vh);
+}
+#second{
+    opacity: 75%;
+    width: 73vmin;
+    height: 73vmin;
+}
+#first{
+    width: 53vmin;
+    height: 53vmin;
+}
+#zeroth{
+    border-style: none;
+    width: 28vmin;
+    height: 28vmin;
+}
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%, -50%);
+}
+#base {
+    background-color: var(--background);
+
+    width: 100vmin;
+    height: 100vmin;
+}
