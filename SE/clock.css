@@ -26,12 +26,13 @@ body{
 }
 .toggler{
 
-
+    
     position: absolute;
-    top: 23vmin;
+    top: 50vh;
     height: 55vmin;
 
     width: 28vmin;
+    transform: translate(0%, -50%);
 }
 
 #mode {
@@ -170,25 +171,36 @@ body{
     border-color: var(--middle-bit);
     background-color: var(--middle-bit);
 }
-#fifth{
+#seventh{
+    opacity: 5%;
+    width: 173vmin;
+    height: 173vmin;
+}
+#sixth{
     
     opacity: 10%;
+    width: 153vmin;
+    height: 153vmin;
+}
+#fifth{
+    
+    opacity: 25%;
     width: 133vmin;
     height: 133vmin;
 }
 #fourth{
     
-    opacity: 25%;
+    opacity: 40%;
     width: 113vmin;
     height: 113vmin;
 }
 #third{
-    opacity: 50%;
+    opacity: 60%;
     width: 93vmin;
     height: min(93vw, 93vh);
 }
 #second{
-    opacity: 75%;
+    opacity: 80%;
     width: 73vmin;
     height: 73vmin;
 }
@@ -203,13 +215,14 @@ body{
 }
 .center{
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50vh;
+    left: 50vw;
     transform:translate(-50%, -50%);
 }
 #base {
     background-color: var(--background);
+    overflow: hidden;
     opacity: 0%;
-    width: 100vmin;
-    height: 100vmin;
+    width: 100vw;
+    height: 100vh;
 }
