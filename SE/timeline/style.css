@@ -1,0 +1,165 @@
+body{
+    background-color: #522248;
+    color: #f0f0f0;
+    font-family: opensans, 'arial';
+   
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+@font-face {
+	font-family: rodondo;
+	src: url("Rodondo.otf") format('opentype');
+}
+#horizon{
+    position: fixed;
+    height: 100vh;
+    width: 20vmin;
+    left: 0%;
+    z-index: 1000;
+}
+#reactor{
+	position: absolute;
+	left: 0px;
+	top:0px;
+}
+#loader {
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  text-align: center;
+  font-size: 5em;
+  transform: translate(-50%, -50%);
+  font-family: 'rodondo';
+}
+
+table { 
+    /*margin-top: 1vh;*/
+    left: 0px;
+    top: 0px;
+    border-collapse: separate; 
+    border-spacing: 0px;
+    min-width: 99vw;
+    position: absolute;
+
+
+}
+
+h2{
+    font-family: 'rodondo';
+    font-size: 3em;
+    color: #f0f0f0;
+
+    padding: 0.2em;
+}
+th {
+    position: sticky;
+    left: 0%;
+    background-color: #522248;
+    background: linear-gradient(to right, #522248 50%, rgba(0,0,0,0));
+    border-right: solid 0px;
+    vertical-align: middle;
+    z-index: 100;
+    min-width: 20vmin;
+
+    border-bottom: solid 3em #00000000;
+    
+    border-left: solid 0.4em;
+}
+tr{
+    border-bottom-width: 3em;
+
+    border-style: solid;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+td{
+    border-left: dashed #afafaf 0.3em;
+    min-width: 20vmin;
+    border-bottom: solid 3em;
+    border-color: inherit;
+    font-weight: bold;
+    font-size: 1em;
+    white-space: pre-line;
+    
+
+}
+
+td:empty, th:empty {
+    border-left: none;
+   }
+td[colspan]:not([colspan="1"]):nth-child(2) { 
+    border-bottom: hidden;
+}
+img{ 
+    position: relative;
+    width: auto;
+    height: 90%
+    border-radius: 10%;
+    margin: 2%;
+    max-height: 5em;
+    border: solid 0.1em #f0f0f0;
+}
+@media only screen and (orientation: portrait) {
+  tr{
+    height: 20em;  
+    transform: scale(1, -1);
+  }
+  h2{
+    transform: rotate(-90deg) scale(1, 1) ;
+    }
+    .event {
+    transform: rotate(-90deg)scale(1, 1)  ;
+        font-size: 1em;
+        padding: 1%;
+    }
+    
+  th {
+    position: relative;
+    border-left: solid 0.4em;
+  }
+  #horizon{
+    width: 0px;  
+  }
+  table{
+    transform-origin: 0 0;
+    transform: rotate(90deg) scale(1, -1) ; 
+    
+  }
+  
+  .hide1 {
+    height: 1em;
+}
+}
+.hide1 {
+    border-bottom-width: 1em;
+}
+.hide1 >td {
+    font-size: 0.1em;
+    border-bottom-width: 10em;
+    border-left-width: 2em;
+}
+
+.hide1 >td >div{
+    opacity: 0;
+    
+}
+
+.hide1 > th {
+            border-bottom-width: 1em;
+}
+.hide1 >th >h2{
+    font-size: 1.5em;
+    position: sticky;
+    padding: 0px;
+
+}
+
