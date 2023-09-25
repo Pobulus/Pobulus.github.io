@@ -27,6 +27,7 @@ var normal = "";
 var onetime = true;
 var hair = normal;
 $(document).ready(function(){updatePos();
+    $("#dialogBox").hide();
 $("#player").append(twemoji.parse('🧍'+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
 $("#Sun").append(twemoji.parse("☀️", {className: "skySun",  folder: "svg", ext: ".svg"}));    
 $("#bM").append(twemoji.parse("♂️", {className: "buttonEmoji", folder: "svg", ext: ".svg"})); 
