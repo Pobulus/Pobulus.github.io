@@ -1,0 +1,51 @@
+define; @r; Red; #ff0000
+define; @g; Green; #00ff00
+define; @b; Blue; #0000ff
+define; @w; White; #ffffff
+define; @m; Magenta; #ff00ff
+define; @y; Yellow; #ffff00
+define; @c; Cyan; #00ffff
+define; @o; Orange; #ff8800
+#START
+scene; background.jpg; o; <b>Hello world!</b>; bannerSet; <i>ACT 1</i>
+sprite; c0; blue_calm; o; This is my <i>test</i> script; show; banner
+goR; c0; b; You'll see <b>me</b> in a while; hide; banner
+b; H- here I am!; show; c0; sprite; c1; red_calm
+goL; c1; show; c1; r; Greetings mortal!
+slideL; c0; r; My name is RED!; slideC; c1
+r; My current mood is HAPPY.; sprite; c1; red_happy; sprite; c0; blue_happy
+r; GoodBye; sprite; c0; blue_sad
+hide; bottomBox
+slideR; c0; slideC; c1
+show; bottomBox
+w; Hi!; sprite; c2; white_calm; goL; c2
+hide; c1; show; c2; w; Look at me!; c0; blue_sad
+b; <u>NOPE</u>; hide; c0; sprite; 
+sprite; c3; cyan_happy; goR; c3; sprite; c2; white_sad; w; Ow :(
+show; c3; c; What's the matter?
+w; Blue just left...; slideC; c3
+sprite; c3; cyan_calm; c; Oh, that's rude...; scene; https://i.pinimg.com/originals/6e/47/88/6e4788deccb3c45848f521508255ab65.gif
+sprite; c3; cyan_sad; c; It makes me sad as well...
+w; Well, I'm gonna go. Bye!; sprite; c2; white_calm
+hide; c2
+c; He fell for it!; sprite; c3; cyan_calm
+sprite; c3; cyan_happy; c; He is so naive...
+c; Well I must run now anyway...; slideL; c3; bannerSet; The <b>END</b>
+hide; c3; show; banner
+bannerSet; The <b>END?</b>
+
+ ; Here my ideas End
+ ; I have some random tests now...
+goC; c0; sprite; c0; https://i.pinimg.com/originals/b8/38/ed/b838ed9eead6ce4b448bc020883ec881.gif; b; WOAH, I'm transforming!
+show; c0; b; AAAAAAAAA!
+slideL; c0; w; Everybody to the left!
+slideR; c0; g; Everybody to the right!
+slideL; c0; r; I AM RED!
+slideR; c0; g; I AM GREEN!
+slideL; c0; b; I AM BLUE!
+slideR; c0; w; I AM WHITE!
+slideL; c0; c; I AM CYAN!
+slideR; c0; y; I AM YELLOW!
+slideL; c0; m; I AM MAGENTA!
+slideR; c0; o; I AM ORANGE!
+
