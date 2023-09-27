@@ -16,7 +16,10 @@ body {
     background: -moz-linear-gradient(right, red, orange, yellow, green, cyan, blue, violet); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to right, red, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
 }
-
+#grad_tl:hover {
+    background: rgb(195,122,0);
+    background: linear-gradient(0deg, rgba(195,122,0,1) 20%, rgba(170,0,0,1) 40%, rgba(0,128,213,1) 60%, rgba(165,0,203,1) 80%);
+}
 #grad_sq:hover {
     background: conic-gradient(from 0deg at 53% 50%, #ffa500, rgba(25, 209, 19, 1), rgba(44, 219, 211, 1), rgba(205,44,219,1), rgba(250, 163, 5, 1))
 }
