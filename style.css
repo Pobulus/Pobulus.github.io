@@ -16,9 +16,13 @@ body {
     background: -moz-linear-gradient(right, red, orange, yellow, green, cyan, blue, violet); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to right, red, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
 }
+#grad_emoji:hover{
+    background: rgb(44,107,12);
+    background: linear-gradient(0deg, rgba(44,107,12,1) 24%, rgba(51,51,51,1) 25%, rgba(70,75,70,1) 35%, rgba(35,173,29,1) 36%, rgba(9,213,0,1) 50%, rgb(6, 133, 150) 51%, rgba(0,180,203,1) 100%); 
+}
 #grad_tl:hover {
     background: rgb(195,122,0);
-    background: linear-gradient(0deg, rgba(195,122,0,1) 20%, rgba(170,0,0,1) 40%, rgba(0,128,213,1) 60%, rgba(165,0,203,1) 80%);
+    background: linear-gradient(180deg,  rgb(201, 14, 120) 0% 25%, rgb(187, 79, 21) 25% 50%, rgb(40, 77, 163) 50% 75%, rgb(141, 16, 16) 75% 100%);
 }
 #grad_sq:hover {
     background: conic-gradient(from 0deg at 53% 50%, #ffa500, rgba(25, 209, 19, 1), rgba(44, 219, 211, 1), rgba(205,44,219,1), rgba(250, 163, 5, 1))
@@ -26,12 +30,15 @@ body {
 #grad_clk:hover {
   background: radial-gradient(circle at 50% 50%,rgba(0, 0, 0, 1), rgba(209, 19, 19, 1), rgba(0, 0, 0, 1), rgba(219, 5, 5, 1), rgba(0, 0, 0, 1), rgba(255, 24, 0, 1), rgba(0,0,0,1), rgba(255, 25, 0, 1))
 }
+#grad_rps{
+    font-size: 1em;
+}
 button {
   
   background-color: #222222;
   border: 2px solid #101010;
 
-  border-radius: 5px;
+  border-radius: 3vh;
   transition-duration: 0.4s;
   color: #ffffffd0;
   padding: 15px 32px;
