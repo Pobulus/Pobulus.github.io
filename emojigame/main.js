@@ -26,9 +26,18 @@ var old = "‍🦳";
 var normal = "";
 var onetime = true;
 var hair = normal;
+
 $(document).ready(function(){updatePos();
     $("#dialogBox").hide();
+
 $("#player").append(twemoji.parse('🧍'+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+let allPlayerEmojis = "🧍🧍‍♂️🧍‍♀️🏃🏃‍♂️🏃‍♀️🚶🚶‍♂️🚶‍♀️🏌️🏌️‍♂️🏌️‍♀️\
+                       🧍🏻🧍🏻‍♂️🧍🏻‍♀️🏃🏻🏃🏻‍♂️🏃🏻‍♀️🚶🏻🚶🏻‍♂️🚶🏻‍♀️🏌🏻🏌🏻‍♂️🏌🏻‍♀️\
+                       🧍🏼🧍🏼‍♂️🧍🏼‍♀️🏃🏼🏃🏼‍♂️🏃🏼‍♀️🚶🏼🚶🏼‍♂️🚶🏼‍♀️🏌🏼🏌🏼‍♂️🏌🏼‍♀️\
+                       🧍🏽🧍🏽‍♂️🧍🏽‍♀️🏃🏽🏃🏽‍♂️🏃🏽‍♀️🚶🏽🚶🏽‍♂️🚶🏽‍♀️🏌🏽🏌🏽‍♂️🏌🏽‍♀️\
+                       🧍🏾🧍🏾‍♂️🧍🏾‍♀️🏃🏾🏃🏾‍♂️🏃🏾‍♀️🚶🏾🚶🏾‍♂️🚶🏾‍♀️🏌🏾🏌🏾‍♂️🏌🏾‍♀️\
+                       🧍🏿🧍🏿‍♂️🧍🏿‍♀️🏃🏿🏃🏿‍♂️🏃🏿‍♀️🚶🏿🚶🏿‍♂️🚶🏿‍♀️🏌🏿🏌🏿‍♂️🏌🏿‍♀️";
+$("#emojiPreloader").append(twemoji.parse(allPlayerEmojis, {className: "preloadMoji", folder: "svg", ext: ".svg"}));
 $("#Sun").append(twemoji.parse("☀️", {className: "skySun",  folder: "svg", ext: ".svg"}));    
 $("#bM").append(twemoji.parse("♂️", {className: "buttonEmoji", folder: "svg", ext: ".svg"})); 
 $("#bF").append(twemoji.parse("♀️", {className: "buttonEmoji", folder: "svg", ext: ".svg"})); 
@@ -52,17 +61,7 @@ function scroll_to(div){
 	},1);}
 
 
-function preloadPlayer(){
-    $(".previewMoji").replaceWith(twemoji.parse('🚶'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
-    if (race==skin0){
-        $(".previewMoji").replaceWith(twemoji.parse('🏌️'+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
-    }else{
-        $(".playerMoji").replaceWith(twemoji.parse("🏌"+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
-    }
-    $(".previewMoji").replaceWith(twemoji.parse('🏃'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
-    $(".previewMoji").replaceWith(twemoji.parse('🧍'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
-    console.log("Preload");
-}
+
 
 function updatePos() { 
     if(pause){
@@ -121,9 +120,7 @@ document.addEventListener('keydown', (event) => {
         if (pause){
             $("#buttonBox").fadeIn();
             $("#player").hide();
-        }else{
-            preloadPlayer();
-            
+        }else{          
             $("#player").show();
             $("#buttonBox").fadeOut();
         }
