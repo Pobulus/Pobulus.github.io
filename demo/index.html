@@ -48,13 +48,13 @@ var flags = {
 var camera, scene, renderer;
 var step;
 var grounded = true;
-let jumped = false;
-let playerHitbox;
+var jumped = false;
+var playerHitbox;
 var collidableMeshList = [];
 var antiCollidableMeshList = [];
-let geometry, material, mesh, ground, groundgeometry, ground_material;
-let sun, sun_geometry, material_sun, amb_light, general_light;
-let npc;
+var geometry, material, mesh, ground, groundgeometry, ground_material;
+var sun, sun_geometry, material_sun, amb_light, general_light;
+var npc;
 var lookaters = [];
 let building, building_geometry, building_material;
 let door, door2, door_material;
@@ -1190,7 +1190,7 @@ function rotateCamera(hor, vert){
         height: 100vh;
         text-align: center;
         vertical-align: middle;
-        font-size: 5vw;
+        font-size: 3vw;
       }
       #menu{
         overflow-y: auto;
@@ -1546,9 +1546,10 @@ input[type=range]:focus::-ms-fill-upper {
           <h3>Ustawienia</h3>
           <table class="menuTable" >
             <tr>
-              <td style="text-align: center;background-color: #002e5a;" colspan="2" onclick="window.localStorage.clear(); window.location.reload();">WYKASUJ ZAPISANY POSTĘP</td></tr>
+              <td style="text-align: center;background-color: #002e5a;" colspan="3" onclick="window.localStorage.clear(); window.location.reload();">WYKASUJ ZAPISANY POSTĘP</td>
+            </tr>
             <tr>
-              <td style="text-align: left" >
+              <td style="text-align: left" colspan="2"  >
                 <label class="container" id="debugC">Debug
                 <input type="checkbox" id="debug" value="debug" >
                 <span class="checkmark"></span>
@@ -1556,28 +1557,35 @@ input[type=range]:focus::-ms-fill-upper {
                <td class="menuTable">
                 <b  id="debugValue">false</b>
               </td>
-
             </tr>
             <tr>
-              <td  style="text-align: left"> <label class="container" id="fullscrC">Fullscreen
+              <td  style="text-align: left" colspan="2" > <label class="container" id="fullscrC">Fullscreen
                 <input type="checkbox" id="fullscr" value="fullscr" checked >
                 <span class="checkmark"></span>
               </label></td>
                <td class="menuTable">
                 <b  id="fullscrValue">true</b>
               </td>
+              </tr>
               <tr>
-                <td class="menuTable">playerSpeed</td>
-                <td class="menuTable"><b id="playerSpeedValue">0.15</b></td> </tr><tr>
-                <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="playerSpeed" value="0.15" min="-1" max="1"step="0.01"></input></td>
-                  
-                </tr>
-                <tr>
-                  <td class="menuTable">timeSpeed</td>
-                  <td class="menuTable"><b id="timeSpeedValue">1</b></td></tr><tr></tr>
-                  <td class="menuTable" colspan="2" ><input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input></td>
-                </tr>
-            </tr>
+                <td class="menuTable" colspan="2" >playerSpeed</td>
+                <td class="menuTable"><b id="playerSpeedValue">0.15</b></td> 
+              </tr>
+              <tr>
+                <td class="menuTable" colspan="3" >
+                  <input type="range" class="settingSlider" id="playerSpeed" value="0.15" min="-1" max="1"step="0.01"></input>
+                </td>  
+              </tr>
+              <tr>
+                <td class="menuTable" colspan="2" >timeSpeed</td>
+                <td class="menuTable"><b id="timeSpeedValue">1</b></td>
+
+              </tr>
+              <tr>
+                  <td class="menuTable" colspan="3" >
+                    <input type="range" class="settingSlider" id="timeSpeed" value="1" min="-50" max="50"step="1"></input>
+                  </td>
+              </tr>
           </table>
         </div>
        
