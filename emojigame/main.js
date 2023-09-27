@@ -51,8 +51,22 @@ function scroll_to(div){
 		scrollLeft: $("#player").offset().left-$(window).width()*0.60
 	},1);}
 
+
+function preloadPlayer(){
+    $(".previewMoji").replaceWith(twemoji.parse('🚶'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
+    if (race==skin0){
+        $(".previewMoji").replaceWith(twemoji.parse('🏌️'+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
+    }else{
+        $(".playerMoji").replaceWith(twemoji.parse("🏌"+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
+    }
+    $(".previewMoji").replaceWith(twemoji.parse('🏃'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
+    $(".previewMoji").replaceWith(twemoji.parse('🧍'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
+    console.log("Preload");
+}
+
 function updatePos() { 
     if(pause){
+        console.log($(".previewMoji"));
         $(".previewMoji").replaceWith(twemoji.parse('🧍'+race+gender, {className: "previewMoji", folder: "svg", ext: ".svg"}));
     }else{  
     
@@ -63,12 +77,11 @@ function updatePos() {
     $("#player").css("height", ((-playerY/20)+60).toString(10)+"%");
     if (sprint){
         $(".playerMoji").replaceWith(twemoji.parse('🏃'+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
-        console.log("zupa");
     } if (sprint==false) {
         $(".playerMoji").replaceWith(twemoji.parse('🚶'+race+gender, {className: "playerMoji",  folder: "svg", ext: ".svg"}));
      if (prevX==playerX) {
         if (prevY<playerY){
-            if (race==skin0){
+            if (race==skin0){ //somehow if you don't do it, they will start cloning 
                 $(".playerMoji").replaceWith(twemoji.parse('🏌️'+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
             }else{
                 $(".playerMoji").replaceWith(twemoji.parse("🏌"+race+gender, {className: "playerMoji", folder: "svg", ext: ".svg"}));
@@ -105,15 +118,17 @@ document.addEventListener('keydown', (event) => {
          pause = !pause;
     
          
-       if (pause){
-        $("#buttonBox").fadeIn();
-        $("#player").hide();
-    }else{
-        $("#buttonBox").fadeOut();
-        $("#player").show();
-    }
+        if (pause){
+            $("#buttonBox").fadeIn();
+            $("#player").hide();
+        }else{
+            preloadPlayer();
+            
+            $("#player").show();
+            $("#buttonBox").fadeOut();
+        }
    }
-    if(!pause){
+if(!pause){
    if (keysPressed['ArrowUp']) {
        if(playerY< window.innerHeight/2){
        playerY = playerY+playerV;
