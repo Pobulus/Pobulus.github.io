@@ -35,18 +35,18 @@ let quests = {
   "Znajdź paluszki dla studentów": {done:false, desc:"Studenci nie wypuszczą cię z budynku jeśli nie dostaną paluszków."}
   
 };
-let inventory = {
-  "paluszki": { n:0, desc:"ulubione jedzenie studentów"},
-  "twoja stara": {n:1, desc: "Największy obiekt we wszechświecie"},
-  "papieżosy": {n:2137, desc:"Powodują raka"},
+var inventory = {
+  "Paluszki": { n:0, desc:"Ulubione jedzenie studentów"},
+  "Kamień nieskończoności"{n:6, desc: "Napotężniejszy minerał we wszechświecie"},
+  "Notatnik": {n:1, desc:"Do zapisywania zadań"},
 };
-let flags = {
+var flags = {
   vending_machine : {counter: 0, },
   student:{counter:0,},
   table:{counter:0}
 }
-let camera, scene, renderer;
-let step;
+var camera, scene, renderer;
+var step;
 var grounded = true;
 let jumped = false;
 let playerHitbox;
@@ -370,9 +370,9 @@ function makeNPC(version, x=0, z=0, y=0.4, n="default"){
             flags.student.counter++;
             break;
           case 1:
-            if(inventory["paluszki"].n){
+            if(inventory["Paluszki"].n){
               $("#text-area").html("O dziękuję!");
-              inventory["paluszki"].n--;
+              inventory["Paluszki"].n--;
               // var animation = new THREE.VectorKeyframeTrack('.position', [0, 2],  [self.position.x, self.position.y, self.position.z, self.position.x+2, self.position.y, self.position.z]);
               // console.log(animation);
               // var studentLeave = new THREE.AnimationClip('studentLeave', -1, [animation]);
@@ -458,7 +458,7 @@ function makeRandomBoxes(rows, cols){
         case 1:
           $("#text-area").html("Proszę, paluszki dla ciebie");
           flags.vending_machine.counter = 1;
-          inventory["paluszki"].n++;
+          inventory["Paluszki"].n++;
           break;
         default:
           $("#text-area").html("<i>*automat nieczynny*</i>");
@@ -1175,7 +1175,7 @@ function rotateCamera(hor, vert){
         height: 100vh;
         align-items: center;
         vertical-align: middle;
-        font-size: 20vw;
+        font-size: 15vw;
       }
       #welcome{
         z-index: 1100;
@@ -1437,6 +1437,8 @@ input[type=range]:focus::-ms-fill-upper {
         }
         body{
           background-image: linear-gradient(to bottom , rgb(48, 0, 158), rgb(0, 153, 255));
+          background-repeat: no-repeat;
+          background-attachment: fixed;
         }
           #text-area{
             font-size: 3.5vw;
