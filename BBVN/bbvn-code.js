@@ -47,7 +47,7 @@ function preload(){
 } else {
     console.log("localStorage unavailable...");
 }
-    $.get('https://pobulus.github.io/script.csv', function(data){
+    $.get('https://pobulus.github.io/BBVN/script.csv', function(data){
         scriptLoad(data);
     });
 }
