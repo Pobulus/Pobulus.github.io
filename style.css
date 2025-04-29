@@ -30,9 +30,7 @@ body {
 #grad_clk:hover {
   background: radial-gradient(circle at 50% 50%,rgba(0, 0, 0, 1), rgba(209, 19, 19, 1), rgba(0, 0, 0, 1), rgba(219, 5, 5, 1), rgba(0, 0, 0, 1), rgba(255, 24, 0, 1), rgba(0,0,0,1), rgba(255, 25, 0, 1))
 }
-#grad_rps{
-    font-size: 1em;
-}
+
 #grad_rps:hover {
     background:-webkit-radial-gradient(ellipse farthest-side at center center, #c19d00 0%, #ba9c03 24%, #2c2c2c 80%);
     background:-o-radial-gradient(ellipse farthest-side at center center, #c19d00 0%, #ba9c03 24%, #2c2c2c 80%);
@@ -62,6 +60,11 @@ button:hover {
   opacity: 1;
 
 }
+
+#grad_rps{
+    padding: 15px 15px;
+}
+
     .notifyButton {
         position: fixed;
         right: 5px;
